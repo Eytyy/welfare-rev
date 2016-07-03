@@ -9,6 +9,8 @@ import babel from 'gulp-babel';
 import sass from 'gulp-sass';
 import autoprefixer from 'gulp-autoprefixer';
 import sourcemaps from 'gulp-sourcemaps';
+import changed from 'gulp-changed';
+import imagemin from 'gulp-imagemin';
 import del from 'del';
 import browserSync from 'browser-sync';
 
@@ -34,8 +36,12 @@ const paths = {
     dest: `${root.dest}/`,
   },
   fonts: {
-    src: `${root.src}/font/**/*`,
-    dest: `${root.dest}/font`,
+    src: `${root.src}/fonts/**/*`,
+    dest: `${root.dest}/fonts`,
+  },
+  images: {
+    src: `${root.src}/images/**/*`,
+    dest: `${root.dest}/images`,
   },
   data: {
     src: `${root.src}/data/**/*.json`,
@@ -79,13 +85,26 @@ gulp.task('html', 'copy HTML files and move to dest folder', () => {
 });
 // End of HTML related tasks   --------------------------------------------
 
-// Start of font related tasks --------------------------------------------
+
+// Start of Images related tasks --------------------------------------------
+gulp.task('images', 'Optimize images and move to dest folder', () => {
+  gulp.src(paths.images.src)
+    .pipe(changed(paths.dest)) // ignore unchanged files
+    .pipe(imagemin()) // optimize
+    .pipe(gulp.dest(paths.images.dest))
+    .pipe(reload({ stream: true }));
+});
+// End of Images related tasks   --------------------------------------------
+
+
+// Start of Fonts related tasks --------------------------------------------
 gulp.task('fonts', 'copy and move font files', () => {
   gulp.src(paths.fonts.src)
     .pipe(gulp.dest(paths.fonts.dest))
     .pipe(reload({ stream: true }));
 });
-// End of font related tasks   --------------------------------------------
+// End of Fonts related tasks   --------------------------------------------
+
 
 // Start of ES6 related tasks ---------------------------------------------
 // Clean Task
@@ -136,4 +155,4 @@ gulp.task('serve', 'serve resources', () => {
 });
 // End of serve related tasks ---------------------------------------------
 
-gulp.task('default', ['help', 'copyData', 'html', 'styles', 'babel', 'serve', 'watch']);
+gulp.task('default', ['help', 'copyData', 'fonts', 'images', 'html', 'styles', 'babel', 'serve', 'watch']);
