@@ -33,6 +33,10 @@ const paths = {
     src: `${root.src}/html/**/*.html`,
     dest: `${root.dest}/`,
   },
+  fonts: {
+    src: `${root.src}/font/**/*`,
+    dest: `${root.dest}/font`,
+  },
   data: {
     src: `${root.src}/data/**/*.json`,
     dest: `${root.dest}/data`,
@@ -75,6 +79,13 @@ gulp.task('html', 'copy HTML files and move to dest folder', () => {
 });
 // End of HTML related tasks   --------------------------------------------
 
+// Start of font related tasks --------------------------------------------
+gulp.task('fonts', 'copy and move font files', () => {
+  gulp.src(paths.fonts.src)
+    .pipe(gulp.dest(paths.fonts.dest))
+    .pipe(reload({ stream: true }));
+});
+// End of font related tasks   --------------------------------------------
 
 // Start of ES6 related tasks ---------------------------------------------
 // Clean Task
