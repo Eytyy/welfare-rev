@@ -7,6 +7,7 @@
 - ES6 - ES5 transpilation (Babel)
 - ESlint
 - Browsersync
+- Nunjucks templates compilation
 
 **Make sure you install node and gulp, then run the following commands:**
 
