@@ -1,7 +1,9 @@
 import _gulp from 'gulp';
 import gulpHelp from 'gulp-help';
+import data from 'gulp-data';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
+import render from 'gulp-nunjucks-render';
 import eslint from 'gulp-eslint';
 import babel from 'gulp-babel';
 import sass from 'gulp-sass';
@@ -50,15 +52,24 @@ gulp.task('styles', 'Convert Sass to CSS', () => {
 });
 // End of styles related tasks  -------------------------------------------
 
-gulp.task('data', 'copy data from src to dest', () => {
+gulp.task('copyData', 'copy data from src to dest', () => {
   gulp.src(paths.data.src)
     .pipe(gulp.dest(paths.data.dest))
     .pipe(reload({ stream: true }));
 });
 
 // Start of HTML related tasks --------------------------------------------
+const dataPath = `${root.src}/data`;
+const templatesPath = `${root.src}/html`;
+
 gulp.task('html', 'copy HTML files and move to dest folder', () => {
   gulp.src(paths.html.src)
+    .pipe(data(() => ({
+      global: require(`${dataPath}/data.json`),
+    })))
+    .pipe(render({
+      path: templatesPath,
+    }))
     .pipe(gulp.dest(paths.html.dest))
     .pipe(reload({ stream: true }));
 });
@@ -114,4 +125,4 @@ gulp.task('serve', 'serve resources', () => {
 });
 // End of serve related tasks ---------------------------------------------
 
-gulp.task('default', ['help', 'data', 'html', 'styles', 'babel', 'serve', 'watch']);
+gulp.task('default', ['help', 'copyData', 'html', 'styles', 'babel', 'serve', 'watch']);
