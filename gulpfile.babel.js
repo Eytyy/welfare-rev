@@ -47,6 +47,10 @@ const paths = {
     src: `${root.src}/data/**/*.json`,
     dest: `${root.dest}/data`,
   },
+  resources: {
+    src: `${root.src}/resources/**/*`,
+    dest: `${root.dest}/resources`,
+  },
 };
 
 // Start of styles related tasks ------------------------------------------
@@ -66,6 +70,11 @@ gulp.task('copyData', 'copy data from src to dest', () => {
   gulp.src(paths.data.src)
     .pipe(gulp.dest(paths.data.dest))
     .pipe(reload({ stream: true }));
+});
+
+gulp.task('copyResources', 'copy resorces from src to dest', () => {
+  gulp.src(paths.resources.src)
+    .pipe(gulp.dest(paths.resources.dest));
 });
 
 // Start of HTML related tasks --------------------------------------------
@@ -155,4 +164,4 @@ gulp.task('serve', 'serve resources', () => {
 });
 // End of serve related tasks ---------------------------------------------
 
-gulp.task('default', ['help', 'copyData', 'fonts', 'images', 'html', 'styles', 'babel', 'serve', 'watch']);
+gulp.task('default', ['help', 'copyData', 'copyResources', 'fonts', 'images', 'html', 'styles', 'babel', 'serve', 'watch']);
