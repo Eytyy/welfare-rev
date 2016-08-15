@@ -89,7 +89,7 @@ gulp.task('html', 'copy HTML files and move to dest folder', () => {
 // Start of Images related tasks --------------------------------------------
 gulp.task('images', 'Optimize images and move to dest folder', () => {
   gulp.src(paths.images.src)
-    .pipe(changed(paths.dest)) // ignore unchanged files
+    .pipe(changed(paths.images.dest)) // ignore unchanged files
     .pipe(imagemin()) // optimize
     .pipe(gulp.dest(paths.images.dest))
     .pipe(reload({ stream: true }));
