@@ -13,6 +13,7 @@ import changed from 'gulp-changed';
 import imagemin from 'gulp-imagemin';
 import del from 'del';
 import browserSync from 'browser-sync';
+import concat from 'gulp-concat';
 
 const gulp = gulpHelp(_gulp);
 const reload = browserSync.reload;
@@ -24,8 +25,8 @@ const root = {
 
 const paths = {
   styles: {
-    src: `${root.src}/sass/**/*.scss`,
-    dest: `${root.dest}/css/`,
+    src: `${root.src}/styles/**/*.scss`,
+    dest: `${root.dest}/styles/`,
   },
   scripts: {
     src: `${root.src}/js/**/*.js`,
@@ -46,6 +47,10 @@ const paths = {
   data: {
     src: `${root.src}/data/**/*.json`,
     dest: `${root.dest}/data`,
+  },
+  templates: {
+    src: `${root.src}/templates/**/*.js`,
+    dest: `${root.dest}/templates`,
   },
   resources: {
     src: `${root.src}/resources/**/*`,
@@ -72,20 +77,23 @@ gulp.task('copyData', 'copy data from src to dest', () => {
     .pipe(reload({ stream: true }));
 });
 
+gulp.task('movetemplates', 'copy templates', () => {
+  gulp.src(paths.templates.src)
+    .pipe(concat('templates.js'))
+    .pipe(gulp.dest(paths.templates.dest))
+    .pipe(reload({ stream: true }));
+});
+
 gulp.task('copyResources', 'copy resorces from src to dest', () => {
   gulp.src(paths.resources.src)
     .pipe(gulp.dest(paths.resources.dest));
 });
 
 // Start of HTML related tasks --------------------------------------------
-const dataPath = `${root.src}/data`;
 const templatesPath = `${root.src}/html`;
 
 gulp.task('html', 'copy HTML files and move to dest folder', () => {
   gulp.src(paths.html.src)
-    .pipe(data(() => ({
-      global: require(`${dataPath}/data.json`),
-    })))
     .pipe(render({
       path: templatesPath,
     }))
@@ -117,6 +125,10 @@ gulp.task('fonts', 'copy and move font files', () => {
 
 // Start of ES6 related tasks ---------------------------------------------
 // Clean Task
+gulp.task('clean-templates', 'remove generated template files in dest directory', () => {
+  del([paths.templates.dest]);
+});
+
 gulp.task('clean-scripts', 'remove generated script files in dest directory', () => {
   del([paths.scripts.dest]);
 });
@@ -133,6 +145,8 @@ gulp.task('babel', 'Generate es6 files in dest directory', () => {
 gulp.task('es6', 'Generate the es6 library in dest', ['clean-scripts', 'babel']);
 
 // End of ES6 related tasks -----------------------------------------------
+
+gulp.task('templates', 'templates task', ['clean-templates', 'movetemplates']);
 
 
 // Start of lint related tasks --------------------------------------------
@@ -152,6 +166,7 @@ gulp.task('watch', 'Watcher task', () => {
   gulp.watch(paths.html.src, ['html']);
   gulp.watch(paths.styles.src, ['styles']);
   gulp.watch(paths.scripts.src, ['lint', 'babel']);
+  gulp.watch(paths.templates.src, ['templates']);
 });
 // End of watch related tasks ---------------------------------------------
 
@@ -164,4 +179,7 @@ gulp.task('serve', 'serve resources', () => {
 });
 // End of serve related tasks ---------------------------------------------
 
-gulp.task('default', ['help', 'copyData', 'copyResources', 'fonts', 'images', 'html', 'styles', 'babel', 'serve', 'watch']);
+gulp.task('default', [
+  'help', 'copyData', 'copyResources', 'templates', 'fonts',
+  'images', 'html', 'styles', 'babel', 'serve', 'watch',
+]);

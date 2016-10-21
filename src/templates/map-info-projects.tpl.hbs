@@ -1,0 +1,61 @@
+<article class="project project--projects">
+  <div class="project__top">
+    <header class="project__header">
+      <div class="project__date">{{this.YearofFinsihing}}</div>
+      <h2 class="project__title">{{this.RelatedEnglishTitle}}</h2>
+      <p class="project__description">
+        {{this.Text}}
+      </p>
+    </header>
+    <aside class="project__details">
+      {{#if (ne this.Period "Unkown")}}
+        <div class="project__details__item project__period">
+          <div class="details__item__label">Period</div>
+          <div class="details__item__value">{{this.Period}}</div>
+        </div>
+      {{/if}}
+      <div class="project__details__item project__budget">
+        <div class="details__item__label">Budget</div>
+        <div class="details__item__value">${{formatCurr this.Cost}}</div>
+      </div>
+      <div class="project__details__item project__beneficary">
+        <div class="details__item__label">Beneficiary</div>
+        <div class="details__item__value">{{this.Beneficary}}</div>
+      </div>
+      <div class="project__details__item project__phase">
+        <div class="details__item__label">Phase</div>
+        <div class="details__item__value">{{this.phase}}</div>
+      </div>
+    </aside>
+  </div>
+  {{#if (or this.beforeImage this.afterImage)}}
+    <div class="project__mid">
+      {{#if this.beforeImage}}
+        <div class="image-comp image-comp--before">
+          <img src="{{this.beforeImage}}" alt="{{this.RelatedEnglishTitle}} before image">
+        </div>
+      {{/if}}
+      {{#if this.afterImage}}
+        <div class="image-comp image-comp--after">
+          <img src="{{this.afterImage}}" alt="{{this.RelatedEnglishTitle}} after image">
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+  <div class="project__bottom">
+    {{#if this.miscImages}}
+      {{#each this.miscImages}}
+        <img class="misc-image" src="{{this}}" alt="{{this.RelatedEnglishTitle}} misc image">
+      {{/each}}
+    {{/if}}
+    {{#if this.otherFiles}}
+      <ul class="links">
+        {{#each this.otherFiles}}
+          <li class="links__item">
+            <a href="{{this}}">{{formatFileName this}}</a>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+</article>

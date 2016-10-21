@@ -1,6 +1,21 @@
 {
   "parser": "babel-eslint",
+  "globals": {
+    "Handlebars": true,
+    "CORE": true,
+    "SHELL": true,
+    "MAP": true,
+    "NAV": true,
+    "WELFARE": true,
+    "OVERLAY": true,
+    "google": true,
+  },
   "rules": {
+    "brace-style": [
+      "error",
+      "stroustrup",
+      { "allowSingleLine": true }
+    ],
     "quotes": [
       2,
       "single"
