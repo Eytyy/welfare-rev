@@ -42,7 +42,7 @@ const MAP = (shell) => {
       shell.listen({
         'init-layer-state': this.updateMap.bind(this),
         'layer-updated': this.updateMap.bind(this),
-        'project-updated': this.updateProject.bind(this),
+        'update-project': this.updateProject.bind(this),
       });
     },
 
@@ -158,6 +158,20 @@ const MAP = (shell) => {
         }).catch((err) => {
           console.log(err);
         });
+
+        if (!ACTIVE_LAYER.eventAdded) {
+          ACTIVE_LAYER.dataLayer.addListener('click', (event) => {
+            shell.notify({
+              type: 'project-clicked',
+              data: {
+                data: event,
+                active_layer: ACTIVE_LAYER,
+              },
+            });
+          });
+          ACTIVE_LAYER.eventAdded = true;
+        }
+
         return true;
       }
       // Unset previous
@@ -204,9 +218,26 @@ const MAP = (shell) => {
 
     /* Update project
      */
-    updateProject(evt) {
-      console.log('update project');
-      console.log(evt);
+    updateProject(event) {
+      const activeProject = event.activeProject;
+      const previousProject = event.previousProject;
+      const dataLayer = config.layers[event.activeLayer].dataLayer;
+      const activeProjectLatLang = event.activeProjectLatLang;
+
+      // remove active styles from previous active project
+      if (previousProject) {
+        dataLayer.overrideStyle(previousProject, config.styles);
+      }
+
+      // add the active project style
+      dataLayer.overrideStyle(activeProject, {
+        fillColor: '#BE4459',
+        fillOpacity: 1,
+      });
+
+      // reposition map and set zeft
+      map.panTo(activeProjectLatLang);
+      map.setZoom(19);
     },
   };
 };

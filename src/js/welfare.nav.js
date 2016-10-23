@@ -4,10 +4,7 @@ const NAV = (shell) => {
   const navMap = {};
   const filteredData = {};
   const navState = {
-    activeLayer: null,
-    previousLayer: null,
     activeCategory: null,
-    previousCategory: null,
     activeProject: null,
     previousProject: null,
   };
@@ -44,6 +41,7 @@ const NAV = (shell) => {
       if (!active && previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
         domMap.$nav.classList.remove('js-catIsOpened');
+        this.resetNav();
         return true;
       }
       // populate list with data if it's not already
@@ -55,10 +53,17 @@ const NAV = (shell) => {
       if (previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
         domMap.$nav.classList.remove('js-catIsOpened');
+        this.resetNav();
       }
       if (active !== previous || (active === previous && layers.active.visible)) {
         shell.find(`.map__nav__item-wrapper--${active}`).classList.add('js-active');
         domMap.$nav.classList.add('js-catIsOpened');
+      }
+    },
+
+    resetNav() {
+      if (navState.activeCategory) {
+        this.closeCategory(navState.activeCategory, navState.activeCategory.nextElementSibling);
       }
     },
 
@@ -166,27 +171,99 @@ const NAV = (shell) => {
       }
     },
 
-    toggleProject() {
+    toggleProject(event) {
       console.log('toggle project');
+      // const item = filteredData[stateMap.activeLayer][el.dataset.cat][el.dataset.target];
+      console.log(event);
+      console.log(event.dataset.cat);
+      console.log(event.dataset.target);
     },
 
-    closeCategory() {
-      console.log('close category');
-      console.log('adjust position');
+    adjustProjectInnerPosition(el, left, width, content) {
+      const element = el;
+      const categoryInner = content;
+      // If any of the categories expanded except for the first category
+      // update the styles of the project navigation
+      if (left > '150') {
+        // reset map nav inner scroll position
+        element.parentNode.scrollLeft = 0;
+        // reposition map nav inner and adjust width
+        setTimeout(() => {
+          element.parentNode.style.transform = `translate3d(${-left + width}px, 0, 0)`;
+          element.parentNode.style.width = `calc(100% + ${left + width}px)`;
+        }, 100);
+        // Adjust category inner wrapper width
+        const categoryInnerWidth = left + width + 300;
+        categoryInner.style.width = `calc(100% - ${categoryInnerWidth}px)`;
+      }
     },
 
-    openCategory() {
-      console.log('open category');
-      console.log('adjust position');
+    resetProjectInnerPosition(el, content) {
+      const element = el;
+      const categoryInner = content;
+      categoryInner.scrollLeft = 0;
+      element.parentNode.removeAttribute('style');
+      categoryInner.removeAttribute('style');
     },
 
-    toggleCategory() {
-      console.log('toggleCategory');
+    closeCategory(el, content) {
+      const element = el || navState.activeCategory;
+      if (!element) return;
+      if (element && content) {
+        console.log('reset position');
+        this.resetProjectInnerPosition(element, content);
+      }
+      element.classList.remove('js-active');
+      domMap.$nav.classList.remove('js-catIsOpened');
+      // NOTE: notify
+      // welfare.info.hideInfoWindow();
+      // document.querySelector('.map-info').classList.remove('js-infoExpanded');
+    },
+
+    openCategory(el, content) {
+      const element = el || navState.activeCategory;
+
+      // Reset navigation scroll first
+      if (domMap.$nav.scrollLeft > 0) {
+        domMap.$nav.scrollLeft = 0;
+      }
+      const elLeft = element.offsetLeft;
+      const elWidth = element.offsetWidth;
+
+      element.classList.add('js-active');
+      domMap.$nav.classList.add('js-catIsOpened');
+      this.adjustProjectInnerPosition(element, elLeft, elWidth, content);
+    },
+
+    toggleCategory(el, content) {
+      // If last active category is the same as the clicked category
+      // Then we are clicking the same category either show it or hide it depnding
+      // on state and return
+      if (navState.activeCategory && navState.activeCategory === el) {
+        if (el.classList.contains('js-active')) {
+          this.closeCategory(el, content);
+        }
+        else {
+          this.openCategory(el, content);
+        }
+        return true;
+      }
+      else if (navState.activeCategory) {
+        // Else if last active category exists and not
+        // the same remove active from last active category
+        navState.activeCategory.classList.remove('js-active');
+        domMap.$nav.classList.remove('js-catIsOpened');
+      }
+      // Update last active categroy
+      navState.activeCategory = el;
+      this.openCategory(el, content);
+      return true;
     },
 
     onNavClick() {
       let el;
       let content;
+
       // alias classList
       const classes = event.target.classList;
 
@@ -197,12 +274,14 @@ const NAV = (shell) => {
           el = event.target;
           this.toggleProject(el);
         }
+
         // Click on `Category`.
         else if (classes.contains('category-wrapper')) {
           el = event.target.parentNode;
           content = event.target.nextElementSibling;
           this.toggleCategory(el, content);
         }
+
         // Click on either `Layer` or `Category` link.
         else if (classes.contains('map__nav__item__icon') ||
           classes.contains('map__nav__item__name')) {
@@ -213,6 +292,7 @@ const NAV = (shell) => {
             this.toggleCategory(el, content);
           }
         }
+
         // If it reaches here, click happened on `Project`.
         else if (classes.contains('map__nav__item__title')) {
           el = event.target.parentNode;

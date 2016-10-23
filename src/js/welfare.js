@@ -4,10 +4,11 @@ const WELFARE = (shell) => {
   const state = {
     activeLayer: null,
     previousLayer: null,
-    activeCategory: null,
-    previousCategory: null,
-    activeProject: null,
     previousProject: null,
+    previousProjectName: '',
+    activeProject: null,
+    activeProjectName: '',
+    activeProjectLatLang: null,
   };
 
   /* Initializes the app state by setting the active layer,
@@ -44,11 +45,42 @@ const WELFARE = (shell) => {
     });
   };
 
+  const updateProject = (event) => {
+    state.previousProject = state.activeProject;
+    state.activeProject = event.data.feature;
+    state.activeProjectLatLang = event.data.latLng;
+
+    switch (state.activeLayer) {
+      case 'projects':
+        state.activeProjectName = state.activeProject.getProperty('RelatedEnglishTitle');
+        break;
+      case 'buildings':
+        state.activeProjectName = state.activeProject.getProperty('BuildingNa');
+        break;
+      case 'housing':
+        break;
+      default:
+        break;
+    }
+
+    shell.notify({
+      type: 'update-project',
+      data: {
+        activeLayer: state.activeLayer,
+        activeProject: state.activeProject,
+        activeProjectName: state.activeProjectName,
+        previousProject: state.previousProject,
+        activeProjectLatLang: state.activeProjectLatLang,
+      },
+    });
+  };
+
   return {
     init() {
       initState();
       shell.listen({
         'session-state-pop': updateLayerState,
+        'project-clicked': updateProject,
       });
     },
     destroy() {
