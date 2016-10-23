@@ -1,6 +1,5 @@
 import _gulp from 'gulp';
 import gulpHelp from 'gulp-help';
-import data from 'gulp-data';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
 import render from 'gulp-nunjucks-render';
@@ -66,22 +65,22 @@ gulp.task('styles', 'Convert Sass to CSS', () => {
     .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
     .pipe(autoprefixer())
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.styles.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.styles.dest));
+    // .pipe(reload({ stream: true }));
 });
 // End of styles related tasks  -------------------------------------------
 
 gulp.task('copyData', 'copy data from src to dest', () => {
   gulp.src(paths.data.src)
-    .pipe(gulp.dest(paths.data.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.data.dest));
+    // .pipe(reload({ stream: true }));
 });
 
 gulp.task('movetemplates', 'copy templates', () => {
   gulp.src(paths.templates.src)
     .pipe(concat('templates.js'))
-    .pipe(gulp.dest(paths.templates.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.templates.dest));
+    // .pipe(reload({ stream: true }));
 });
 
 gulp.task('copyResources', 'copy resorces from src to dest', () => {
@@ -108,8 +107,8 @@ gulp.task('images', 'Optimize images and move to dest folder', () => {
   gulp.src(paths.images.src)
     .pipe(changed(paths.images.dest)) // ignore unchanged files
     .pipe(imagemin()) // optimize
-    .pipe(gulp.dest(paths.images.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.images.dest));
+    // .pipe(reload({ stream: true }));
 });
 // End of Images related tasks   --------------------------------------------
 
@@ -117,8 +116,8 @@ gulp.task('images', 'Optimize images and move to dest folder', () => {
 // Start of Fonts related tasks --------------------------------------------
 gulp.task('fonts', 'copy and move font files', () => {
   gulp.src(paths.fonts.src)
-    .pipe(gulp.dest(paths.fonts.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.fonts.dest));
+    // .pipe(reload({ stream: true }));
 });
 // End of Fonts related tasks   --------------------------------------------
 
@@ -137,8 +136,8 @@ gulp.task('clean-scripts', 'remove generated script files in dest directory', ()
 gulp.task('babel', 'Generate es6 files in dest directory', () => {
   gulp.src(paths.scripts.src)
     .pipe(babel())
-    .pipe(gulp.dest(paths.scripts.dest))
-    .pipe(reload({ stream: true }));
+    .pipe(gulp.dest(paths.scripts.dest));
+    // .pipe(reload({ stream: true }));
 });
 
 // Both (clean dest file the regenerate files in es6 compliant format using babel) Tasks
@@ -177,9 +176,11 @@ gulp.task('serve', 'serve resources', () => {
     server: './dest',
   });
 });
-// End of serve related tasks ---------------------------------------------
 
-gulp.task('default', [
-  'help', 'copyData', 'copyResources', 'templates', 'fonts',
-  'images', 'html', 'styles', 'babel', 'serve', 'watch',
-]);
+// End of serve related tasks ---------------------------------------------
+gulp.task('default', ['help', 'copyData', 'copyResources', 'templates', 'fonts',
+'images', 'html', 'styles', 'babel', 'watch']);
+// gulp.task('default', [
+//   'help', 'copyData', 'copyResources', 'templates', 'fonts',
+//   'images', 'html', 'styles', 'babel', 'serve', 'watch',
+// ]);
