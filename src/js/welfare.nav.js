@@ -19,17 +19,22 @@ const NAV = (shell) => {
       this.onNavClick = this.onNavClick.bind(this);
       this.setMainNav = this.setMainNav.bind(this);
       this.updateMainNav = this.updateMainNav.bind(this);
+      this.updateProject = this.updateProject.bind(this);
+      this.resetProject = this.resetProject.bind(this);
 
       // Listen to global events
       shell.listen({
         'layers-created': this.setMainNav,
         'layers-data-updated': this.updateMainNav,
-        // 'project-updated': this.updateProject.bind(this),
+        'project-nav-click-info': this.updateProject,
+        'update-project': this.updateProject,
+        'reset-project': this.resetProject,
       });
 
       // Listen to click events on navigation
       domMap.$nav.addEventListener('click', this.onNavClick, false);
     },
+
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
@@ -171,12 +176,56 @@ const NAV = (shell) => {
       }
     },
 
-    toggleProject(event) {
-      console.log('toggle project');
-      // const item = filteredData[stateMap.activeLayer][el.dataset.cat][el.dataset.target];
-      console.log(event);
-      console.log(event.dataset.cat);
-      console.log(event.dataset.target);
+    resetProject(event) {
+      let projectName = undefined;
+      switch (event.activeLayer) {
+        case 'projects':
+          projectName = event.activeProject.getProperty('RelatedEnglishTitle');
+          break;
+        case 'buildings':
+          projectName = event.activeProject.getProperty('BuildingNa');
+          break;
+        case 'housing':
+          break;
+        default:
+          return;
+      }
+      shell.find(`[data-target="${projectName}"]`).classList.remove('js-active');
+    },
+
+    onProjectClick(el) {
+      shell.notify({
+        type: 'project-nav-clicked',
+        data: {
+          category: el.dataset.cat,
+          target: el.dataset.target,
+          data: filteredData,
+        },
+      });
+    },
+
+    updateProject(event) {
+      // NOTE: update project navigation classes here
+
+      const opts = {};
+
+      if (event.previousProjectName) {
+        const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+        opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
+        opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
+
+        prevProj.classList.remove('js-active');
+      }
+
+      const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
+      const catEl = shell.find(`.map__nav__item--category--${activeProj.dataset.cat}`);
+      const catInner = catEl.querySelector('.category__inner');
+
+      activeProj.classList.add('js-active');
+      domMap.$nav.classList.add('js-layerIsOpened');
+      opts.activeProj = activeProj;
+
+      this.toggleCategory(catEl, catInner, true, opts);
     },
 
     adjustProjectInnerPosition(el, left, width, content) {
@@ -206,15 +255,18 @@ const NAV = (shell) => {
       categoryInner.removeAttribute('style');
     },
 
-    closeCategory(el, content) {
+    closeCategory(el, content, fromMap) {
       const element = el || navState.activeCategory;
       if (!element) return;
       if (element && content) {
-        console.log('reset position');
         this.resetProjectInnerPosition(element, content);
       }
       element.classList.remove('js-active');
       domMap.$nav.classList.remove('js-catIsOpened');
+      shell.notify({
+        type: 'category-closed',
+        data: {},
+      });
       // NOTE: notify
       // welfare.info.hideInfoWindow();
       // document.querySelector('.map-info').classList.remove('js-infoExpanded');
@@ -235,7 +287,26 @@ const NAV = (shell) => {
       this.adjustProjectInnerPosition(element, elLeft, elWidth, content);
     },
 
-    toggleCategory(el, content) {
+    toggleCategory(el, content, fromMap, opts) {
+      // If event is comming from map
+      if (fromMap) {
+        if (navState.activeCategory && el !== navState.activeCategory) {
+          if (opts.prevProjCat) {
+            this.closeCategory(opts.prevProjCat, opts.prevCatInner, fromMap);
+          }
+        }
+        if (!el.classList.contains('js-active')) {
+          this.openCategory(el, content);
+        }
+        navState.activeCategory = el;
+        setTimeout(() => {
+          content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
+        }, 10);
+        return true;
+      }
+
+      // If event is coming from clicking on the category
+      //
       // If last active category is the same as the clicked category
       // Then we are clicking the same category either show it or hide it depnding
       // on state and return
@@ -272,7 +343,7 @@ const NAV = (shell) => {
         // Click on `Project`.
         if (classes.contains('map__nav__item--project')) {
           el = event.target;
-          this.toggleProject(el);
+          this.onProjectClick(el);
         }
 
         // Click on `Category`.
@@ -296,7 +367,7 @@ const NAV = (shell) => {
         // If it reaches here, click happened on `Project`.
         else if (classes.contains('map__nav__item__title')) {
           el = event.target.parentNode;
-          this.toggleProject(el);
+          this.onProjectClick(el);
         }
       }
       event.stopPropagation();

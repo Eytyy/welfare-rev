@@ -21,15 +21,12 @@ const MAP = (shell) => {
       // Cache map element
       domMap.map = shell.find('#map');
 
-      // Alias this
-      const module = this;
-
       // Create new instance of google maps
       map = new google.maps.Map(domMap.map, config.options);
 
       // Retrieve the layers and set them up
       shell.get('data/layers.json').then((data) => {
-        module.setupLayers(data);
+        this.setupLayers(data);
       });
 
       // Notify modules that map setup is done
@@ -38,11 +35,17 @@ const MAP = (shell) => {
         data: map,
       });
 
+      // Bind methods to this
+      this.updateMap = this.updateMap.bind(this);
+      this.updateProject = this.updateProject.bind(this);
+      this.resetProject = this.resetProject.bind(this);
+
       // listen to events
       shell.listen({
-        'init-layer-state': this.updateMap.bind(this),
-        'layer-updated': this.updateMap.bind(this),
-        'update-project': this.updateProject.bind(this),
+        'init-layer-state': this.updateMap,
+        'layer-updated': this.updateMap,
+        'update-project': this.updateProject,
+        'reset-project': this.resetProject,
       });
     },
 
@@ -214,6 +217,15 @@ const MAP = (shell) => {
           clearInterval(wait);
         }
       };
+    },
+
+    resetProject(event) {
+      const activeProject = event.activeProject;
+      const dataLayer = config.layers[event.activeLayer].dataLayer;
+
+      dataLayer.overrideStyle(activeProject, config.styles);
+      map.panTo({ lat: 31.777, lng: 35.234 });
+      map.setZoom(16);
     },
 
     /* Update project

@@ -45,8 +45,38 @@ const WELFARE = (shell) => {
     });
   };
 
-  const updateProject = (event) => {
+  const updateProject = () => {
+    shell.notify({
+      type: 'update-project',
+      data: {
+        activeLayer: state.activeLayer,
+        activeProject: state.activeProject,
+        activeProjectName: state.activeProjectName,
+        previousProject: state.previousProject,
+        previousProjectName: state.previousProjectName,
+        activeProjectLatLang: state.activeProjectLatLang,
+      },
+    });
+  };
+
+  const onProjectNavClick = (event) => {
+    const obj = event.data[state.activeLayer][event.category][event.target];
+    const latLngs = obj.getGeometry().getAt(0).getAt(0);
+
     state.previousProject = state.activeProject;
+    state.previousProjectName = state.activeProjectName;
+
+    state.activeProject = obj;
+    state.activeProjectLatLang = latLngs;
+    state.activeProjectName = event.target;
+
+    updateProject();
+  };
+
+  const onProjectMapClick = (event) => {
+    state.previousProject = state.activeProject;
+    state.previousProjectName = state.activeProjectName;
+
     state.activeProject = event.data.feature;
     state.activeProjectLatLang = event.data.latLng;
 
@@ -63,16 +93,20 @@ const WELFARE = (shell) => {
         break;
     }
 
-    shell.notify({
-      type: 'update-project',
-      data: {
-        activeLayer: state.activeLayer,
-        activeProject: state.activeProject,
-        activeProjectName: state.activeProjectName,
-        previousProject: state.previousProject,
-        activeProjectLatLang: state.activeProjectLatLang,
-      },
-    });
+    updateProject();
+  };
+
+  const onCategoryClosed = () => {
+    if (state.activeProject) {
+      console.log('reset project and map');
+      shell.notify({
+        type: 'reset-project',
+        data: {
+          activeProject: state.activeProject,
+          activeLayer: state.activeLayer,
+        },
+      });
+    }
   };
 
   return {
@@ -80,7 +114,9 @@ const WELFARE = (shell) => {
       initState();
       shell.listen({
         'session-state-pop': updateLayerState,
-        'project-clicked': updateProject,
+        'project-clicked': onProjectMapClick,
+        'project-nav-clicked': onProjectNavClick,
+        'category-closed': onCategoryClosed,
       });
     },
     destroy() {
