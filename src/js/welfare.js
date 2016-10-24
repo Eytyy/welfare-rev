@@ -34,7 +34,13 @@ const WELFARE = (shell) => {
 
     const logMsg = `<layer-update> Prev: ${state.previousLayer} | Active: ${state.activeLayer}`;
     console.log(logMsg);
-
+    shell.notify({
+      type: 'reset-project',
+      data: {
+        activeProject: state.activeProject,
+        activeLayer: state.activeLayer,
+      },
+    });
     // Notify
     shell.notify({
       type: 'layer-updated',
@@ -99,7 +105,7 @@ const WELFARE = (shell) => {
 
   const onCategoryClosed = () => {
     if (state.activeProject) {
-      console.log('reset project and map');
+      // console.log('reset project and map');
       shell.notify({
         type: 'reset-project',
         data: {
@@ -113,6 +119,7 @@ const WELFARE = (shell) => {
   return {
     init() {
       initState();
+
       shell.listen({
         'session-state-pop': updateLayerState,
         'project-clicked': onProjectMapClick,

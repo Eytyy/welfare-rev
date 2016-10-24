@@ -153,9 +153,37 @@
   background: #373535;
   color: $red;
 }
-.category-wrapper .map__nav__item__icon {
+.category-wrapper--Institutional .map__nav__item__icon {
+  background-image: url('../images/Institutional.svg');
+  width: 39px;
+}
+.category-wrapper--Social .map__nav__item__icon {
+  background-image: url('../images/Social.svg');
+  width: 58px;
+}
+.category-wrapper--Educational .map__nav__item__icon {
+  background-image: url('../images/Educational.svg');
+  width: 52px;
+}
+.category-wrapper--Cultural .map__nav__item__icon {
   background-image: url('../images/Cultural.svg');
-  width: 28px;
+  width: 32px;
+}
+.category-wrapper--Commercial .map__nav__item__icon {
+  background-image: url('../images/Commercial.svg');
+  width: 52px;
+}
+.category-wrapper--Religious .map__nav__item__icon {
+  background-image: url('../images/Religious.svg');
+  width: 58px;
+}
+.category-wrapper--Residential-Hosh .map__nav__item__icon {
+  background-image: url('../images/ResidentialHosh.svg');
+  width: 62px;
+}
+.category-wrapper--Residential .map__nav__item__icon {
+  background-image: url('../images/Residential.svg');
+  width: 58px;
 }
 
 .map__nav__item--project {

@@ -2,6 +2,7 @@ const MAIN = {
   init() {
     // Register Modules
     CORE.register('overlay', OVERLAY);
+    CORE.register('messages', MESSAGES);
     CORE.register('info', INFO);
     CORE.register('nav', NAV);
     CORE.register('map', MAP);

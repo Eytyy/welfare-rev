@@ -17,6 +17,7 @@ const INFO = (shell) => {
 
       // Bind methods to this
       this.updateProject = this.updateProject.bind(this);
+      this.hideInfoWindow = this.hideInfoWindow.bind(this);
 
       // setup window
       this.setupInfoWindow();
@@ -26,6 +27,8 @@ const INFO = (shell) => {
       // Listen to global events
       shell.listen({
         'update-project': this.updateProject,
+        'layer-updated': this.hideInfoWindow,
+        'category-closed': this.hideInfoWindow,
       });
     },
 
@@ -47,6 +50,13 @@ const INFO = (shell) => {
     },
 
     updateInfoWindow(data) {
+      console.log('loading');
+      shell.notify({
+        type: 'app-updating',
+        data: {
+          message: 'Loading Project',
+        },
+      });
       const activeLayer = data.activeLayer;
       const activeProjectName = data.activeProjectName;
       const previousProjectName = data.previousProjectName;
@@ -57,9 +67,15 @@ const INFO = (shell) => {
 
       const module = this;
 
-      if (activeProjectName === previousProjectName) {
-        return true;
-      }
+      // if (activeProjectName === previousProjectName) {
+      //   shell.notify({
+      //     type: 'app-updated',
+      //     data: {
+      //       message: '',
+      //     },
+      //   });
+      //   return true;
+      // }
 
       domMap.$infoInner.scrollTop = 0;
       domMap.$info.classList.remove('js-infoExpanded');
@@ -85,7 +101,7 @@ const INFO = (shell) => {
             return rval;
           },
           formatCurr: (v) => {
-            const val = v.toString().split('.');
+            const val = v ? v.toString().split('.') : '';
             val[0] = val[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             return val;
           },
@@ -96,16 +112,29 @@ const INFO = (shell) => {
         });
         const rendered = Handlebars.templates[tpl](infoData);
         domMap.$infoInner.innerHTML = rendered;
+        shell.notify({
+          type: 'app-updated',
+          data: {
+            message: '',
+          },
+        });
+        console.log('loaded');
       }
 
       if (dataCache[activeProjectID]) {
-        console.log('cached data');
+        shell.notify({
+          type: 'app-updated',
+          data: {
+            message: '',
+          },
+        });
         // Update Info
         appendInfo(dataCache[activeProjectID]);
         this.showInfoWindow();
         return true;
       }
 
+      console.log(dataCache[activeProjectID]);
       function fetchImages(id) {
         const url = `resources/images/${activeLayer}/${id}`;
         return shell.get(url).then(images => (images)).catch((err) => {
@@ -121,6 +150,7 @@ const INFO = (shell) => {
       }
 
       function fetchProjectResources() {
+        console.log('fetch project');
         const resourcesID = projectData.ukey;
 
         Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)]).then(allData => {
@@ -168,6 +198,7 @@ const INFO = (shell) => {
       }
 
       function fetchBuildingResources() {
+        console.log('fetch building');
         const resourcesID = projectData.ID;
 
         fetchImages(resourcesID).then(allData => {
@@ -194,7 +225,7 @@ const INFO = (shell) => {
           module.showInfoWindow();
         });
       }
-
+      console.log(activeLayer);
       switch (activeLayer) {
         case 'projects' :
           fetchProjectResources();

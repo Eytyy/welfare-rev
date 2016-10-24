@@ -38,7 +38,6 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
-      console.log('layer updated');
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
@@ -185,20 +184,25 @@ const NAV = (shell) => {
     },
 
     resetProject(event) {
+      if (!event.activeProject) {
+        return true;
+      }
       let projectName = undefined;
       switch (event.activeLayer) {
         case 'projects':
-          projectName = event.activeProject.getProperty('RelatedEnglishTitle');
+          projectName = event.activeProject.getProperty('RelatedEnglishTitle') || undefined;
           break;
         case 'buildings':
-          projectName = event.activeProject.getProperty('BuildingNa');
+          projectName = event.activeProject.getProperty('BuildingNa') || undefined;
           break;
         case 'housing':
           break;
         default:
-          return;
+          return true;
       }
-      shell.find(`[data-target="${projectName}"]`).classList.remove('js-active');
+      if (projectName) {
+        shell.find(`[data-target="${projectName}"]`).classList.remove('js-active');
+      }
     },
 
     onProjectClick(el) {
@@ -288,9 +292,6 @@ const NAV = (shell) => {
         type: 'category-closed',
         data: {},
       });
-      // NOTE: notify
-      // welfare.info.hideInfoWindow();
-      // document.querySelector('.map-info').classList.remove('js-infoExpanded');
     },
 
     openCategory(el, content) {

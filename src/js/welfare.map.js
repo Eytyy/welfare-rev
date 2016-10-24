@@ -27,12 +27,19 @@ const MAP = (shell) => {
       // Retrieve the layers and set them up
       shell.get('data/layers.json').then((data) => {
         this.setupLayers(data);
-      });
 
-      // Notify modules that map setup is done
-      shell.notify({
-        type: 'map-is-loaded',
-        data: map,
+        // Notify modules that map setup is done
+        shell.notify({
+          type: 'map-is-loaded',
+          data: map,
+        });
+
+        shell.notify({
+          type: 'app-updated',
+          data: {
+            message: '',
+          },
+        });
       });
 
       // Bind methods to this
@@ -64,8 +71,6 @@ const MAP = (shell) => {
         obj.visible = false;
         config.layers[key] = Object.assign({}, obj, data[key]);
       });
-      // NOTE: notify modules that the layers where created
-      // nav need this to create navigation
       shell.notify({
         type: 'layers-created',
         data: config.layers,

@@ -23,6 +23,7 @@ app.get('/', function(req, res) {
   res.sendfile('./app/index.html');
   res.end();
 });
+
 app.get('/resources/images/:layer/:id', function(req, res) {
   const images = [];
   const prefix = req.params.layer === 'projects' ? `welfare/${req.params.layer}/${req.params.id}/Photo/` :
@@ -48,6 +49,7 @@ app.get('/resources/images/:layer/:id', function(req, res) {
     res.end();
   }
 });
+
 app.get('/resources/other/:layer/:id', function(req, res) {
   const others = [];
   const s3Params = {

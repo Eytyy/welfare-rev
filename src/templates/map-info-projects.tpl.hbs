@@ -31,13 +31,11 @@
   {{#if (or this.beforeImage this.afterImage)}}
     <div class="project__mid">
       {{#if this.beforeImage}}
-        <div class="image-comp image-comp--before">
-          <img src="https://s3.amazonaws.com/eytyy.com/{{this.beforeImage}}" alt="{{this.RelatedEnglishTitle}} before image">
+        <div class="image-comp image-comp--before" style="background-image: url('https://s3.amazonaws.com/eytyy.com/{{this.beforeImage}}');">
         </div>
       {{/if}}
       {{#if this.afterImage}}
-        <div class="image-comp image-comp--after">
-          <img src="https://s3.amazonaws.com/eytyy.com/{{this.afterImage}}" alt="{{this.RelatedEnglishTitle}} after image">
+        <div class="image-comp image-comp--after" style="background-image:url('https://s3.amazonaws.com/eytyy.com/{{this.afterImage}}');">
         </div>
       {{/if}}
     </div>
