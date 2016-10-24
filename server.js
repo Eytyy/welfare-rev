@@ -25,10 +25,12 @@ app.get('/', function(req, res) {
 });
 app.get('/resources/images/:layer/:id', function(req, res) {
   const images = [];
+  const prefix = req.params.layer === 'projects' ? `welfare/${req.params.layer}/${req.params.id}/Photo/` :
+    `welfare/${req.params.layer}/${req.params.id}/`;
   const s3Params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Delimiter: '/',
-    Prefix: `welfare/${req.params.layer}/${req.params.id}/Photo/`
+    Prefix: prefix
   };
 
   s3.listObjects(s3Params, function(err, data) {

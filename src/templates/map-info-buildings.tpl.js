@@ -56,6 +56,18 @@ templates['map-info-buildings.tpl.hbs'] = template({"1":function(container,depth
     return "        <div class=\"project__details__item project__currentUse\">\n          <div class=\"details__item__label\">Current Use</div>\n          <div class=\"details__item__value\">"
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.CurrentUse : depth0), depth0))
     + "</div>\n        </div>\n";
+},"29":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.images : depth0),{"name":"each","hash":{},"fn":container.program(30, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"30":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "        <img class=\"misc-image\" src=\"https://s3.amazonaws.com/eytyy.com/"
+    + alias2(alias1(depth0, depth0))
+    + "\" alt=\""
+    + alias2(alias1((depth0 != null ? depth0.BuildingNa : depth0), depth0))
+    + " misc image\">\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
@@ -77,6 +89,8 @@ templates['map-info-buildings.tpl.hbs'] = template({"1":function(container,depth
     + ((stack1 = helpers["if"].call(alias1,(helpers.ne || (depth0 && depth0.ne) || alias2).call(alias1,(depth0 != null ? depth0.RestoredIn : depth0)," ",{"name":"ne","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(23, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(helpers.ne || (depth0 && depth0.ne) || alias2).call(alias1,(depth0 != null ? depth0.originalUs : depth0)," ",{"name":"ne","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(25, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ((stack1 = helpers["if"].call(alias1,(helpers.ne || (depth0 && depth0.ne) || alias2).call(alias1,(depth0 != null ? depth0.CurrentUse : depth0)," ",{"name":"ne","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(27, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </div>\n  </div>\n</article>\n";
+    + "    </div>\n  </div>\n  <div class=\"project__bottom\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.images : depth0),{"name":"if","hash":{},"fn":container.program(29, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "  </div>\n</article>\n";
 },"useData":true});
 })();

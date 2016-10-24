@@ -47,7 +47,6 @@ const INFO = (shell) => {
     },
 
     updateInfoWindow(data) {
-      console.log(data);
       const activeLayer = data.activeLayer;
       const activeProjectName = data.activeProjectName;
       const previousProjectName = data.previousProjectName;
@@ -55,7 +54,8 @@ const INFO = (shell) => {
 
       const projectData = data.activeProject.f;
       const activeProjectID = projectData.OBJECTID;
-      const resourcesID = projectData.ukey;
+
+      const module = this;
 
       if (activeProjectName === previousProjectName) {
         return true;
@@ -106,63 +106,105 @@ const INFO = (shell) => {
         return true;
       }
 
-      function fetchImages() {
-        const url = `resources/images/${activeLayer}/${resourcesID}`;
+      function fetchImages(id) {
+        const url = `resources/images/${activeLayer}/${id}`;
         return shell.get(url).then(images => (images)).catch((err) => {
           console.log(err);
         });
       }
 
-      function fetchExtraResources() {
-        const url = `resources/other/${activeLayer}/${resourcesID}`;
+      function fetchExtraResources(id) {
+        const url = `resources/other/${activeLayer}/${id}`;
         return shell.get(url).then(resources => (resources)).catch((err) => {
           console.log(err);
         });
       }
 
-      // Fetch Project Images
-      Promise.all([fetchImages(), fetchExtraResources()]).then(allData => {
-        const obj = {
-          miscImages: [],
-          otherFiles: [],
-        };
-        allData[0].data.forEach((item, index) => {
-          if (/before.jpg/i.test(item)) {
-            obj.beforeImage = item;
-          }
-          else if (/after.jpg/i.test(item)) {
-            obj.afterImage = item;
-          }
-          else if (/main.jpg/i.test(item)) {
-            obj.mainImage = item;
-          }
-          else {
-            if (index !== 0) {
-              obj.miscImages.push(item);
+      function fetchProjectResources() {
+        const resourcesID = projectData.ukey;
+
+        Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)]).then(allData => {
+          const obj = {
+            miscImages: [],
+            otherFiles: [],
+          };
+          allData[0].data.forEach((item, index) => {
+            if (/before.jpg/i.test(item)) {
+              obj.beforeImage = item;
             }
-          }
-        });
+            else if (/after.jpg/i.test(item)) {
+              obj.afterImage = item;
+            }
+            else if (/main.jpg/i.test(item)) {
+              obj.mainImage = item;
+            }
+            else {
+              if (index !== 0) {
+                obj.miscImages.push(item);
+              }
+            }
+          });
 
-        allData[1].data.forEach((item, index) => {
-          if (index !== 0) {
-            obj.otherFiles.push(item);
-          }
-        });
+          allData[1].data.forEach((item, index) => {
+            if (index !== 0) {
+              obj.otherFiles.push(item);
+            }
+          });
 
-        const completeData = Object.assign(projectData, obj);
-        // Update Cache
-        dataCache[activeProjectID] = completeData;
-        // Update Info
-        appendInfo(completeData);
-        this.showInfoWindow();
-      }).catch(error => {
-        console.log(error);
-        // Update Cache
-        dataCache[activeProjectID] = data;
-        // Update Info
-        appendInfo(data);
-        this.showInfoWindow();
-      });
+          const completeData = Object.assign(projectData, obj);
+          // Update Cache
+          dataCache[activeProjectID] = completeData;
+          // Update Info
+          appendInfo(completeData);
+          module.showInfoWindow();
+        }).catch(error => {
+          console.log(error);
+          // Update Cache
+          dataCache[activeProjectID] = data;
+          // Update Info
+          appendInfo(data);
+          module.showInfoWindow();
+        });
+      }
+
+      function fetchBuildingResources() {
+        const resourcesID = projectData.ID;
+
+        fetchImages(resourcesID).then(allData => {
+          const obj = {
+            images: [],
+          };
+          allData.data.forEach((item, index) => {
+            if (index !== 0) {
+              obj.images.push(item);
+            }
+          });
+          const completeData = Object.assign(projectData, obj);
+          // Update Cache
+          dataCache[activeProjectID] = completeData;
+          // Update Info
+          appendInfo(completeData);
+          module.showInfoWindow();
+        }).catch(error => {
+          console.log(error);
+          // Update Cache
+          dataCache[activeProjectID] = data;
+          // Update Info
+          appendInfo(data);
+          module.showInfoWindow();
+        });
+      }
+
+      switch (activeLayer) {
+        case 'projects' :
+          fetchProjectResources();
+          break;
+        case 'buildings' :
+          fetchBuildingResources();
+          break;
+        default:
+          break;
+      }
     },
 
     setupInfoWindow() {
