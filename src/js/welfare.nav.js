@@ -105,7 +105,8 @@ const NAV = (shell) => {
         Object.keys(catData).forEach(key => {
           const id = catData[key].getProperty('RelatedEnglishTitle');
           if (catData[key].getGeometry().getAt(0)) {
-            const itemTpl = Handlebars.templates['nav-layer.tpl.hbs']({ title: id, cat: catName });
+            const itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs'](
+              { title: id, cat: catName });
             shell.injectTemplateText(itemTpl, $catInner);
           }
           else {
@@ -139,23 +140,29 @@ const NAV = (shell) => {
       shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
-    buildBuildingsLayerNavigation() {
-      console.log('buildings');
+    buildBuildingsLayerNavigation(wrapper, data, activeLayer) {
+      // Filter Duplicates
+      if (!filteredData[activeLayer]) {
+        const obj = {};
+        for (const el of data) {
+          // If the data set has categories, then filter/group them based on category name
+          const item = el.getProperty('BuildingNa');
+          if (!obj[item]) {
+            obj[item] = el;
+          }
+        }
+        filteredData[activeLayer] = obj;
+      }
+      // Loop through data to add an element/link for each project in the layer navigation
+      Object.keys(filteredData[activeLayer]).forEach(key => {
+        const item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
+        shell.injectTemplateText(item, wrapper);
+      });
+      shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
     buildHousingLayerNavigation() {
       console.log('housing');
-    },
-
-    removeDuplicates() {
-      const obj = {};
-      for (const el of data) {
-        const item = el.getProperty('BuildingNa').trim();
-        if (!obj[item]) {
-          obj[item] = el;
-        }
-      }
-      filteredData[activeLayer] = obj;
     },
 
     setLayerNav(data, activeLayer) {
@@ -207,26 +214,39 @@ const NAV = (shell) => {
 
     updateProject(event) {
       // NOTE: update project navigation classes here
-
+      const activeLayer = event.activeLayer;
       const opts = {};
 
-      if (event.previousProjectName) {
-        const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
-        opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
-        opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
+      if (activeLayer === 'projects') {
+        if (event.previousProjectName) {
+          const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+          opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
+          opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
 
-        prevProj.classList.remove('js-active');
+          prevProj.classList.remove('js-active');
+        }
+
+        const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
+        const catEl = shell.find(`.map__nav__item--category--${activeProj.dataset.cat}`);
+        const catInner = catEl.querySelector('.category__inner');
+
+        activeProj.classList.add('js-active');
+        domMap.$nav.classList.add('js-layerIsOpened');
+        opts.activeProj = activeProj;
+
+        this.toggleCategory(catEl, catInner, true, opts);
       }
+      else {
+        if (event.previousProjectName) {
+          const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+          prevProj.classList.remove('js-active');
+        }
 
-      const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
-      const catEl = shell.find(`.map__nav__item--category--${activeProj.dataset.cat}`);
-      const catInner = catEl.querySelector('.category__inner');
+        const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
 
-      activeProj.classList.add('js-active');
-      domMap.$nav.classList.add('js-layerIsOpened');
-      opts.activeProj = activeProj;
-
-      this.toggleCategory(catEl, catInner, true, opts);
+        activeProj.classList.add('js-active');
+        domMap.$nav.classList.add('js-layerIsOpened');
+      }
     },
 
     adjustProjectInnerPosition(el, left, width, content) {

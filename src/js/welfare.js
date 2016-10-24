@@ -60,7 +60,8 @@ const WELFARE = (shell) => {
   };
 
   const onProjectNavClick = (event) => {
-    const obj = event.data[state.activeLayer][event.category][event.target];
+    const obj = event.category ? event.data[state.activeLayer][event.category][event.target] :
+      event.data[state.activeLayer][event.target];
     const latLngs = obj.getGeometry().getAt(0).getAt(0);
 
     state.previousProject = state.activeProject;
