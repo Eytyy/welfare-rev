@@ -38,6 +38,7 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
+      console.log('layer updated');
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
@@ -45,7 +46,7 @@ const NAV = (shell) => {
 
       if (!active && previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
-        domMap.$nav.classList.remove('js-catIsOpened');
+        domMap.$nav.classList.remove('js-layerIsOpened');
         this.resetNav();
         return true;
       }
@@ -57,12 +58,12 @@ const NAV = (shell) => {
       // handle classes
       if (previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
-        domMap.$nav.classList.remove('js-catIsOpened');
+        domMap.$nav.classList.remove('js-layerIsOpened');
         this.resetNav();
       }
       if (active !== previous || (active === previous && layers.active.visible)) {
         shell.find(`.map__nav__item-wrapper--${active}`).classList.add('js-active');
-        domMap.$nav.classList.add('js-catIsOpened');
+        domMap.$nav.classList.add('js-layerIsOpened');
       }
     },
 
