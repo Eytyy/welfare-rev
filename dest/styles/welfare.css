@@ -250,8 +250,8 @@ body, html, main, #welfare, #map {
   color: #FFF; }
 
 .js-view-mode {
-  -webkit-transform: translate3d(0, -375px, 0);
-          transform: translate3d(0, -375px, 0);
+  -webkit-transform: translate3d(0, -300px, 0);
+          transform: translate3d(0, -300px, 0);
   opacity: 1; }
   .js-view-mode .map-info__grabber {
     opacity: 1; }
