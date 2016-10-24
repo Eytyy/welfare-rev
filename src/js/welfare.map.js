@@ -139,6 +139,12 @@ const MAP = (shell) => {
 
       // Fetch
       if (active && config.layers[active] && !config.layers[active].dataLoaded) {
+        shell.notify({
+          type: 'app-updating',
+          data: {
+            message: `Loading ${ACTIVE_LAYER} Layer`,
+          },
+        });
         const promise = new Promise((resolve, reject) => {
           try {
             ACTIVE_LAYER.dataLayer.loadGeoJson(ACTIVE_LAYER.url, {}, (features) => {
@@ -156,6 +162,12 @@ const MAP = (shell) => {
           if (previous && previous !== '/' && previous !== active) {
             this.disableLayer(PREVIOUS_LAYER);
           }
+          shell.notify({
+            type: 'app-updated',
+            data: {
+              message: '',
+            },
+          });
           shell.notify({
             type: 'layers-data-updated',
             data: {
