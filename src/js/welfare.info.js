@@ -22,6 +22,8 @@ const INFO = (shell) => {
       // setup window
       this.setupInfoWindow();
 
+      shell.find('.map-info__grabber').addEventListener('click', this.toggleInfoExpand);
+
       // Listen to global events
       shell.listen({
         'update-project': this.updateProject,
@@ -32,8 +34,20 @@ const INFO = (shell) => {
       domMap.$info.classList.add('js-view-mode');
     },
 
+    hideInfoWindow() {
+      domMap.$info.classList.remove('js-view-mode');
+    },
+
+    toggleInfoExpand(event) {
+      if (domMap.$info.classList.contains('js-infoExpanded')) {
+        domMap.$info.classList.remove('js-infoExpanded');
+      }
+      else {
+        domMap.$info.classList.add('js-infoExpanded');
+      }
+    },
+
     updateInfoWindow(data) {
-      console.log('updating info');
       const activeLayer = data.activeLayer;
       const activeProjectName = data.activeProjectName;
       const previousProjectName = data.previousProjectName;
@@ -83,6 +97,7 @@ const INFO = (shell) => {
         });
         const rendered = Handlebars.templates[tpl](projectData);
         domMap.$infoInner.innerHTML = rendered;
+        console.log(projectData);
       }
 
       if (dataCache[activeProjectID]) {
