@@ -1,0 +1,26 @@
+{
+  "projects": {
+    "id": 1,
+    "name": "projects",
+    "title": "Our Projects",
+    "url": "data/our-projects2.json",
+    "hasCategories": true,
+    "data": null
+  },
+  "buildings": {
+    "id": 2,
+    "name": "buildings",
+    "title": "Public Buildings",
+    "url": "data/PublicBuilding2.json",
+    "hasCategories": false,
+    "data": null
+  },
+  "housing": {
+    "id": 3,
+    "name": "housing",
+    "title": "Housing Study",
+    "url": "data/housing-study2.json",
+    "hasCategories": false,
+    "data": null
+  }
+}
