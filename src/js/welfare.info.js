@@ -50,11 +50,10 @@ const INFO = (shell) => {
     },
 
     updateInfoWindow(data) {
-      console.log('loading');
       shell.notify({
         type: 'app-updating',
         data: {
-          message: 'Loading Project',
+          message: `Loading ${data.activeProjectName}`,
         },
       });
       const activeLayer = data.activeLayer;

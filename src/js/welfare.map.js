@@ -142,7 +142,7 @@ const MAP = (shell) => {
         shell.notify({
           type: 'app-updating',
           data: {
-            message: `Loading ${ACTIVE_LAYER} Layer`,
+            message: `Loading ${active} Layer`,
           },
         });
         const promise = new Promise((resolve, reject) => {
