@@ -46,11 +46,10 @@ var INFO = function INFO(shell) {
       }
     },
     updateInfoWindow: function updateInfoWindow(data) {
-      console.log('loading');
       shell.notify({
         type: 'app-updating',
         data: {
-          message: 'Loading Project'
+          message: 'Loading ' + data.activeProjectName
         }
       });
       var activeLayer = data.activeLayer;
