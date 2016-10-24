@@ -112,6 +112,9 @@
   position: relative;
   z-index: 1;
 }
+.map__nav__item-wrapper--buildings .map__nav__item--project {
+  font-family: $font__light--fb;
+}
 
 .map__nav__item--layer {
   display: inline-block;

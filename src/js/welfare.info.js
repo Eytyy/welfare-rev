@@ -12,7 +12,6 @@ const INFO = (shell) => {
   return {
 
     init() {
-      console.log('hi');
       // Cache dom elements
       domMap.$container = shell.find('#info');
 
@@ -48,6 +47,7 @@ const INFO = (shell) => {
     },
 
     updateInfoWindow(data) {
+      console.log(data);
       const activeLayer = data.activeLayer;
       const activeProjectName = data.activeProjectName;
       const previousProjectName = data.previousProjectName;
@@ -65,8 +65,7 @@ const INFO = (shell) => {
       domMap.$info.classList.remove('js-infoExpanded');
 
       // Add Project info to html
-      function appendInfo(projectData) {
-        console.log('info updated');
+      function appendInfo(infoData) {
         const tpl = tplMap[data.activeLayer];
         Handlebars.registerHelper({
           or: (v1, v2) => {
@@ -95,9 +94,8 @@ const INFO = (shell) => {
             return val;
           },
         });
-        const rendered = Handlebars.templates[tpl](projectData);
+        const rendered = Handlebars.templates[tpl](infoData);
         domMap.$infoInner.innerHTML = rendered;
-        console.log(projectData);
       }
 
       if (dataCache[activeProjectID]) {

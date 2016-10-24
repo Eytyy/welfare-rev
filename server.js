@@ -28,7 +28,7 @@ app.get('/resources/images/:layer/:id', function(req, res) {
   const s3Params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Delimiter: '/',
-    Prefix: `https://s3.amazonaws.com/eytyy.com/welfare/${req.params.layer}/${req.params.id}/Photo/`
+    Prefix: `welfare/${req.params.layer}/${req.params.id}/Photo/`
   };
 
   s3.listObjects(s3Params, function(err, data) {
@@ -51,7 +51,7 @@ app.get('/resources/other/:layer/:id', function(req, res) {
   const s3Params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Delimiter: '/',
-    Prefix: `https://s3.amazonaws.com/eytyy.com/welfare/${req.params.layer}/${req.params.id}/Misc/`
+    Prefix: `welfare/${req.params.layer}/${req.params.id}/Misc/`
   };
   s3.listObjects(s3Params, function(err, data) {
     if (err) {

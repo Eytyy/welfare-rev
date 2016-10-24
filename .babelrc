@@ -1,6 +1,7 @@
 {
   "presets": ["es2015"],
   "ignore": [
-    "vendor"
+    "vendor",
+    "templates"
   ]
 }
