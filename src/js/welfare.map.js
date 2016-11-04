@@ -146,8 +146,9 @@ const MAP = (shell) => {
           },
         });
         const promise = new Promise((resolve, reject) => {
+          const mapData = active === 'projects' ? ACTIVE_LAYER.url : ACTIVE_LAYER.keys;
           try {
-            ACTIVE_LAYER.dataLayer.loadGeoJson(ACTIVE_LAYER.url, {}, (features) => {
+            ACTIVE_LAYER.dataLayer.loadGeoJson(mapData, {}, (features) => {
               ACTIVE_LAYER.data = features;
               resolve(features);
             });

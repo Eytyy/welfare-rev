@@ -147,8 +147,9 @@ var MAP = function MAP(shell) {
           }
         });
         var promise = new Promise(function (resolve, reject) {
+          var mapData = active === 'projects' ? ACTIVE_LAYER.url : ACTIVE_LAYER.keys;
           try {
-            ACTIVE_LAYER.dataLayer.loadGeoJson(ACTIVE_LAYER.url, {}, function (features) {
+            ACTIVE_LAYER.dataLayer.loadGeoJson(mapData, {}, function (features) {
               ACTIVE_LAYER.data = features;
               resolve(features);
             });
