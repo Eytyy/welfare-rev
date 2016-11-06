@@ -136,7 +136,6 @@ const MAP = (shell) => {
        * 1. Fetch data, if it's not available.
        * 2. Unset the previous layer and set the map for the active layer.
       */
-
       // Fetch
       if (active && config.layers[active] && !config.layers[active].dataLoaded) {
         shell.notify({
@@ -145,30 +144,39 @@ const MAP = (shell) => {
             message: `Loading ${active} Layer`,
           },
         });
-        const promise = new Promise((resolve, reject) => {
-          const mapData = active === 'projects' ? ACTIVE_LAYER.url : ACTIVE_LAYER.keys;
-          try {
-            ACTIVE_LAYER.dataLayer.loadGeoJson(mapData, {}, (features) => {
-              ACTIVE_LAYER.data = features;
-              resolve(features);
-            });
-          }
-          catch (err) {
-            reject(err);
-          }
-        });
-        promise.then(() => {
+
+        // Get the geodata to be placed on the map first
+        const getGeoData = (url) => {
+          const prom = new Promise((resolve, reject) => {
+            try {
+              ACTIVE_LAYER.dataLayer.loadGeoJson(url, {}, (features) => {
+                resolve(features);
+              });
+            }
+            catch (err) {
+              reject(err);
+            }
+          });
+          return prom;
+        };
+
+        const updateLayersData = (features) => {
+          ACTIVE_LAYER.data = features;
           ACTIVE_LAYER.dataLoaded = true;
+
           this.enableLayer(ACTIVE_LAYER);
+
           if (previous && previous !== '/' && previous !== active) {
             this.disableLayer(PREVIOUS_LAYER);
           }
+
           shell.notify({
             type: 'app-updated',
             data: {
               message: '',
             },
           });
+
           shell.notify({
             type: 'layers-data-updated',
             data: {
@@ -176,9 +184,62 @@ const MAP = (shell) => {
               previous: PREVIOUS_LAYER,
             },
           });
-        }).catch((err) => {
-          console.log(err);
-        });
+        };
+
+        if (active === 'projects') {
+          const url = ACTIVE_LAYER.url;
+          getGeoData(url).then((features) => {
+            updateLayersData(features);
+          }).catch((err) => {
+            console.log(err);
+          });
+        }
+        else {
+          const geoUrl = ACTIVE_LAYER.keysUrl;
+          const allUrl = ACTIVE_LAYER.url;
+          let geoData = undefined;
+
+          getGeoData(geoUrl)
+            .then((features) => {
+              geoData = features;
+              return shell.get(allUrl).then(allData => (allData)).catch((err) => {
+                console.log(err);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .then(allData => {
+              const data = {};
+              if (active === 'buildings') {
+                for (const el of allData.MainTable) {
+                  const item = el[0].SERIAL_NO;
+                  data[item] = el[0];
+                }
+              }
+              else {
+                for (const el of allData) {
+                  const item = el[0].SERIAL_NO;
+                  data[item] = el[0];
+                }
+              }
+              for (const el of geoData) {
+                const serial = el.getProperty('SERIAL_NO');
+                if (serial === 1190001200) {
+                  console.log(el);
+                }
+                const obj = {};
+                if (data[serial]) {
+                  obj.alldata = data[serial];
+                  Object.assign(el, obj);
+                }
+              }
+              updateLayersData(geoData);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
 
         if (!ACTIVE_LAYER.eventAdded) {
           ACTIVE_LAYER.dataLayer.addListener('click', (event) => {
@@ -250,7 +311,9 @@ const MAP = (shell) => {
      */
     updateProject(event) {
       const activeProject = event.activeProject;
+
       const previousProject = event.previousProject;
+
       const dataLayer = config.layers[event.activeLayer].dataLayer;
       const activeProjectLatLang = event.activeProjectLatLang;
 

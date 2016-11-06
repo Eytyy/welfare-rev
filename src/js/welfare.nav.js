@@ -38,7 +38,6 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
-      console.log(layers);
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
@@ -141,24 +140,28 @@ const NAV = (shell) => {
     },
 
     buildBuildingsLayerNavigation(wrapper, data, activeLayer) {
+      function addLinks() {
+        // Loop through data to add an element/link for each project in the layer navigation
+        Object.keys(filteredData[activeLayer]).forEach(key => {
+          const item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
+          shell.injectTemplateText(item, wrapper);
+        });
+        shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
+      }
+
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
         const obj = {};
         for (const el of data) {
           // If the data set has categories, then filter/group them based on category name
-          const item = el.getProperty('BuildingNa');
+          const item = el.alldata.BuildingName.trim();
           if (!obj[item]) {
             obj[item] = el;
           }
         }
         filteredData[activeLayer] = obj;
+        addLinks();
       }
-      // Loop through data to add an element/link for each project in the layer navigation
-      Object.keys(filteredData[activeLayer]).forEach(key => {
-        const item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
-        shell.injectTemplateText(item, wrapper);
-      });
-      shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
     buildHousingLayerNavigation() {
@@ -242,6 +245,7 @@ const NAV = (shell) => {
         this.toggleCategory(catEl, catInner, true, opts);
       }
       else {
+        // console.log(event);
         if (event.previousProjectName) {
           const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
           prevProj.classList.remove('js-active');
@@ -251,6 +255,10 @@ const NAV = (shell) => {
 
         activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
+
+        // setTimeout(() => {
+        //   content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
+        // }, 10);
       }
     },
 

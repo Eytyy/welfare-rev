@@ -373,8 +373,20 @@ img {
   width: 100%;
   height: auto; }
 
-.misc-image {
+.misc-image,
+.image-wrapper {
   margin-bottom: 8em; }
+
+.image-wrapper {
+  text-align: left; }
+  .image-wrapper img {
+    border-bottom: 1px solid #FCCA34;
+    padding-bottom: 10px;
+    margin-bottom: 12px; }
+
+.image-caption {
+  font-size: 18px;
+  line-height: 1; }
 
 .project__mid {
   margin-bottom: 60px; }
@@ -448,7 +460,8 @@ img {
       margin-right: 10px; }
 
 .project--buildings {
-  font-family: "FiraSans-Light", "Droid Arabic Kufi"; }
+  font-family: "FiraSans-Light", "Droid Arabic Kufi";
+  text-align: right; }
   .project--buildings .project__title {
     font-family: "FiraSans", "Droid Arabic Kufi";
     font-size: 3.2em;
@@ -457,7 +470,7 @@ img {
     font-size: 18px;
     line-height: 1.5;
     direction: rtl;
-    text-align: left; }
+    text-align: right; }
 
 .project__details--buildings-extras {
   -webkit-box-flex: 0;

@@ -41,7 +41,6 @@ var NAV = function NAV(shell) {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav: function updateMainNav(layers) {
-      console.log(layers);
       var data = layers.active && layers.active.data;
       var active = layers.active && layers.active.name;
       var previous = layers.previous && layers.previous.name;
@@ -160,6 +159,15 @@ var NAV = function NAV(shell) {
       shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
     },
     buildBuildingsLayerNavigation: function buildBuildingsLayerNavigation(wrapper, data, activeLayer) {
+      function addLinks() {
+        // Loop through data to add an element/link for each project in the layer navigation
+        Object.keys(filteredData[activeLayer]).forEach(function (key) {
+          var item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
+          shell.injectTemplateText(item, wrapper);
+        });
+        shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
+      }
+
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
         var obj = {};
@@ -172,7 +180,7 @@ var NAV = function NAV(shell) {
             var el = _step2.value;
 
             // If the data set has categories, then filter/group them based on category name
-            var item = el.getProperty('BuildingNa');
+            var item = el.alldata.BuildingName.trim();
             if (!obj[item]) {
               obj[item] = el;
             }
@@ -193,13 +201,8 @@ var NAV = function NAV(shell) {
         }
 
         filteredData[activeLayer] = obj;
+        addLinks();
       }
-      // Loop through data to add an element/link for each project in the layer navigation
-      Object.keys(filteredData[activeLayer]).forEach(function (key) {
-        var item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
-        shell.injectTemplateText(item, wrapper);
-      });
-      shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
     },
     buildHousingLayerNavigation: function buildHousingLayerNavigation() {
       console.log('housing');
@@ -277,6 +280,7 @@ var NAV = function NAV(shell) {
 
         this.toggleCategory(catEl, catInner, true, opts);
       } else {
+        // console.log(event);
         if (event.previousProjectName) {
           var _prevProj = shell.find('[data-target="' + event.previousProjectName + '"]');
           _prevProj.classList.remove('js-active');
@@ -286,6 +290,10 @@ var NAV = function NAV(shell) {
 
         _activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
+
+        // setTimeout(() => {
+        //   content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
+        // }, 10);
       }
     },
     adjustProjectInnerPosition: function adjustProjectInnerPosition(el, left, width, content) {

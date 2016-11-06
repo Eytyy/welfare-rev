@@ -7,7 +7,11 @@ const INFO = (shell) => {
     housing: 'map-info-housing.tpl.hbs',
   };
 
-  const dataCache = {};
+  const dataCache = {
+    projects: {},
+    buildings: {},
+    housing: {},
+  };
 
   return {
 
@@ -53,7 +57,7 @@ const INFO = (shell) => {
       shell.notify({
         type: 'app-updating',
         data: {
-          message: `Loading ${data.activeProjectName}`,
+          message: 'Loading Project',
         },
       });
       const activeLayer = data.activeLayer;
@@ -61,21 +65,10 @@ const INFO = (shell) => {
       const previousProjectName = data.previousProjectName;
       const activeProject = data.activeProject;
 
-      const projectData = data.activeProject.f;
-      const activeProjectID = projectData.OBJECTID;
+      const projectData = activeLayer === 'projects' ? activeProject.f : activeProject.alldata;
+      const activeProjectID = activeLayer === 'projects' ? projectData.OBJECTID : projectData.ID;
 
       const module = this;
-
-      // if (activeProjectName === previousProjectName) {
-      //   shell.notify({
-      //     type: 'app-updated',
-      //     data: {
-      //       message: '',
-      //     },
-      //   });
-      //   return true;
-      // }
-
       domMap.$infoInner.scrollTop = 0;
       domMap.$info.classList.remove('js-infoExpanded');
 
@@ -120,7 +113,7 @@ const INFO = (shell) => {
         console.log('loaded');
       }
 
-      if (dataCache[activeProjectID]) {
+      if (dataCache[activeLayer][activeProjectID]) {
         shell.notify({
           type: 'app-updated',
           data: {
@@ -128,12 +121,12 @@ const INFO = (shell) => {
           },
         });
         // Update Info
-        appendInfo(dataCache[activeProjectID]);
+        appendInfo(dataCache[activeLayer][activeProjectID]);
         this.showInfoWindow();
         return true;
       }
 
-      console.log(dataCache[activeProjectID]);
+      // console.log(dataCache[activeLayer][activeProjectID]);
       function fetchImages(id) {
         const url = `resources/images/${activeLayer}/${id}`;
         return shell.get(url).then(images => (images)).catch((err) => {
@@ -149,7 +142,7 @@ const INFO = (shell) => {
       }
 
       function fetchProjectResources() {
-        console.log('fetch project');
+        // console.log('fetch project');
         const resourcesID = projectData.ukey;
 
         Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)]).then(allData => {
@@ -182,14 +175,14 @@ const INFO = (shell) => {
 
           const completeData = Object.assign(projectData, obj);
           // Update Cache
-          dataCache[activeProjectID] = completeData;
+          dataCache[activeLayer][activeProjectID] = completeData;
           // Update Info
           appendInfo(completeData);
           module.showInfoWindow();
         }).catch(error => {
           console.log(error);
           // Update Cache
-          dataCache[activeProjectID] = data;
+          dataCache[activeLayer][activeProjectID] = data;
           // Update Info
           appendInfo(data);
           module.showInfoWindow();
@@ -201,30 +194,46 @@ const INFO = (shell) => {
         const resourcesID = projectData.ID;
 
         fetchImages(resourcesID).then(allData => {
+          const imageData = data.activeProject.alldata.ImageData;
+          const regex = /(\w*)(?:\.jpg)/i;
+
           const obj = {
             images: [],
           };
-          allData.data.forEach((item, index) => {
+
+          allData.data.forEach((image, index) => {
             if (index !== 0) {
-              obj.images.push(item);
+              const caption = imageData.find((el) =>
+                el.PathNew === regex.exec(image)[1]
+              ).name;
+              if (caption) {
+                obj.images.push({
+                  image,
+                  caption,
+                });
+              }
             }
           });
-          const completeData = Object.assign(projectData, obj);
+          Object.assign(projectData, obj);
+          // console.log(projectData);
+
           // Update Cache
-          dataCache[activeProjectID] = completeData;
+          dataCache[activeLayer][activeProjectID] = projectData;
+
           // Update Info
-          appendInfo(completeData);
+          appendInfo(projectData);
+
           module.showInfoWindow();
         }).catch(error => {
           console.log(error);
           // Update Cache
-          dataCache[activeProjectID] = data;
+          dataCache[activeLayer][activeProjectID] = data;
           // Update Info
           appendInfo(data);
           module.showInfoWindow();
         });
       }
-      console.log(activeLayer);
+
       switch (activeLayer) {
         case 'projects' :
           fetchProjectResources();

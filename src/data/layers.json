@@ -11,7 +11,7 @@
     "id": 2,
     "name": "buildings",
     "title": "Public Buildings",
-    "keys": "data/public-keys.json",
+    "keysUrl": "data/public-keys.json",
     "url": "data/public.json",
     "hasCategories": false,
     "data": null
@@ -20,7 +20,7 @@
     "id": 3,
     "name": "housing",
     "title": "Housing Study",
-    "keys": "data/housing-keys.json",
+    "keysUrl": "data/housing-keys.json",
     "url": "data/housing.json",
     "hasCategories": false,
     "data": null

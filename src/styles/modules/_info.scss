@@ -130,8 +130,21 @@ img {
   width: 100%;
   height: auto;
 }
-.misc-image {
+.misc-image,
+.image-wrapper {
   margin-bottom: 8em;
+}
+.image-wrapper {
+  text-align: left;
+  img {
+    border-bottom: 1px solid $gold;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+}
+.image-caption {
+  font-size: 18px;
+  line-height: 1;
 }
 .project__mid {
   margin-bottom: 60px;
@@ -213,6 +226,7 @@ img {
 }
 .project--buildings {
   font-family: $font__light--fb;
+  text-align: right;
   .project__title {
     font-family: $font--fb;
     font-size: 3.2em;
@@ -222,7 +236,7 @@ img {
     font-size: 18px;
     line-height: 1.5;
     direction: rtl;
-    text-align: left;
+    text-align: right;
   }
 }
 .project__details--buildings-extras {

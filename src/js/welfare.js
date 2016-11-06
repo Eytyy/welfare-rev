@@ -68,6 +68,7 @@ const WELFARE = (shell) => {
   const onProjectNavClick = (event) => {
     const obj = event.category ? event.data[state.activeLayer][event.category][event.target] :
       event.data[state.activeLayer][event.target];
+
     const latLngs = obj.getGeometry().getAt(0).getAt(0);
 
     state.previousProject = state.activeProject;
@@ -92,7 +93,7 @@ const WELFARE = (shell) => {
         state.activeProjectName = state.activeProject.getProperty('RelatedEnglishTitle');
         break;
       case 'buildings':
-        state.activeProjectName = state.activeProject.getProperty('BuildingNa');
+        state.activeProjectName = state.activeProject.alldata.BuildingName;
         break;
       case 'housing':
         break;
