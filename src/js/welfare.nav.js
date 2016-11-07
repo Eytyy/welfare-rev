@@ -7,6 +7,7 @@ const NAV = (shell) => {
     activeCategory: null,
     activeProject: null,
     previousProject: null,
+    activeLayer: null,
   };
 
   return {
@@ -43,6 +44,8 @@ const NAV = (shell) => {
       const previous = layers.previous && layers.previous.name;
       const populated = active && navMap[active].populated;
 
+      navState.activeLayer = active;
+
       if (!active && previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
         domMap.$nav.classList.remove('js-layerIsOpened');
@@ -57,12 +60,12 @@ const NAV = (shell) => {
       // handle classes
       if (previous) {
         shell.find(`.map__nav__item-wrapper--${previous}`).classList.remove('js-active');
-        domMap.$nav.classList.remove('js-layerIsOpened');
+        domMap.$nav.classList.remove('js-layerIsOpened', `${active}`, `${previous}`);
         this.resetNav();
       }
       if (active !== previous || (active === previous && layers.active.visible)) {
         shell.find(`.map__nav__item-wrapper--${active}`).classList.add('js-active');
-        domMap.$nav.classList.add('js-layerIsOpened');
+        domMap.$nav.classList.add('js-layerIsOpened', `${active}`);
       }
     },
 
@@ -89,7 +92,7 @@ const NAV = (shell) => {
     },
 
     buildProjectsLayerNavigation(wrapper, data, activeLayer) {
-      const buildHtml = (catName, catData) => {
+      const buildCategoryHtml = (catName, catData) => {
         const $catWrapper = shell.createElement('div', {
           class: ['map__nav__item--category', `map__nav__item--category--${catName}`],
         });
@@ -114,7 +117,6 @@ const NAV = (shell) => {
         });
         return $catWrapper;
       };
-
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
         const obj = {};
@@ -133,35 +135,61 @@ const NAV = (shell) => {
       }
       // Loop through data to add an element/link for each project in the layer navigation
       Object.keys(filteredData[activeLayer]).forEach(key => {
-        const navGroup = buildHtml(key, filteredData[activeLayer][key]);
+        const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
         wrapper.appendChild(navGroup);
       });
       shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
     buildBuildingsLayerNavigation(wrapper, data, activeLayer) {
-      function addLinks() {
-        // Loop through data to add an element/link for each project in the layer navigation
-        Object.keys(filteredData[activeLayer]).forEach(key => {
-          const item = Handlebars.templates['nav-layer.tpl.hbs']({ title: key });
-          shell.injectTemplateText(item, wrapper);
+      const buildCategoryHtml = (catName, catData) => {
+        const $catWrapper = shell.createElement('div', {
+          class: ['map__nav__item--category', `map__nav__item--category--${catName}`],
         });
-        shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
-      }
+        const $catInner = shell.createElement('div', {
+          class: ['category__inner'],
+        });
+        const tpl = Handlebars.templates['nav-cat.tpl.hbs']({ title: catName });
 
+        shell.injectTemplateText(tpl, $catWrapper);
+        $catWrapper.appendChild($catInner);
+
+        Object.keys(catData).forEach(key => {
+          const id = catData[key].alldata.BuildingName;
+          if (catData[key].getGeometry() && catData[key].getGeometry().getAt(0)) {
+            const itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs'](
+              { title: id, cat: catName });
+            shell.injectTemplateText(itemTpl, $catInner);
+          }
+          else {
+            console.log(`${id} does not have geometry`);
+          }
+        });
+        return $catWrapper;
+      };
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
         const obj = {};
         for (const el of data) {
           // If the data set has categories, then filter/group them based on category name
+          const category = el.alldata.BuildingType.replace(/ +/g, '');
           const item = el.alldata.BuildingName.trim();
-          if (!obj[item]) {
-            obj[item] = el;
+          if (!obj[category]) {
+            obj[category] = {};
+          }
+          if (!obj[category][item]) {
+            obj[category][item] = el;
           }
         }
         filteredData[activeLayer] = obj;
-        addLinks();
       }
+
+      // Loop through data to add an element/link for each project in the layer navigation
+      Object.keys(filteredData[activeLayer]).forEach(key => {
+        const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
+        wrapper.appendChild(navGroup);
+      });
+      shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
     buildHousingLayerNavigation() {
@@ -256,6 +284,7 @@ const NAV = (shell) => {
         activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
 
+
         // setTimeout(() => {
         //   content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
         // }, 10);
@@ -265,6 +294,7 @@ const NAV = (shell) => {
     adjustProjectInnerPosition(el, left, width, content) {
       const element = el;
       const categoryInner = content;
+      const trnsLeft = navState.activeLayer === 'projects' ? -left : (-left + 300);
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation
       if (left > '150') {
@@ -272,7 +302,7 @@ const NAV = (shell) => {
         element.parentNode.scrollLeft = 0;
         // reposition map nav inner and adjust width
         setTimeout(() => {
-          element.parentNode.style.transform = `translate3d(${-left + width}px, 0, 0)`;
+          element.parentNode.style.transform = `translate3d(${trnsLeft + width}px, 0, 0)`;
           element.parentNode.style.width = `calc(100% + ${left + width}px)`;
         }, 100);
         // Adjust category inner wrapper width
@@ -289,7 +319,7 @@ const NAV = (shell) => {
       categoryInner.removeAttribute('style');
     },
 
-    closeCategory(el, content, fromMap) {
+    closeCategory(el, content) {
       const element = el || navState.activeCategory;
       if (!element) return;
       if (element && content) {
@@ -319,6 +349,7 @@ const NAV = (shell) => {
     },
 
     toggleCategory(el, content, fromMap, opts) {
+      const cnt = content;
       // If event is comming from map
       if (fromMap) {
         if (navState.activeCategory && el !== navState.activeCategory) {
@@ -331,7 +362,7 @@ const NAV = (shell) => {
         }
         navState.activeCategory = el;
         setTimeout(() => {
-          content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
+          cnt.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
         }, 10);
         return true;
       }
