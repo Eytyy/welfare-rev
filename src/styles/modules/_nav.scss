@@ -1,4 +1,18 @@
-#map__nav {
+%nav-arrow {
+  position: relative;
+  z-index: 2;
+  &:after {
+    content: '';
+    display: block;
+    border: 7px solid transparent;
+    border-left: 7px solid $darkGrey;
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.map__nav {
   position: absolute;
   display: flex; // flex container
   z-index: 4;
@@ -9,11 +23,20 @@
   border-top: 0.4em solid $red;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+  transition: left 0.3s linear, width 0.3s linear;
   > * {
     height: 150px;
   }
   &.js-catIsOpened {
     overflow: hidden;
+  }
+  &.buildings {
+    left: -150px;
+    width: calc(100% + 150px);
+  }
+  &.housing {
+    left: -300px;
+    width: calc(100% + 300px);
   }
 }
 .map__nav__item-wrapper {
@@ -31,14 +54,21 @@
   vertical-align: top;
   width: calc(100% - 155px);
   margin-left: -3px;
-  .js-active & {
+}
+.js-active {
+  .map__nav__item__inner {
     display: inline-block;
     transition: transform 0.3s linear;
     white-space: nowrap;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
   }
+  .map__nav__item--layer {
+    @extend %nav-arrow;
+    z-index: 3;
+  }
 }
+
 .map__nav__item--category {
   display: inline-block;
   height: 100%;
@@ -49,11 +79,14 @@
       width: calc(100% - 155px);
       .map__nav__item {
         width: 150px;
-
       }
     }
     .category-wrapper {
+      @extend %nav-arrow;
       border-right: 0;
+      &:after {
+        border-left: 7px solid #373535;
+      }
     }
   }
 }
@@ -117,8 +150,25 @@
   position: relative;
   z-index: 1;
 }
-.map__nav__item-wrapper--buildings .map__nav__item--project {
-  font-family: $font__light--fb;
+.map__nav__item-wrapper--buildings {
+  .map__nav__item--project {
+    font-family: $font__light--fb;
+  }
+  .category-wrapper {
+    padding: 0;
+    .map__nav__item__icon {
+      display: none;
+    }
+    .map__nav__item__name {
+      font-family: $font--fb;
+      font-size: 1.4em;
+      text-align: left;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding: 0 10px 0 15px;
+    }
+  }
 }
 
 .js-layerIsOpened .map__nav__item--layer {
@@ -147,9 +197,6 @@
 .map__nav__item__name {
   font-size: 1.4em;
   white-space: normal;
-  .map__nav__item-wrapper--buildings & {
-    font-family: $font--fb;
-  }
 }
 .map__nav__item--category {
   position: relative;
@@ -163,38 +210,41 @@
   border-right: 1px solid $gold;
   background: #373535;
   color: $red;
+  .map__nav__item__name {
+    font-size: 1.3em;
+  }
 }
 .category-wrapper--Institutional .map__nav__item__icon {
   background-image: url('../images/Institutional.svg');
-  width: 39px;
+  width: 31px;
 }
 .category-wrapper--Social .map__nav__item__icon {
   background-image: url('../images/Social.svg');
-  width: 58px;
+  width: 46px;
 }
 .category-wrapper--Educational .map__nav__item__icon {
   background-image: url('../images/Educational.svg');
-  width: 52px;
+  width: 42px;
 }
 .category-wrapper--Cultural .map__nav__item__icon {
   background-image: url('../images/Cultural.svg');
-  width: 32px;
+  width: 25px;
 }
 .category-wrapper--Commercial .map__nav__item__icon {
   background-image: url('../images/Commercial.svg');
-  width: 52px;
+  width: 34px;
 }
 .category-wrapper--Religious .map__nav__item__icon {
   background-image: url('../images/Religious.svg');
-  width: 58px;
+  width: 38px;
 }
 .category-wrapper--Residential-Hosh .map__nav__item__icon {
   background-image: url('../images/ResidentialHosh.svg');
-  width: 62px;
+  width: 52px;
 }
 .category-wrapper--Residential .map__nav__item__icon {
   background-image: url('../images/Residential.svg');
-  width: 58px;
+  width: 37px;
 }
 
 .map__nav__item--project {
@@ -211,13 +261,15 @@
   }
 }
 .map__nav__item__title {
-  font-size: 1.6em;
+  font-size: 1.4em;
   line-height: 1.2em;
   text-transform: capitalize;
   color: #FFF;
-  display: block;
+  display: flex;
+  height: 100%;
+  align-items: center;
   width: 150px;
-  padding: 40px 10px 0;
+  padding: 0 10px 0 15px;
 }
 .js-view-mode {
   .map__nav {

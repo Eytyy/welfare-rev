@@ -43,7 +43,21 @@ body, html, main, #welfare, #map {
 #map {
   height: 100%; }
 
-#map__nav {
+.js-active .map__nav__item--layer, .map__nav__item--category.js-active .category-wrapper {
+  position: relative;
+  z-index: 2; }
+  .js-active .map__nav__item--layer:after, .map__nav__item--category.js-active .category-wrapper:after {
+    content: '';
+    display: block;
+    border: 7px solid transparent;
+    border-left: 7px solid #2C2B2B;
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%); }
+
+.map__nav {
   position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -55,11 +69,19 @@ body, html, main, #welfare, #map {
   background: rgba(0, 0, 0, 0.9);
   border-top: 0.4em solid #BE4459;
   overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; }
-  #map__nav > * {
+  -webkit-overflow-scrolling: touch;
+  -webkit-transition: left 0.3s linear, width 0.3s linear;
+  transition: left 0.3s linear, width 0.3s linear; }
+  .map__nav > * {
     height: 150px; }
-  #map__nav.js-catIsOpened {
+  .map__nav.js-catIsOpened {
     overflow: hidden; }
+  .map__nav.buildings {
+    left: -150px;
+    width: calc(100% + 150px); }
+  .map__nav.housing {
+    left: -300px;
+    width: calc(100% + 300px); }
 
 .map__nav__item-wrapper {
   display: inline-block; }
@@ -74,15 +96,19 @@ body, html, main, #welfare, #map {
   vertical-align: top;
   width: calc(100% - 155px);
   margin-left: -3px; }
-  .js-active .map__nav__item__inner {
-    display: inline-block;
-    -webkit-transition: -webkit-transform 0.3s linear;
-    transition: -webkit-transform 0.3s linear;
-    transition: transform 0.3s linear;
-    transition: transform 0.3s linear, -webkit-transform 0.3s linear;
-    white-space: nowrap;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch; }
+
+.js-active .map__nav__item__inner {
+  display: inline-block;
+  -webkit-transition: -webkit-transform 0.3s linear;
+  transition: -webkit-transform 0.3s linear;
+  transition: transform 0.3s linear;
+  transition: transform 0.3s linear, -webkit-transform 0.3s linear;
+  white-space: nowrap;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; }
+
+.js-active .map__nav__item--layer {
+  z-index: 3; }
 
 .map__nav__item--category {
   display: inline-block;
@@ -95,6 +121,8 @@ body, html, main, #welfare, #map {
       width: 150px; }
   .map__nav__item--category.js-active .category-wrapper {
     border-right: 0; }
+    .map__nav__item--category.js-active .category-wrapper:after {
+      border-left: 7px solid #373535; }
 
 .category__inner {
   display: none;
@@ -145,6 +173,23 @@ body, html, main, #welfare, #map {
 .map__nav__item-wrapper--buildings .map__nav__item--project {
   font-family: "FiraSans-Light", "Droid Arabic Kufi"; }
 
+.map__nav__item-wrapper--buildings .category-wrapper {
+  padding: 0; }
+  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__icon {
+    display: none; }
+  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__name {
+    font-family: "FiraSans", "Droid Arabic Kufi";
+    font-size: 1.4em;
+    text-align: left;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100%;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0 10px 0 15px; }
+
 .js-layerIsOpened .map__nav__item--layer {
   background: #000; }
 
@@ -170,8 +215,6 @@ body, html, main, #welfare, #map {
 .map__nav__item__name {
   font-size: 1.4em;
   white-space: normal; }
-  .map__nav__item-wrapper--buildings .map__nav__item__name {
-    font-family: "FiraSans", "Droid Arabic Kufi"; }
 
 .map__nav__item--category {
   position: relative;
@@ -185,38 +228,40 @@ body, html, main, #welfare, #map {
   border-right: 1px solid #FCCA34;
   background: #373535;
   color: #BE4459; }
+  .category-wrapper .map__nav__item__name {
+    font-size: 1.3em; }
 
 .category-wrapper--Institutional .map__nav__item__icon {
   background-image: url("../images/Institutional.svg");
-  width: 39px; }
+  width: 31px; }
 
 .category-wrapper--Social .map__nav__item__icon {
   background-image: url("../images/Social.svg");
-  width: 58px; }
+  width: 46px; }
 
 .category-wrapper--Educational .map__nav__item__icon {
   background-image: url("../images/Educational.svg");
-  width: 52px; }
+  width: 42px; }
 
 .category-wrapper--Cultural .map__nav__item__icon {
   background-image: url("../images/Cultural.svg");
-  width: 32px; }
+  width: 25px; }
 
 .category-wrapper--Commercial .map__nav__item__icon {
   background-image: url("../images/Commercial.svg");
-  width: 52px; }
+  width: 34px; }
 
 .category-wrapper--Religious .map__nav__item__icon {
   background-image: url("../images/Religious.svg");
-  width: 58px; }
+  width: 38px; }
 
 .category-wrapper--Residential-Hosh .map__nav__item__icon {
   background-image: url("../images/ResidentialHosh.svg");
-  width: 62px; }
+  width: 52px; }
 
 .category-wrapper--Residential .map__nav__item__icon {
   background-image: url("../images/Residential.svg");
-  width: 58px; }
+  width: 37px; }
 
 .map__nav__item--project {
   cursor: pointer;
@@ -230,13 +275,19 @@ body, html, main, #welfare, #map {
     background-color: #4F545D; }
 
 .map__nav__item__title {
-  font-size: 1.6em;
+  font-size: 1.4em;
   line-height: 1.2em;
   text-transform: capitalize;
   color: #FFF;
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 150px;
-  padding: 40px 10px 0; }
+  padding: 0 10px 0 15px; }
 
 .js-view-mode .map__nav {
   background: black; }

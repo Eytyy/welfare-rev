@@ -253,7 +253,7 @@ const NAV = (shell) => {
       const activeLayer = event.activeLayer;
       const opts = {};
 
-      if (activeLayer === 'projects') {
+      if (activeLayer !== 'housing') {
         if (event.previousProjectName) {
           const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
           opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
@@ -295,6 +295,8 @@ const NAV = (shell) => {
       const element = el;
       const categoryInner = content;
       const trnsLeft = navState.activeLayer === 'projects' ? -left : (-left + 300);
+      const wdthLeft = navState.activeLayer === 'projects' ? left : (left - 300);
+
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation
       if (left > '150') {
@@ -303,7 +305,7 @@ const NAV = (shell) => {
         // reposition map nav inner and adjust width
         setTimeout(() => {
           element.parentNode.style.transform = `translate3d(${trnsLeft + width}px, 0, 0)`;
-          element.parentNode.style.width = `calc(100% + ${left + width}px)`;
+          element.parentNode.style.width = `calc(100% + ${wdthLeft + width}px)`;
         }, 100);
         // Adjust category inner wrapper width
         const categoryInnerWidth = left + width + 300;
