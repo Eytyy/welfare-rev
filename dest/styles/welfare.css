@@ -725,14 +725,33 @@ img {
       justify-content: space-around;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 50%;
-          flex: 1 1 50%; }
+          flex: 1 1 50%;
+  margin-bottom: 0; }
   .housing-section--aditional-info .housing-section__title {
     width: 100%; }
   .housing-section--aditional-info .housing-sub {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
-    border-bottom: 0; }
+    border-bottom: 0;
+    padding-bottom: 0; }
+
+.housing-images {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+
+.housing-image {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 50%;
+          flex: 0 1 50%;
+  padding-bottom: 30px; }
+  .housing-image:nth-child(even) {
+    padding-left: 15px; }
+  .housing-image:nth-child(odd) {
+    padding-right: 15px; }
 
 .module-progress {
   position: absolute;

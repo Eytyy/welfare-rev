@@ -89,6 +89,7 @@ const INFO = (shell) => {
 
       // Add Project info to html
       function appendInfo(infoData) {
+        console.log(infoData);
         const tpl = tplMap[data.activeLayer];
 
         Handlebars.registerHelper({
@@ -153,6 +154,7 @@ const INFO = (shell) => {
           appendInfo(Object.assign(
             {},
             dataCache[activeLayer][activeProjectID].alldata[activeProjectName],
+            { images: dataCache[activeLayer][activeProjectID].images },
             {
               building: dataCache[activeLayer][activeProjectID].buildingName,
               study: `Study No. ${activeProjectName + 1}`,
@@ -217,15 +219,14 @@ const INFO = (shell) => {
           dataCache[activeLayer][activeProjectID] = completeData;
           // Update Info
           appendInfo(completeData);
-          module.showInfoWindow();
         }).catch(error => {
           console.log(error);
           // Update Cache
           dataCache[activeLayer][activeProjectID] = data;
           // Update Info
           appendInfo(data);
-          module.showInfoWindow();
         });
+        module.showInfoWindow();
       }
 
       function fetchBuildingResources() {
@@ -273,15 +274,41 @@ const INFO = (shell) => {
 
       function fetchHousingResources() {
         console.log('fetch housing');
-        dataCache[activeLayer][activeProjectID] = projectData;
-        appendInfo(Object.assign(
-          {},
-          projectData.alldata[activeProjectName],
-          {
-            building: projectData.buildingName,
-            study: `Study No. ${activeProjectName + 1}`,
-          }
-        ));
+
+        fetchImages(activeProjectID).then(allData => {
+          const regex = /\w*(?:\.jpg)/i;
+          const obj = {
+            images: [],
+          };
+          allData.data.forEach((image, index) => {
+            if (index !== 0 && regex.test(image)) {
+              obj.images.push(image);
+            }
+          });
+          const completeData = Object.assign(projectData, obj);
+          dataCache[activeLayer][activeProjectID] = completeData;
+          appendInfo(Object.assign(
+            {},
+            completeData.alldata[activeProjectName],
+            { images: completeData.images },
+            {
+              building: completeData.buildingName,
+              study: `Study No. ${activeProjectName + 1}`,
+            }
+          ));
+        }).catch(err => {
+          console.log(err);
+
+          appendInfo(Object.assign(
+            {},
+            projectData.alldata[activeProjectName],
+            {
+              building: projectData.buildingName,
+              study: `Study No. ${activeProjectName + 1}`,
+            }
+          ));
+        });
+
         module.showInfoWindow();
       }
 

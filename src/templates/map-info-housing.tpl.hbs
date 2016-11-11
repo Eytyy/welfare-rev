@@ -38,80 +38,81 @@
     </div>
   </div>
   <div class="project__bottom">
-
-    <section class="housing-section">
-      <h2 class="housing-section__title">Building Original Rooms</h2>
-      <section class="housing-sub">
-        <h3 class="housing-sub__title">STRUCTURAL ASSESSMENT</h3>
-        <div class="housing-sub__header">
-          <div class="housing-sub__header__item">Use</div>
-          <div class="housing-sub__header__item">Size Area(M2)</div>
-          <div class="housing-sub__header__item">Structure Type</div>
-          <div class="housing-sub__header__item">Changes on Structure</div>
-          <div class="housing-sub__header__item">Damage on structure (outside and inside)</div>
-        </div>
-        <div class="housing-sub__body">
-          {{#each OriginalRooms}}
-            <div class="housing-sub__body__row">
-              <div class="housing-sub__body__item">{{this.UseAs}}</div>
-              <div class="housing-sub__body__item">{{this.SizeArea}}</div>
-              <div class="housing-sub__body__item">{{this.SructureType}}</div>
-              <div class="housing-sub__body__item"><i class="icon icon--{{ico this.ChangeOnSructure}}"></i></div>
-              <div class="housing-sub__body__item"><i class="icon icon--{{ico this.DamageOnStructureOutsideAndInside}}"></i></div>
-            </div>
-          {{/each}}
-        </div>
+    {{#if (notEmpty OriginalRooms "")}}
+      <section class="housing-section">
+        <h2 class="housing-section__title">Building Original Rooms</h2>
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">STRUCTURAL ASSESSMENT</h3>
+          <div class="housing-sub__header">
+            <div class="housing-sub__header__item">Use</div>
+            <div class="housing-sub__header__item">Size Area(M2)</div>
+            <div class="housing-sub__header__item">Structure Type</div>
+            <div class="housing-sub__header__item">Changes on Structure</div>
+            <div class="housing-sub__header__item">Damage on structure (outside and inside)</div>
+          </div>
+          <div class="housing-sub__body">
+            {{#each OriginalRooms}}
+              <div class="housing-sub__body__row">
+                <div class="housing-sub__body__item">{{this.UseAs}}</div>
+                <div class="housing-sub__body__item">{{this.SizeArea}}</div>
+                <div class="housing-sub__body__item">{{this.SructureType}}</div>
+                <div class="housing-sub__body__item"><i class="icon icon--{{ico this.ChangeOnSructure}}"></i></div>
+                <div class="housing-sub__body__item"><i class="icon icon--{{ico this.DamageOnStructureOutsideAndInside}}"></i></div>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">PHYSICAL ASSESSMENT</h3>
+          <div class="housing-sub__header">
+            <div class="housing-sub__header__item">Use</div>
+            <div class="housing-sub__header__item">Size Area(M2)</div>
+            {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
+              <div class="housing-sub__header__item">Algae/ fungus or erosion of stone</div>
+            {{/if}}
+            {{#if (ne this.FaçadePlantsGrowing "")}}
+              <div class="housing-sub__header__item">Façade/ Plants Growing?</div>
+            {{/if}}
+            {{#if (ne this.Ventilation "")}}
+              <div class="housing-sub__header__item">Ventilation</div>
+            {{/if}}
+            {{#if (ne this.Dampness "")}}
+              <div class="housing-sub__header__item">Dampness</div>
+            {{/if}}
+            {{#if (ne this.CauseOfDampness "")}}
+              <div class="housing-sub__header__item">Cause of dampness?</div>
+            {{/if}}
+          </div>
+          <div class="housing-sub__body">
+            {{#each OriginalRooms}}
+              <div class="housing-sub__body__row">
+                <div class="housing-sub__body__item">{{this.UseAs}}</div>
+                <div class="housing-sub__body__item">{{this.SizeArea}}</div>
+                {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.AlgaeFungusOrErosionOfStone}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.FaçadePlantsGrowing "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.FaçadePlantsGrowing}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.Ventilation "")}}
+                  <div class="housing-sub__body__item">{{this.Ventilation}}</div>
+                {{/if}}
+                {{#if (ne this.Dampness "")}}
+                  <div class="housing-sub__body__item">{{this.Dampness}}</div>
+                {{/if}}
+                {{#if (ne this.CauseOfDampness "")}}
+                  <div class="housing-sub__body__item">{{this.CauseOfDampness}}</div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
       </section>
-      <section class="housing-sub">
-        <h3 class="housing-sub__title">PHYSICAL ASSESSMENT</h3>
-        <div class="housing-sub__header">
-          <div class="housing-sub__header__item">Use</div>
-          <div class="housing-sub__header__item">Size Area(M2)</div>
-          {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
-            <div class="housing-sub__header__item">Algae/ fungus or erosion of stone</div>
-          {{/if}}
-          {{#if (ne this.FaçadePlantsGrowing "")}}
-            <div class="housing-sub__header__item">Façade/ Plants Growing?</div>
-          {{/if}}
-          {{#if (ne this.Ventilation "")}}
-            <div class="housing-sub__header__item">Ventilation</div>
-          {{/if}}
-          {{#if (ne this.Dampness "")}}
-            <div class="housing-sub__header__item">Dampness</div>
-          {{/if}}
-          {{#if (ne this.CauseOfDampness "")}}
-            <div class="housing-sub__header__item">Cause of dampness?</div>
-          {{/if}}
-        </div>
-        <div class="housing-sub__body">
-          {{#each OriginalRooms}}
-            <div class="housing-sub__body__row">
-              <div class="housing-sub__body__item">{{this.UseAs}}</div>
-              <div class="housing-sub__body__item">{{this.SizeArea}}</div>
-              {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
-                <div class="housing-sub__body__item">
-                  <i class="icon icon--{{ico this.AlgaeFungusOrErosionOfStone}}"></i>
-                </div>
-              {{/if}}
-              {{#if (ne this.FaçadePlantsGrowing "")}}
-                <div class="housing-sub__body__item">
-                  <i class="icon icon--{{ico this.FaçadePlantsGrowing}}"></i>
-                </div>
-              {{/if}}
-              {{#if (ne this.Ventilation "")}}
-                <div class="housing-sub__body__item">{{this.Ventilation}}</div>
-              {{/if}}
-              {{#if (ne this.Dampness "")}}
-                <div class="housing-sub__body__item">{{this.Dampness}}</div>
-              {{/if}}
-              {{#if (ne this.CauseOfDampness "")}}
-                <div class="housing-sub__body__item">{{this.CauseOfDampness}}</div>
-              {{/if}}
-            </div>
-          {{/each}}
-        </div>
-      </section>
-    </section>
+    {{/if}}
 
     {{#if (notEmpty AnnexRooms "")}}
       <section class="housing-section">
@@ -534,13 +535,14 @@
       </section>
     </section>
 
-    {{#if this.images}}
-      {{#each this.images}}
-        <div class="image-wrapper">
-          <img src="https://s3.amazonaws.com/eytyy.com/{{this.image}}" alt="{{this.caption}} misc image">
-          <span class="image-caption">{{this.caption}}</span>
-        </div>
-      {{/each}}
+    {{#if images}}
+      <div class="housing-images">
+        {{#each images}}
+          <div class="housing-image">
+            <img src="https://s3.amazonaws.com/eytyy.com/{{this}}">
+          </div>
+        {{/each}}
+      </div>
     {{/if}}
   </div>
 </article>
