@@ -42,7 +42,7 @@ var INFO = function INFO(shell) {
     hideInfoWindow: function hideInfoWindow() {
       domMap.$info.classList.remove('js-view-mode');
     },
-    toggleInfoExpand: function toggleInfoExpand(event) {
+    toggleInfoExpand: function toggleInfoExpand() {
       if (domMap.$info.classList.contains('js-infoExpanded')) {
         domMap.$info.classList.remove('js-infoExpanded');
       } else {
@@ -56,13 +56,24 @@ var INFO = function INFO(shell) {
           message: 'Loading Project'
         }
       });
-      var activeLayer = data.activeLayer;
-      var activeProjectName = data.activeProjectName;
-      var previousProjectName = data.previousProjectName;
-      var activeProject = data.activeProject;
 
-      var projectData = activeLayer === 'projects' ? activeProject.f : activeProject.alldata;
-      var activeProjectID = activeLayer === 'projects' ? projectData.OBJECTID : projectData.ID;
+      var activeLayer = data.activeLayer;
+      var activeProject = data.activeProject;
+      var activeProjectName = activeLayer === 'housing' ? data.activeProjectName - 1 : data.activeProjectName;
+
+      var projectData = void 0;
+      var activeProjectID = void 0;
+
+      if (activeLayer === 'projects') {
+        projectData = activeProject.f;
+        activeProjectID = projectData.OBJECTID;
+      } else if (activeLayer === 'buildings') {
+        projectData = activeProject.alldata;
+        activeProjectID = projectData.ID;
+      } else {
+        projectData = activeProject;
+        activeProjectID = projectData.getProperty('OBJECTID');
+      }
 
       var module = this;
       domMap.$infoInner.scrollTop = 0;
@@ -71,6 +82,7 @@ var INFO = function INFO(shell) {
       // Add Project info to html
       function appendInfo(infoData) {
         var tpl = tplMap[data.activeLayer];
+
         Handlebars.registerHelper({
           or: function or(v1, v2) {
             var rval = v1 || v2;
@@ -96,16 +108,29 @@ var INFO = function INFO(shell) {
           formatFileName: function formatFileName(v) {
             var val = v.match(/[^\\/]+$/)[0];
             return val;
+          },
+          notEmpty: function notEmpty(v) {
+            var val = v ? !(v.length === 0) : false;
+            return val;
+          },
+          ico: function ico(v) {
+            if (v === 'True' || v === 'Yes') {
+              return 'check';
+            }
+            return 'cross';
           }
         });
+
         var rendered = Handlebars.templates[tpl](infoData);
         domMap.$infoInner.innerHTML = rendered;
+
         shell.notify({
           type: 'app-updated',
           data: {
             message: ''
           }
         });
+
         console.log('loaded');
       }
 
@@ -116,13 +141,19 @@ var INFO = function INFO(shell) {
             message: ''
           }
         });
+        if (activeLayer === 'housing') {
+          appendInfo(Object.assign({}, dataCache[activeLayer][activeProjectID].alldata[activeProjectName], {
+            building: dataCache[activeLayer][activeProjectID].buildingName,
+            study: 'Study No. ' + (activeProjectName + 1)
+          }));
+        } else {
+          appendInfo(dataCache[activeLayer][activeProjectID]);
+        }
         // Update Info
-        appendInfo(dataCache[activeLayer][activeProjectID]);
         this.showInfoWindow();
         return true;
       }
 
-      // console.log(dataCache[activeLayer][activeProjectID]);
       function fetchImages(id) {
         var url = 'resources/images/' + activeLayer + '/' + id;
         return shell.get(url).then(function (images) {
@@ -142,7 +173,6 @@ var INFO = function INFO(shell) {
       }
 
       function fetchProjectResources() {
-        // console.log('fetch project');
         var resourcesID = projectData.ukey;
 
         Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)]).then(function (allData) {
@@ -187,7 +217,6 @@ var INFO = function INFO(shell) {
       }
 
       function fetchBuildingResources() {
-        console.log('fetch building');
         var resourcesID = projectData.ID;
 
         fetchImages(resourcesID).then(function (allData) {
@@ -212,7 +241,6 @@ var INFO = function INFO(shell) {
             }
           });
           Object.assign(projectData, obj);
-          // console.log(projectData);
 
           // Update Cache
           dataCache[activeLayer][activeProjectID] = projectData;
@@ -231,12 +259,25 @@ var INFO = function INFO(shell) {
         });
       }
 
+      function fetchHousingResources() {
+        console.log('fetch housing');
+        dataCache[activeLayer][activeProjectID] = projectData;
+        appendInfo(Object.assign({}, projectData.alldata[activeProjectName], {
+          building: projectData.buildingName,
+          study: 'Study No. ' + (activeProjectName + 1)
+        }));
+        module.showInfoWindow();
+      }
+
       switch (activeLayer) {
         case 'projects':
           fetchProjectResources();
           break;
         case 'buildings':
           fetchBuildingResources();
+          break;
+        case 'housing':
+          fetchHousingResources();
           break;
         default:
           break;

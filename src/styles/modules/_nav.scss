@@ -119,6 +119,11 @@
       width: calc(100% + 150px);
     }
   }
+  &.buildings{
+    .js-active {
+      width: calc(100% + 300px);
+    }
+  }
 }
 
 .map__nav__item--projects {
@@ -150,23 +155,35 @@
   position: relative;
   z-index: 1;
 }
+.map__nav__item-wrapper--buildings,
+.map__nav__item-wrapper--housing {
+  .category-wrapper {
+    padding: 0;
+    .map__nav__item__name {
+      font-size: 1.4em;
+      text-align: left;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      padding: 0 10px;
+    }
+  }
+  .map__nav__item__title {
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+  }
+}
 .map__nav__item-wrapper--buildings {
   .map__nav__item--project {
     font-family: $font__light--fb;
   }
   .category-wrapper {
     padding: 0;
-    .map__nav__item__icon {
-      display: none;
-    }
     .map__nav__item__name {
       font-family: $font--fb;
-      font-size: 1.4em;
-      text-align: left;
-      display: flex;
-      height: 100%;
-      align-items: center;
-      padding: 0 10px 0 15px;
     }
   }
 }
@@ -260,16 +277,17 @@
     background-color: #4F545D;
   }
 }
+
 .map__nav__item__title {
   font-size: 1.4em;
   line-height: 1.2em;
   text-transform: capitalize;
   color: #FFF;
   display: flex;
+  width: 150px;
   height: 100%;
   align-items: center;
-  width: 150px;
-  padding: 0 10px 0 15px;
+  padding: 0 15px;
 }
 .js-view-mode {
   .map__nav {

@@ -149,7 +149,7 @@ const NAV = (shell) => {
         const $catInner = shell.createElement('div', {
           class: ['category__inner'],
         });
-        const tpl = Handlebars.templates['nav-cat.tpl.hbs']({ title: catName });
+        const tpl = Handlebars.templates['nav-cat-noicon.tpl.hbs']({ title: catName });
 
         shell.injectTemplateText(tpl, $catWrapper);
         $catWrapper.appendChild($catInner);
@@ -192,8 +192,46 @@ const NAV = (shell) => {
       shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
-    buildHousingLayerNavigation() {
-      console.log('housing');
+    buildHousingLayerNavigation(wrapper, data, activeLayer) {
+      const buildCategoryHtml = (catName, catData) => {
+        const $catWrapper = shell.createElement('div', {
+          class: ['map__nav__item--category', `map__nav__item--category--${catName}`],
+        });
+        const $catInner = shell.createElement('div', {
+          class: ['category__inner'],
+        });
+        const tpl = Handlebars.templates['nav-cat-noicon.tpl.hbs']({ title: catData.buildingName });
+
+        shell.injectTemplateText(tpl, $catWrapper);
+        $catWrapper.appendChild($catInner);
+
+        // loop through each building to add children studies to the navigation
+        catData.alldata.forEach((el, index) => {
+          const title = `Study No.${index + 1}`;
+          const itemTpl = Handlebars.templates['nav-layer-housing.tpl.hbs'](
+            { target: index + 1, title, cat: catName });
+          shell.injectTemplateText(itemTpl, $catInner);
+        });
+        return $catWrapper;
+      };
+
+      if (!filteredData[activeLayer]) {
+        const obj = {};
+
+        for (const el of data) {
+          // If the data set has categories, then filter/group them based on category name
+          const category = el.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+          if (!obj[category]) {
+            obj[category] = el;
+          }
+        }
+        filteredData[activeLayer] = obj;
+      }
+      Object.keys(filteredData[activeLayer]).forEach(key => {
+        const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
+        wrapper.appendChild(navGroup);
+      });
+      shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
     },
 
     setLayerNav(data, activeLayer) {
@@ -294,8 +332,27 @@ const NAV = (shell) => {
     adjustProjectInnerPosition(el, left, width, content) {
       const element = el;
       const categoryInner = content;
-      const trnsLeft = navState.activeLayer === 'projects' ? -left : (-left + 300);
-      const wdthLeft = navState.activeLayer === 'projects' ? left : (left - 300);
+      let trnsLeft;
+      let wdthLeft
+
+      if (navState.activeLayer === 'projects') {
+        trnsLeft = -left;
+      }
+      else if (navState.activeLayer === 'buildings') {
+        trnsLeft = -left + 300;
+      }
+      else {
+        trnsLeft = -left + 600;
+      }
+      if (navState.activeLayer === 'projects') {
+        wdthLeft = left;
+      }
+      else if (navState.activeLayer === 'buildings') {
+        wdthLeft = left - 300;
+      }
+      else {
+        wdthLeft = left - 300;
+      }
 
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation

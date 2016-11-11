@@ -10,6 +10,7 @@
   opacity: 0;
   color: #FFF;
 }
+
 .js-view-mode {
   transform: translate3d(0, -300px, 0);
   opacity: 1;
@@ -17,6 +18,7 @@
     opacity: 1;
   }
 }
+
 .js-infoExpanded {
   transform: translate3d(0, -100%, 0);
   .map-info__grabber {
@@ -28,6 +30,7 @@
     transform: translate(-50%, -50%) rotate(-90deg);
   }
 }
+
 .map-info__inner {
   position: relative;
   padding: 5em 5em 20em;
@@ -36,12 +39,14 @@
   background: rgba(26, 26, 25, 0.9);
   height: 100%;
 }
+
 .js-infoExpanded {
   .map-info__inner {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
 }
+
 .map-info__grabber {
   position: absolute;
   z-index: 2;
@@ -67,6 +72,7 @@
     transition: opacity 0.5s ease-in-out;
   }
 }
+
 .grabber__handle {
   font-size: 20px;
   color: $red;
@@ -75,15 +81,18 @@
   top: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
 }
+
 .project {
   max-width: 1120px;
   margin: 0 auto;
 }
+
 .project__top {
   display: flex;
   margin-bottom: 8em;
   flex-wrap: wrap;
 }
+
 .project__header {
   flex:0 0 66.666%;
   padding-right: 8em;
@@ -91,28 +100,39 @@
     padding-right: 12em;
   }
 }
+
 .project__date {
   font-size: 3em;
   line-height: 1em;
   color: $gold;
   border-bottom: 3px solid $red;
-
 }
+
 .project__title {
   font-family: $font__light;
-  font-size: 4.8em;
-  line-height: 1em;
+  font-size: 48px;
+  line-height: 1.2;
   margin: 0.4em 0 0.5em;
 }
+
+.project__sub-title {
+  font-family: $font__light;
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
 .project__details {
   flex: 0 0 33.333%;
   border-top: 1px solid #FFF;
   margin-top: 3.1em;
   padding-top: 2em;
 }
+
 .project__details__item {
   margin-bottom: 3em;
 }
+
 .details__item__label {
   color: $red;
   font-family: $font__light;
@@ -121,19 +141,23 @@
   text-transform: uppercase;
   margin-bottom: 0.25em;
 }
+
 .details__item__value {
   font-size: 2.8em;
   line-height: 1em;
 }
+
 img {
   max-width: 100%;
   width: 100%;
   height: auto;
 }
+
 .misc-image,
 .image-wrapper {
   margin-bottom: 8em;
 }
+
 .image-wrapper {
   text-align: left;
   img {
@@ -142,13 +166,16 @@ img {
     margin-bottom: 12px;
   }
 }
+
 .image-caption {
   font-size: 18px;
   line-height: 1;
 }
+
 .project__mid {
   margin-bottom: 60px;
 }
+
 .image-comp {
   overflow: hidden;
   position: relative;
@@ -197,16 +224,19 @@ img {
     }
   }
 }
+
 .project__description {
   font-size: 1.8em;
   line-height: 1.5em;
   white-space: pre-line;
 }
+
 .links {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .links__item {
   margin-bottom: 10px;
   a {
@@ -224,6 +254,7 @@ img {
     }
   }
 }
+
 .project--buildings {
   font-family: $font__light--fb;
   text-align: right;
@@ -239,6 +270,7 @@ img {
     text-align: right;
   }
 }
+
 .project__details--buildings-extras {
   flex: 0 0 100%;
   display: flex;

@@ -168,7 +168,7 @@ var NAV = function NAV(shell) {
         var $catInner = shell.createElement('div', {
           class: ['category__inner']
         });
-        var tpl = Handlebars.templates['nav-cat.tpl.hbs']({ title: catName });
+        var tpl = Handlebars.templates['nav-cat-noicon.tpl.hbs']({ title: catName });
 
         shell.injectTemplateText(tpl, $catWrapper);
         $catWrapper.appendChild($catInner);
@@ -230,8 +230,67 @@ var NAV = function NAV(shell) {
       });
       shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
     },
-    buildHousingLayerNavigation: function buildHousingLayerNavigation() {
-      console.log('housing');
+    buildHousingLayerNavigation: function buildHousingLayerNavigation(wrapper, data, activeLayer) {
+      var buildCategoryHtml = function buildCategoryHtml(catName, catData) {
+        var $catWrapper = shell.createElement('div', {
+          class: ['map__nav__item--category', 'map__nav__item--category--' + catName]
+        });
+        var $catInner = shell.createElement('div', {
+          class: ['category__inner']
+        });
+        var tpl = Handlebars.templates['nav-cat-noicon.tpl.hbs']({ title: catData.buildingName });
+
+        shell.injectTemplateText(tpl, $catWrapper);
+        $catWrapper.appendChild($catInner);
+
+        // loop through each building to add children studies to the navigation
+        catData.alldata.forEach(function (el, index) {
+          var title = 'Study No.' + (index + 1);
+          var itemTpl = Handlebars.templates['nav-layer-housing.tpl.hbs']({ target: index + 1, title: title, cat: catName });
+          shell.injectTemplateText(itemTpl, $catInner);
+        });
+        return $catWrapper;
+      };
+
+      if (!filteredData[activeLayer]) {
+        var obj = {};
+
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = data[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var el = _step3.value;
+
+            // If the data set has categories, then filter/group them based on category name
+            var category = el.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+            if (!obj[category]) {
+              obj[category] = el;
+            }
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+
+        filteredData[activeLayer] = obj;
+      }
+      Object.keys(filteredData[activeLayer]).forEach(function (key) {
+        var navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
+        wrapper.appendChild(navGroup);
+      });
+      shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
     },
     setLayerNav: function setLayerNav(data, activeLayer) {
       // Layer Inner Div
@@ -325,8 +384,23 @@ var NAV = function NAV(shell) {
     adjustProjectInnerPosition: function adjustProjectInnerPosition(el, left, width, content) {
       var element = el;
       var categoryInner = content;
-      var trnsLeft = navState.activeLayer === 'projects' ? -left : -left + 300;
-      var wdthLeft = navState.activeLayer === 'projects' ? left : left - 300;
+      var trnsLeft = void 0;
+      var wdthLeft = void 0;
+
+      if (navState.activeLayer === 'projects') {
+        trnsLeft = -left;
+      } else if (navState.activeLayer === 'buildings') {
+        trnsLeft = -left + 300;
+      } else {
+        trnsLeft = -left + 600;
+      }
+      if (navState.activeLayer === 'projects') {
+        wdthLeft = left;
+      } else if (navState.activeLayer === 'buildings') {
+        wdthLeft = left - 300;
+      } else {
+        wdthLeft = left - 300;
+      }
 
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation

@@ -148,6 +148,9 @@ body, html, main, #welfare, #map {
 .js-catIsOpened.buildings .js-active {
   width: calc(100% + 150px); }
 
+.js-catIsOpened.buildings .js-active {
+  width: calc(100% + 300px); }
+
 .map__nav__item--projects .map__nav__item__icon {
   background-image: url("../images/our-projects-icon.svg");
   width: 51px; }
@@ -170,15 +173,11 @@ body, html, main, #welfare, #map {
   position: relative;
   z-index: 1; }
 
-.map__nav__item-wrapper--buildings .map__nav__item--project {
-  font-family: "FiraSans-Light", "Droid Arabic Kufi"; }
-
-.map__nav__item-wrapper--buildings .category-wrapper {
+.map__nav__item-wrapper--buildings .category-wrapper,
+.map__nav__item-wrapper--housing .category-wrapper {
   padding: 0; }
-  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__icon {
-    display: none; }
-  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__name {
-    font-family: "FiraSans", "Droid Arabic Kufi";
+  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__name,
+  .map__nav__item-wrapper--housing .category-wrapper .map__nav__item__name {
     font-size: 1.4em;
     text-align: left;
     display: -webkit-box;
@@ -188,7 +187,28 @@ body, html, main, #welfare, #map {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 0 10px 0 15px; }
+    text-align: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 0 10px; }
+
+.map__nav__item-wrapper--buildings .map__nav__item__title,
+.map__nav__item-wrapper--housing .map__nav__item__title {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  text-align: center; }
+
+.map__nav__item-wrapper--buildings .map__nav__item--project {
+  font-family: "FiraSans-Light", "Droid Arabic Kufi"; }
+
+.map__nav__item-wrapper--buildings .category-wrapper {
+  padding: 0; }
+  .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__name {
+    font-family: "FiraSans", "Droid Arabic Kufi"; }
 
 .js-layerIsOpened .map__nav__item--layer {
   background: #000; }
@@ -282,12 +302,12 @@ body, html, main, #welfare, #map {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  width: 150px;
   height: 100%;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 150px;
-  padding: 0 10px 0 15px; }
+  padding: 0 15px; }
 
 .js-view-mode .map__nav {
   background: black; }
@@ -400,9 +420,15 @@ body, html, main, #welfare, #map {
 
 .project__title {
   font-family: "FiraSans-Light";
-  font-size: 4.8em;
-  line-height: 1em;
+  font-size: 48px;
+  line-height: 1.2;
   margin: 0.4em 0 0.5em; }
+
+.project__sub-title {
+  font-family: "FiraSans-Light";
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0 0 10px; }
 
 .project__details {
   -webkit-box-flex: 0;
@@ -548,6 +574,165 @@ img {
     margin-right: 10px; }
     .project__details--buildings-extras .project__details__item:not(:last-child) {
       border-right: 1px solid #D5D3D3; }
+
+.project--housing .project__title {
+  margin-bottom: 5px; }
+
+.housing-section {
+  margin-bottom: 80px; }
+
+.housing-section__title {
+  font-family: "FiraSans-Light";
+  font-size: 28px;
+  border-bottom: 2px solid #FFF;
+  padding-bottom: 5px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin-bottom: 40px; }
+
+.housing-sub__title {
+  font-family: "FiraSans-Light";
+  font-size: 20px;
+  line-height: 1.3;
+  text-transform: none;
+  margin: 0 0 30px; }
+
+.housing-details {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 20px 0 60px;
+  padding-top: 15px;
+  border-top: 1px solid #FFF; }
+
+.housing-details__item {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 150px;
+          flex: 1 1 150px; }
+  .housing-details__item:not(:last-child) {
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #D5D3D3; }
+
+.housing-details__item__label {
+  font-size: 22px;
+  line-height: 1.2em;
+  color: #BE4459; }
+
+.housing-details__item__value {
+  font-size: 22px;
+  line-height: 1.2em; }
+
+.icon {
+  display: block;
+  background-size: contain;
+  background-repeat: no-repeat; }
+  .icon--cross {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/cross.svg"); }
+  .icon--check {
+    width: 20px;
+    height: 14px;
+    background-image: url("../images/check.svg"); }
+
+.housing-sub {
+  width: 100%;
+  margin-bottom: 60px;
+  padding-bottom: 40px; }
+  .housing-sub h2 {
+    font-size: 20px;
+    line-height: 1.2;
+    font-family: "FiraSans-Light";
+    border-bottom: 1px solid #fff;
+    padding-bottom: 7px; }
+  .housing-sub:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
+
+.housing-sub__info__item {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 25%;
+          flex: 1 1 25%;
+  padding-bottom: 20px; }
+  .housing-sub__info__item:not(:last-child) {
+    padding-right: 10px;
+    margin-right: 10px; }
+
+.housing-sub__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 30px; }
+
+.housing-sub__header__item, .housing-sub__body__item, .wrap {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 200px;
+          flex: 1 1 200px; }
+  .housing-sub__header__item:not(:last-child), .housing-sub__body__item:not(:last-child), .wrap:not(:last-child) {
+    padding-right: 10px;
+    margin-right: 10px; }
+
+.housing-sub__header__item:not(:last-child) {
+  border-right: 1px solid #D5D3D3; }
+
+.housing-sub__body__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px; }
+
+.housing-sub {
+  font-size: 18px;
+  line-height: 1.2; }
+
+.housing-sub__info__item__label,
+.housing-sub__header__item {
+  color: #BE4459;
+  text-transform: uppercase; }
+
+.housing-sub__info__item__value,
+.housing-sub__body__item {
+  font-size: 16px; }
+
+.housing-sub__info__item__label {
+  margin-bottom: 5px; }
+
+.housing-sub__header .wrap:not(:last-child) {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #D5D3D3; }
+
+.wrap .housing-sub__header__item:nth-child(2),
+.wrap .housing-sub__body__item:nth-child(2) {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #FCCA34; }
+
+.wrap .housing-sub__header__item,
+.wrap .housing-sub__body__item {
+  padding-right: 0;
+  margin-right: 0;
+  border-right: 0; }
+
+.housing-section--aditional-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 50%;
+          flex: 1 1 50%; }
+  .housing-section--aditional-info .housing-section__title {
+    width: 100%; }
+  .housing-section--aditional-info .housing-sub {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 50%;
+            flex: 1 1 50%;
+    border-bottom: 0; }
 
 .module-progress {
   position: absolute;

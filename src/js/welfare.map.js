@@ -211,27 +211,37 @@ const MAP = (shell) => {
             })
             .then(allData => {
               const data = {};
+              let counter = 1;
               if (active === 'buildings') {
                 for (const el of allData.MainTable) {
                   const item = el[0].SERIAL_NO;
                   data[item] = el[0];
                 }
+                for (const el of geoData) {
+                  const serial = el.getProperty('SERIAL_NO');
+                  const obj = {};
+                  if (data[serial]) {
+                    obj.alldata = data[serial];
+                    Object.assign(el, obj);
+                  }
+                }
               }
               else {
-                for (const el of allData) {
-                  const item = el[0].SERIAL_NO;
-                  data[item] = el[0];
+                for (const el of Object.keys(allData)) {
+                  const item = allData[el][0].SERIAL_NO;
+                  if (!data[item]) {
+                    data[item] = [];
+                  }
+                  data[item].push(allData[el][0]);
                 }
-              }
-              for (const el of geoData) {
-                const serial = el.getProperty('SERIAL_NO');
-                if (serial === 1190001200) {
-                  console.log(el);
-                }
-                const obj = {};
-                if (data[serial]) {
-                  obj.alldata = data[serial];
-                  Object.assign(el, obj);
+                for (const el of geoData) {
+                  const serial = el.getProperty('SERIAL_NO');
+                  const obj = {};
+                  if (data[serial]) {
+                    obj.alldata = data[serial];
+                    Object.assign(el, obj, { buildingName: `Building No. ${counter}` });
+                  }
+                  counter++;
                 }
               }
               updateLayersData(geoData);

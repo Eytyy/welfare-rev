@@ -68,7 +68,7 @@ var WELFARE = function WELFARE(shell) {
   };
 
   var onProjectNavClick = function onProjectNavClick(event) {
-    var obj = event.category ? event.data[state.activeLayer][event.category][event.target] : event.data[state.activeLayer][event.target];
+    var obj = state.activeLayer === 'housing' ? event.data[state.activeLayer][event.category] : event.data[state.activeLayer][event.category][event.target];
 
     var latLngs = obj.getGeometry().getAt(0).getAt(0);
 

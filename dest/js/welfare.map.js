@@ -213,6 +213,7 @@ var MAP = function MAP(shell) {
                 console.log(err);
               }).then(function (allData) {
                 var data = {};
+                var counter = 1;
                 if (active === 'buildings') {
                   var _iteratorNormalCompletion = true;
                   var _didIteratorError = false;
@@ -239,17 +240,21 @@ var MAP = function MAP(shell) {
                       }
                     }
                   }
-                } else {
+
                   var _iteratorNormalCompletion2 = true;
                   var _didIteratorError2 = false;
                   var _iteratorError2 = undefined;
 
                   try {
-                    for (var _iterator2 = allData[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    for (var _iterator2 = geoData[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                       var _el = _step2.value;
 
-                      var _item = _el[0].SERIAL_NO;
-                      data[_item] = _el[0];
+                      var serial = _el.getProperty('SERIAL_NO');
+                      var obj = {};
+                      if (data[serial]) {
+                        obj.alldata = data[serial];
+                        Object.assign(_el, obj);
+                      }
                     }
                   } catch (err) {
                     _didIteratorError2 = true;
@@ -265,40 +270,67 @@ var MAP = function MAP(shell) {
                       }
                     }
                   }
-                }
-                var _iteratorNormalCompletion3 = true;
-                var _didIteratorError3 = false;
-                var _iteratorError3 = undefined;
+                } else {
+                  var _iteratorNormalCompletion3 = true;
+                  var _didIteratorError3 = false;
+                  var _iteratorError3 = undefined;
 
-                try {
-                  for (var _iterator3 = geoData[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                    var _el2 = _step3.value;
-
-                    var serial = _el2.getProperty('SERIAL_NO');
-                    if (serial === 1190001200) {
-                      console.log(_el2);
-                    }
-                    var obj = {};
-                    if (data[serial]) {
-                      obj.alldata = data[serial];
-                      Object.assign(_el2, obj);
-                    }
-                  }
-                } catch (err) {
-                  _didIteratorError3 = true;
-                  _iteratorError3 = err;
-                } finally {
                   try {
-                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                      _iterator3.return();
+                    for (var _iterator3 = Object.keys(allData)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                      var _el2 = _step3.value;
+
+                      var _item = allData[_el2][0].SERIAL_NO;
+                      if (!data[_item]) {
+                        data[_item] = [];
+                      }
+                      data[_item].push(allData[_el2][0]);
                     }
+                  } catch (err) {
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
                   } finally {
-                    if (_didIteratorError3) {
-                      throw _iteratorError3;
+                    try {
+                      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                        _iterator3.return();
+                      }
+                    } finally {
+                      if (_didIteratorError3) {
+                        throw _iteratorError3;
+                      }
+                    }
+                  }
+
+                  var _iteratorNormalCompletion4 = true;
+                  var _didIteratorError4 = false;
+                  var _iteratorError4 = undefined;
+
+                  try {
+                    for (var _iterator4 = geoData[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                      var _el3 = _step4.value;
+
+                      var _serial = _el3.getProperty('SERIAL_NO');
+                      var _obj = {};
+                      if (data[_serial]) {
+                        _obj.alldata = data[_serial];
+                        Object.assign(_el3, _obj, { buildingName: 'Building No. ' + counter });
+                      }
+                      counter++;
+                    }
+                  } catch (err) {
+                    _didIteratorError4 = true;
+                    _iteratorError4 = err;
+                  } finally {
+                    try {
+                      if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                        _iterator4.return();
+                      }
+                    } finally {
+                      if (_didIteratorError4) {
+                        throw _iteratorError4;
+                      }
                     }
                   }
                 }
-
                 updateLayersData(geoData);
               }).catch(function (err) {
                 console.log(err);
