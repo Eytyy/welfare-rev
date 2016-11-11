@@ -1,0 +1,546 @@
+<article class="project project--housing">
+  <div class="project__top">
+    <header class="project__header">
+      <h2 class="project__title">{{building}}</h2>
+      <h3 class="project__sub-title">{{study}}</h2>
+    </header>
+    <div class="housing-details">
+      {{#if (ne this.BuildingOriginalUse "")}}
+        <div class="housing-details__item">
+          <div class="housing-details__item__label">ORIGINAL USE</div>
+          <div class="housing-details__item__value">{{this.BuildingOriginalUse}}</div>
+        </div>
+      {{/if}}
+      {{#if (ne this.NoOfFamilies "")}}
+        <div class="housing-details__item">
+          <div class="housing-details__item__label">NUMBER OF FAMILIES</div>
+          <div class="housing-details__item__value">{{this.NoOfFamilies}}</div>
+        </div>
+      {{/if}}
+      {{#if (ne this.NoOfResident "")}}
+        <div class="housing-details__item">
+          <div class="housing-details__item__label">NUMBER OF RESIDENTS</div>
+          <div class="housing-details__item__value">{{this.NoOfResident}}</div>
+        </div>
+      {{/if}}
+      {{#if (ne this.LivingDuration "")}}
+        <div class="housing-details__item">
+          <div class="housing-details__item__label">LIVING DURATION</div>
+          <div class="housing-details__item__value">{{this.LivingDuration}}</div>
+        </div>
+      {{/if}}
+      {{#if (ne this.PartOfHoush "")}}
+        <div class="housing-details__item">
+          <div class="housing-details__item__label">Part of Housh</div>
+          <div class="housing-details__item__value">{{this.PartOfHoush}}</div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="project__bottom">
+
+    <section class="housing-section">
+      <h2 class="housing-section__title">Building Original Rooms</h2>
+      <section class="housing-sub">
+        <h3 class="housing-sub__title">STRUCTURAL ASSESSMENT</h3>
+        <div class="housing-sub__header">
+          <div class="housing-sub__header__item">Use</div>
+          <div class="housing-sub__header__item">Size Area(M2)</div>
+          <div class="housing-sub__header__item">Structure Type</div>
+          <div class="housing-sub__header__item">Changes on Structure</div>
+          <div class="housing-sub__header__item">Damage on structure (outside and inside)</div>
+        </div>
+        <div class="housing-sub__body">
+          {{#each OriginalRooms}}
+            <div class="housing-sub__body__row">
+              <div class="housing-sub__body__item">{{this.UseAs}}</div>
+              <div class="housing-sub__body__item">{{this.SizeArea}}</div>
+              <div class="housing-sub__body__item">{{this.SructureType}}</div>
+              <div class="housing-sub__body__item"><i class="icon icon--{{ico this.ChangeOnSructure}}"></i></div>
+              <div class="housing-sub__body__item"><i class="icon icon--{{ico this.DamageOnStructureOutsideAndInside}}"></i></div>
+            </div>
+          {{/each}}
+        </div>
+      </section>
+      <section class="housing-sub">
+        <h3 class="housing-sub__title">PHYSICAL ASSESSMENT</h3>
+        <div class="housing-sub__header">
+          <div class="housing-sub__header__item">Use</div>
+          <div class="housing-sub__header__item">Size Area(M2)</div>
+          {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
+            <div class="housing-sub__header__item">Algae/ fungus or erosion of stone</div>
+          {{/if}}
+          {{#if (ne this.FaçadePlantsGrowing "")}}
+            <div class="housing-sub__header__item">Façade/ Plants Growing?</div>
+          {{/if}}
+          {{#if (ne this.Ventilation "")}}
+            <div class="housing-sub__header__item">Ventilation</div>
+          {{/if}}
+          {{#if (ne this.Dampness "")}}
+            <div class="housing-sub__header__item">Dampness</div>
+          {{/if}}
+          {{#if (ne this.CauseOfDampness "")}}
+            <div class="housing-sub__header__item">Cause of dampness?</div>
+          {{/if}}
+        </div>
+        <div class="housing-sub__body">
+          {{#each OriginalRooms}}
+            <div class="housing-sub__body__row">
+              <div class="housing-sub__body__item">{{this.UseAs}}</div>
+              <div class="housing-sub__body__item">{{this.SizeArea}}</div>
+              {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
+                <div class="housing-sub__body__item">
+                  <i class="icon icon--{{ico this.AlgaeFungusOrErosionOfStone}}"></i>
+                </div>
+              {{/if}}
+              {{#if (ne this.FaçadePlantsGrowing "")}}
+                <div class="housing-sub__body__item">
+                  <i class="icon icon--{{ico this.FaçadePlantsGrowing}}"></i>
+                </div>
+              {{/if}}
+              {{#if (ne this.Ventilation "")}}
+                <div class="housing-sub__body__item">{{this.Ventilation}}</div>
+              {{/if}}
+              {{#if (ne this.Dampness "")}}
+                <div class="housing-sub__body__item">{{this.Dampness}}</div>
+              {{/if}}
+              {{#if (ne this.CauseOfDampness "")}}
+                <div class="housing-sub__body__item">{{this.CauseOfDampness}}</div>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </section>
+    </section>
+
+    {{#if (notEmpty AnnexRooms "")}}
+      <section class="housing-section">
+        <h2 class="housing-section__title">Building Additional Rooms</h2>
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">Addition information</h3>
+
+          <div class="housing-sub__header">
+            {{#if (ne this.OriginalStructure "")}}
+              <div class="housing-sub__header__item">Original Structure</div>
+            {{/if}}
+            {{#if (ne this.UseAs "")}}
+              <div class="housing-sub__header__item">Use</div>
+            {{/if}}
+            {{#if (ne this.FloorNo "")}}
+              <div class="housing-sub__header__item">Floor</div>
+            {{/if}}
+            {{#if (ne this.SizeAprox "")}}
+              <div class="housing-sub__header__item">Size aprox</div>
+            {{/if}}
+            {{#if (ne this.StructureType "")}}
+              <div class="housing-sub__header__item">Structure Type</div>
+            {{/if}}
+            {{#if (ne this.IsTheAnnexATotalFloorOrPartial "")}}
+              <div class="housing-sub__header__item">Is the annex a total floor? Or partial?</div>
+            {{/if}}
+            {{#if (ne this.IsTheAnnexHorizontalVerticalMix "")}}
+              <div class="housing-sub__header__item">Is the annex horizontal / vertical/ mix between both</div>
+            {{/if}}
+          </div>
+          <div class="housing-sub__body">
+            {{#each this.AnnexRooms}}
+              <div class="housing-sub__body__row">
+                {{#if (ne this.OriginalStructure "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.OriginalStructure}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.UseAs "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.UseAs}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.FloorNo "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.FloorNo}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.SizeAprox "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.SizeAprox}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.StructureType "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.StructureType}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.IsTheAnnexATotalFloorOrPartial "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.IsTheAnnexATotalFloorOrPartial}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.IsTheAnnexHorizontalVerticalMix "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.IsTheAnnexHorizontalVerticalMix}}
+                  </div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">Type of Addition</h3>
+          <div class="housing-sub__header">
+            {{#if (ne this.OriginalStructure "")}}
+              <div class="housing-sub__header__item">Original Structure</div>
+            {{/if}}
+            {{#if (ne this.IsItDivisionOfLargerUnit "")}}
+              <div class="housing-sub__header__item">Is it: Division of larger Unit</div>
+            {{/if}}
+            {{#if (ne this.DivisionOfLargerUnit "")}}
+              <div class="housing-sub__header__item">Division of Larger Room</div>
+            {{/if}}
+            {{#if (ne this.ClosureOfIwan "")}}
+              <div class="housing-sub__header__item">Closure of Iwan</div>
+            {{/if}}
+            {{#if (ne this.NewAddition "")}}
+              <div class="housing-sub__header__item">New addition</div>
+            {{/if}}
+            {{#if (ne this.ReorganaizationExterior "")}}
+              <div class="housing-sub__header__item">Reorganization/ exterior </div>
+            {{/if}}
+            {{#if (ne this.AdditionToCourtyard "")}}
+              <div class="housing-sub__header__item">Addition to a courtyard</div>
+            {{/if}}
+            {{#if (ne this.AddedRoof "")}}
+              <div class="housing-sub__header__item">Added roof</div>
+            {{/if}}
+          </div>
+          <div class="housing-sub__body">
+            {{#each this.AnnexRooms}}
+              <div class="housing-sub__body__row">
+                {{#if (ne this.OriginalStructure "")}}
+                  <div class="housing-sub__body__item">
+                    {{this.OriginalStructure}}
+                  </div>
+                {{/if}}
+                {{#if (ne this.IsItDivisionOfLargerUnit "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.IsItDivisionOfLargerUnit}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.DivisionOfLargerUnit "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.DivisionOfLargerUnit}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.ClosureOfIwan "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.ClosureOfIwan}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.NewAddition "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.NewAddition}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.ReorganaizationExterior "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.ReorganaizationExterior}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.AdditionToCourtyard "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.AdditionToCourtyard}}"></i>
+                  </div>
+                {{/if}}
+                {{#if (ne this.AddedRoof "")}}
+                  <div class="housing-sub__body__item">
+                    <i class="icon icon--{{ico this.AddedRoof}}"></i>
+                  </div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      </section>
+    {{/if}}
+
+    <section class="housing-section">
+      <h2 class="housing-section__title">Kitchen &amp; Bath</h2>
+      {{#if (notEmpty Kitchen "")}}
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">Kitchen Information</h3>
+          <div class="housing-sub__header">
+            {{#if (ne this.Use "")}}
+              <div class="housing-sub__header__item">Use</div>
+            {{/if}}
+            <div class="wrap">
+              {{#if (ne this.KitchenSink "")}}
+                <div class="housing-sub__header__item">Kitchen sink</div>
+              {{/if}}
+              {{#if (ne this.KitchenSinkCondition "")}}
+                <div class="housing-sub__header__item">Kitchen sink condition</div>
+              {{/if}}
+            </div>
+            <div class="wrap">
+              {{#if (ne this.KitchenCupboards "")}}
+                <div class="housing-sub__header__item">Kitchen Cupboards</div>
+              {{/if}}
+              {{#if (ne this.KitchenCupboardssCondition "")}}
+                <div class="housing-sub__header__item">Kitchen Cupboardss Condition</div>
+              {{/if}}
+            </div>
+            {{#if (ne this.GazLocation "")}}
+              <div class="housing-sub__header__item">Gaz Location</div>
+            {{/if}}
+          </div>
+          <div class="housing-sub__body">
+            {{#each Kitchen}}
+              <div class="housing-sub__body__row">
+                {{#if (ne this.Use "")}}
+                  <div class="housing-sub__body__item">{{this.Use}}</div>
+                {{/if}}
+                <div class="wrap">
+                  {{#if (ne this.KitchenSink "")}}
+                    <div class="housing-sub__body__item">
+                      <i class="icon icon--{{ico this.KitchenSink}}"></i>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.KitchenSinkCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.KitchenSinkCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="wrap">
+                  {{#if (ne this.KitchenCupboards "")}}
+                    <div class="housing-sub__body__item">
+                      <i class="icon icon--{{ico this.KitchenCupboards}}"></i>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.KitchenCupboardssCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.KitchenCupboardssCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+                {{#if (ne this.GazLocation "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.GazLocation}}</div>
+                  </div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if (notEmpty Bathroom_Toliets "")}}
+        <section class="housing-sub">
+          <h3 class="housing-sub__title">Bathroom &amp; Toilet Information</h3>
+          <div class="housing-sub__header">
+            {{#if (ne this.Use "")}}
+              <div class="housing-sub__header__item">Use</div>
+            {{/if}}
+            <div class="wrap">
+              {{#if (ne this.BatTub "")}}
+                <div class="housing-sub__header__item">Bath Tub</div>
+              {{/if}}
+              {{#if (ne this.BathTubCondition "")}}
+                <div class="housing-sub__header__item">Bath Tub Condition</div>
+              {{/if}}
+            </div>
+            <div class="wrap">
+              {{#if (ne this.BathSower "")}}
+                <div class="housing-sub__header__item">Bath Shower</div>
+              {{/if}}
+              {{#if (ne this.BathShowerCondition "")}}
+                <div class="housing-sub__header__item">Bath Shower Condition</div>
+              {{/if}}
+            </div>
+            <div class="wrap">
+              {{#if (ne this.ClosetBat "")}}
+                <div class="housing-sub__header__item">Closet</div>
+              {{/if}}
+              {{#if (ne this.ClosetBatCondition "")}}
+                <div class="housing-sub__header__item">Closet Condition</div>
+              {{/if}}
+            </div>
+            <div class="wrap">
+              {{#if (ne this.BathLavatory "")}}
+                <div class="housing-sub__header__item">BathLavatory</div>
+              {{/if}}
+              {{#if (ne this.BathLavatoryCondition "")}}
+                <div class="housing-sub__header__item">BathLavatory Condition</div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="housing-sub__body">
+            {{#each Bathroom_Toliets}}
+              <div class="housing-sub__body__row">
+                {{#if (ne this.Use "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.Use}}</div>
+                  </div>
+                {{/if}}
+                <div class="wrap">
+                  {{#if (ne this.BatTub "")}}
+                    <div class="housing-sub__body__item">
+                      <i class="icon icon--{{ico this.BatTub}}"></i>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.BathTubCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.BathTubCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="wrap">
+                  {{#if (ne this.BathSower "")}}
+                    <div class="housing-sub__body__item">
+                      <i class="icon icon--{{ico this.BathSower}}"></i>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.BathShowerCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.BathShowerCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="wrap">
+                  {{#if (ne this.ClosetBat "")}}
+                    <div class="housing-sub__body__item">
+                      <i class="icon icon--{{ico this.ClosetBat}}"></i>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.ClosetBatCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.ClosetBatCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="wrap">
+                  {{#if (ne this.BathLavatory "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.BathLavatory}}</div>
+                    </div>
+                  {{/if}}
+                  {{#if (ne this.BathLavatoryCondition "")}}
+                    <div class="housing-sub__body__item">
+                      <div class="housing-sub__body__item">{{this.BathLavatoryCondition}}</div>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+    </section>
+
+    <section class="housing-section housing-section--aditional-info">
+      <h2 class="housing-section__title">Building Additional Info</h2>
+      <section class="housing-sub">
+        <h3 class="housing-sub__title">INTERVENTION INFORMATION</h3>
+        <div class="housing-sub__info">
+          {{#if (ne this.PreviousInterventionRestoraion "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">PREVIOUS INTERVENTION/RESTORATION</div>
+              <div class="housing-sub__info__item__value">{{this.PreviousInterventionRestoraion}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.InterventionWas "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Intervention was</div>
+              <div class="housing-sub__info__item__value">{{this.InterventionWas}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.YearOfIntervention "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Year of Intervention</div>
+              <div class="housing-sub__info__item__value">{{this.YearOfIntervention}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.HowRegularIsTheBuildingMaintainedSinceTheRestoration "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">How regular is the building maintained since the restoration?</div>
+              <div class="housing-sub__info__item__value">{{this.HowRegularIsTheBuildingMaintainedSinceTheRestoration}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.WasTheIntervention "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Was the intervention?</div>
+              <div class="housing-sub__info__item__value">{{this.WasTheIntervention}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.HowRegularDoYouMaintianYourHome "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">How regular do you maintain your home?</div>
+              <div class="housing-sub__info__item__value">{{this.HowRegularDoYouMaintianYourHome}}</div>
+            </div>
+          {{/if}}
+        </div>
+      </section>
+
+      <section class="housing-sub">
+        <h3 class="housing-sub__title">COURTYARD INFORMATION</h3>
+        <div class="housing-sub__info">
+          {{#if (ne this.CourtyardOrGardenOrTerrace "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Courtyard or garden or Terrace</div>
+              <div class="housing-sub__info__item__value">{{this.CourtyardOrGardenOrTerrace}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.NoOfCourtyardOrGardenOrTerrace "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">No. of Courtyard or garden or Terrace </div>
+              <div class="housing-sub__info__item__value">{{this.NoOfCourtyardOrGardenOrTerrace}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.CommonSharedCourtyard "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Common/ Shared Courtyard</div>
+              <div class="housing-sub__info__item__value">{{this.CommonSharedCourtyard}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.Couryard2CommonSharedCourtyard "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Courtyard 2 common or shared</div>
+              <div class="housing-sub__info__item__value">{{this.Couryard2CommonSharedCourtyard}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.Couryard2CourtyardCoveredOpen "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Courtyard 2 open or closed </div>
+              <div class="housing-sub__info__item__value">{{this.Couryard2CourtyardCoveredOpen}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.IfCoveredNewlyIsItPatialOrCompleteClosoure "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">If covered newly</div>
+              <div class="housing-sub__info__item__value">{{this.IfCoveredNewlyIsItPatialOrCompleteClosoure}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.MaterialUsed "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Material used</div>
+              <div class="housing-sub__info__item__value">{{this.MaterialUsed}}</div>
+            </div>
+          {{/if}}
+          {{#if (ne this.CourtyardLocationWithinTheHousingUnit "")}}
+            <div class="housing-sub__info__item">
+              <div class="housing-sub__info__item__label">Courtyard Location within the housing unit</div>
+              <div class="housing-sub__info__item__value">{{this.CourtyardLocationWithinTheHousingUnit}}</div>
+            </div>
+          {{/if}}
+        </div>
+      </section>
+    </section>
+
+    {{#if this.images}}
+      {{#each this.images}}
+        <div class="image-wrapper">
+          <img src="https://s3.amazonaws.com/eytyy.com/{{this.image}}" alt="{{this.caption}} misc image">
+          <span class="image-caption">{{this.caption}}</span>
+        </div>
+      {{/each}}
+    {{/if}}
+  </div>
+</article>
