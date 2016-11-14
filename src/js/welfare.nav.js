@@ -170,26 +170,50 @@ const NAV = (shell) => {
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
         const obj = {};
-        for (const el of data) {
-          // If the data set has categories, then filter/group them based on category name
-          const category = el.alldata.BuildingType.replace(/ +/g, '');
-          const item = el.alldata.BuildingName.trim();
-          if (!obj[category]) {
-            obj[category] = {};
-          }
-          if (!obj[category][item]) {
-            obj[category][item] = el;
-          }
-        }
-        filteredData[activeLayer] = obj;
-      }
+        let sortedData = [];
+        let sortData;
+        shell.get('data/sort.json').then(sdata => {
+          sortData = sdata.Sort;
+          sortData.forEach(el => {
+            el.sort = parseInt(el.sort, 10);
+          });
 
-      // Loop through data to add an element/link for each project in the layer navigation
-      Object.keys(filteredData[activeLayer]).forEach(key => {
-        const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
-        wrapper.appendChild(navGroup);
-      });
-      shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
+          for (const el of data) {
+            // If the data set has categories, then filter/group them based on category name
+            const category = el.alldata.BuildingType;
+            const item = el.alldata.BuildingName.trim();
+            if (!obj[category]) {
+              obj[category] = {};
+              obj[category].name = category;
+              obj[category].sort = sortData.find(element => element.Name === category).sort;
+            }
+            if (!obj[category].alldata) {
+              obj[category].alldata = {};
+            }
+            if (!obj[category].alldata[item]) {
+              obj[category].alldata[item] = el;
+            }
+          }
+
+          // copy object to an array to get sorted
+          Object.keys(obj).forEach(key => {
+            sortedData.push(obj[key]);
+          });
+          // sort data
+          sortedData = _.sortBy(sortedData, 'sort');
+
+          // update filtered data with sorted data
+          filteredData[activeLayer] = sortedData;
+
+          // Loop through data to add an element/link for each project in the layer navigation
+          filteredData[activeLayer].forEach(cat => {
+            const name = cat.name.replace(/ +/g, '');
+            const navGroup = buildCategoryHtml(name, cat.alldata);
+            wrapper.appendChild(navGroup);
+          });
+          shell.find(`.map__nav__item-wrapper--${activeLayer}`).appendChild(wrapper);
+        });
+      }
     },
 
     buildHousingLayerNavigation(wrapper, data, activeLayer) {

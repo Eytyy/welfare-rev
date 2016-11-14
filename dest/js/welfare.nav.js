@@ -186,49 +186,81 @@ var NAV = function NAV(shell) {
       };
       // Filter Duplicates
       if (!filteredData[activeLayer]) {
-        var obj = {};
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
+        (function () {
+          var obj = {};
+          var sortedData = [];
+          var sortData = void 0;
+          shell.get('data/sort.json').then(function (sdata) {
+            sortData = sdata.Sort;
+            sortData.forEach(function (el) {
+              el.sort = parseInt(el.sort, 10);
+            });
 
-        try {
-          for (var _iterator2 = data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var el = _step2.value;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
 
-            // If the data set has categories, then filter/group them based on category name
-            var category = el.alldata.BuildingType.replace(/ +/g, '');
-            var item = el.alldata.BuildingName.trim();
-            if (!obj[category]) {
-              obj[category] = {};
-            }
-            if (!obj[category][item]) {
-              obj[category][item] = el;
-            }
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-              _iterator2.return();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
-        }
+            try {
+              var _loop = function _loop() {
+                var el = _step2.value;
 
-        filteredData[activeLayer] = obj;
+                // If the data set has categories, then filter/group them based on category name
+                var category = el.alldata.BuildingType;
+                var item = el.alldata.BuildingName.trim();
+                if (!obj[category]) {
+                  obj[category] = {};
+                  obj[category].name = category;
+                  obj[category].sort = sortData.find(function (element) {
+                    return element.Name === category;
+                  }).sort;
+                }
+                if (!obj[category].alldata) {
+                  obj[category].alldata = {};
+                }
+                if (!obj[category].alldata[item]) {
+                  obj[category].alldata[item] = el;
+                }
+              };
+
+              for (var _iterator2 = data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                _loop();
+              }
+
+              // copy object to an array to get sorted
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                  _iterator2.return();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
+              }
+            }
+
+            Object.keys(obj).forEach(function (key) {
+              sortedData.push(obj[key]);
+            });
+            // sort data
+            sortedData = _.sortBy(sortedData, 'sort');
+
+            // update filtered data with sorted data
+            filteredData[activeLayer] = sortedData;
+
+            // Loop through data to add an element/link for each project in the layer navigation
+            filteredData[activeLayer].forEach(function (cat) {
+              var name = cat.name.replace(/ +/g, '');
+              var navGroup = buildCategoryHtml(name, cat.alldata);
+              wrapper.appendChild(navGroup);
+            });
+            shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
+          });
+        })();
       }
-
-      // Loop through data to add an element/link for each project in the layer navigation
-      Object.keys(filteredData[activeLayer]).forEach(function (key) {
-        var navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
-        wrapper.appendChild(navGroup);
-      });
-      shell.find('.map__nav__item-wrapper--' + activeLayer).appendChild(wrapper);
     },
     buildHousingLayerNavigation: function buildHousingLayerNavigation(wrapper, data, activeLayer) {
       var buildCategoryHtml = function buildCategoryHtml(catName, catData) {
@@ -261,12 +293,12 @@ var NAV = function NAV(shell) {
 
         try {
           for (var _iterator3 = data[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var el = _step3.value;
+            var _el = _step3.value;
 
             // If the data set has categories, then filter/group them based on category name
-            var category = el.buildingName.replace(/ +/g, '').replace(/\./g, '-');
-            if (!obj[category]) {
-              obj[category] = el;
+            var _category = _el.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+            if (!obj[_category]) {
+              obj[_category] = _el;
             }
           }
         } catch (err) {

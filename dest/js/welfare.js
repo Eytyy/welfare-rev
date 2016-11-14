@@ -68,7 +68,23 @@ var WELFARE = function WELFARE(shell) {
   };
 
   var onProjectNavClick = function onProjectNavClick(event) {
-    var obj = state.activeLayer === 'housing' ? event.data[state.activeLayer][event.category] : event.data[state.activeLayer][event.category][event.target];
+    var obj = void 0;
+    var cat = void 0;
+    switch (state.activeLayer) {
+      case 'housing':
+        obj = event.data[state.activeLayer][event.category];
+        break;
+      case 'buildings':
+        cat = event.category.replace(/\-/g, ' - ');
+        obj = event.data[state.activeLayer].find(function (project) {
+          return project.name === cat;
+        }).alldata[event.target];
+        break;
+      default:
+        obj = event.data[state.activeLayer][event.category][event.target];
+        break;
+    }
+    console.log(obj);
 
     var latLngs = obj.getGeometry().getAt(0).getAt(0);
 

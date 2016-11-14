@@ -66,9 +66,22 @@ const WELFARE = (shell) => {
   };
 
   const onProjectNavClick = (event) => {
-    const obj = state.activeLayer === 'housing' ?
-      event.data[state.activeLayer][event.category] :
-      event.data[state.activeLayer][event.category][event.target];
+    let obj;
+    let cat;
+    switch (state.activeLayer) {
+      case 'housing':
+        obj = event.data[state.activeLayer][event.category];
+        break;
+      case 'buildings':
+        cat = event.category.replace(/\-/g, ' - ');
+        obj = event.data[state.activeLayer]
+          .find(project => project.name === cat).alldata[event.target];
+        break;
+      default:
+        obj = event.data[state.activeLayer][event.category][event.target];
+        break;
+    }
+    console.log(obj);
 
     const latLngs = obj.getGeometry().getAt(0).getAt(0);
 

@@ -28,7 +28,8 @@
     "gulp-plumber": "^1.1.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "build": "babel src -d lib",
