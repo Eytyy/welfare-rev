@@ -1,5 +1,7 @@
 /* MAP MODULE */
 const WELFARE = (shell) => {
+  const debugmode = false;
+
   // State map: object to be used as the single source for the app state
   const state = {
     activeLayer: null,
@@ -31,9 +33,10 @@ const WELFARE = (shell) => {
   const updateLayerState = (activeLayer) => {
     state.previousLayer = state.activeLayer;
     state.activeLayer = activeLayer;
-
-    const logMsg = `<layer-update> Prev: ${state.previousLayer} | Active: ${state.activeLayer}`;
-    console.log(logMsg);
+    if (debugmode) {
+      const logMsg = `<layer-update> Prev: ${state.previousLayer} | Active: ${state.activeLayer}`;
+      console.log(logMsg);
+    }
     shell.notify({
       type: 'reset-project',
       data: {
@@ -81,9 +84,12 @@ const WELFARE = (shell) => {
         obj = event.data[state.activeLayer][event.category][event.target];
         break;
     }
-    console.log(obj);
+    if (debugmode) {
+      console.log(obj);
+    }
 
     const latLngs = obj.getGeometry().getAt(0).getAt(0);
+
 
     state.previousProject = state.activeProject;
     state.previousProjectName = state.activeProjectName;
@@ -96,6 +102,7 @@ const WELFARE = (shell) => {
   };
 
   const onProjectMapClick = (event) => {
+
     state.previousProject = state.activeProject;
     state.previousProjectName = state.activeProjectName;
 
@@ -110,6 +117,7 @@ const WELFARE = (shell) => {
         state.activeProjectName = state.activeProject.alldata.BuildingName;
         break;
       case 'housing':
+        state.activeProjectName = '1';
         break;
       default:
         break;
@@ -119,8 +127,8 @@ const WELFARE = (shell) => {
   };
 
   const onCategoryClosed = () => {
+    console.log('cat closed');
     if (state.activeProject) {
-      // console.log('reset project and map');
       shell.notify({
         type: 'reset-project',
         data: {
@@ -128,6 +136,10 @@ const WELFARE = (shell) => {
           activeLayer: state.activeLayer,
         },
       });
+
+      if (debugmode) {
+        console.log('reset project and map');
+      }
     }
   };
 

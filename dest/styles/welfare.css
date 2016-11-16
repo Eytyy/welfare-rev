@@ -43,10 +43,10 @@ body, html, main, #welfare, #map {
 #map {
   height: 100%; }
 
-.js-active .map__nav__item--layer, .map__nav__item--category.js-active .category-wrapper {
+.js-active.map__nav__item--category .category-wrapper, .js-active .map__nav__item--layer {
   position: relative;
   z-index: 2; }
-  .js-active .map__nav__item--layer:after, .map__nav__item--category.js-active .category-wrapper:after {
+  .js-active.map__nav__item--category .category-wrapper:after, .js-active .map__nav__item--layer:after {
     content: '';
     display: block;
     border: 7px solid transparent;
@@ -74,8 +74,6 @@ body, html, main, #welfare, #map {
   transition: left 0.3s linear, width 0.3s linear; }
   .map__nav > * {
     height: 150px; }
-  .map__nav.js-catIsOpened {
-    overflow: hidden; }
   .map__nav.buildings {
     left: -150px;
     width: calc(100% + 150px); }
@@ -84,45 +82,30 @@ body, html, main, #welfare, #map {
     width: calc(100% + 300px); }
 
 .map__nav__item-wrapper {
-  display: inline-block; }
-  .map__nav__item-wrapper.js-active {
-    width: 100%;
-    min-width: 100vw; }
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
+  overflow: hidden; }
   .map__nav__item-wrapper > * {
     height: 150px; }
 
 .map__nav__item__inner {
   display: none;
   vertical-align: top;
-  width: calc(100% - 155px);
   margin-left: -3px; }
 
-.js-active .map__nav__item__inner {
-  display: inline-block;
-  -webkit-transition: -webkit-transform 0.3s linear;
-  transition: -webkit-transform 0.3s linear;
-  transition: transform 0.3s linear;
-  transition: transform 0.3s linear, -webkit-transform 0.3s linear;
-  white-space: nowrap;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; }
-
-.js-active .map__nav__item--layer {
-  z-index: 3; }
-
 .map__nav__item--category {
-  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   height: 100%;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
   cursor: pointer; }
-  .map__nav__item--category.js-active .category__inner {
-    display: inline-block;
-    width: calc(100% - 155px); }
-    .map__nav__item--category.js-active .category__inner .map__nav__item {
-      width: 150px; }
-  .map__nav__item--category.js-active .category-wrapper {
-    border-right: 0; }
-    .map__nav__item--category.js-active .category-wrapper:after {
-      border-left: 7px solid #373535; }
 
 .category__inner {
   display: none;
@@ -131,25 +114,6 @@ body, html, main, #welfare, #map {
   margin-left: -3px;
   vertical-align: top;
   overflow: hidden; }
-
-.js-layerIsOpened {
-  overflow: hidden; }
-
-.js-catIsOpened .js-active {
-  width: 100%; }
-  .js-catIsOpened .js-active .map__nav__item__inner {
-    overflow: hidden;
-    position: absolute;
-    left: 150px; }
-  .js-catIsOpened .js-active .category__inner {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch; }
-
-.js-catIsOpened.buildings .js-active {
-  width: calc(100% + 150px); }
-
-.js-catIsOpened.buildings .js-active {
-  width: calc(100% + 300px); }
 
 .map__nav__item--projects .map__nav__item__icon {
   background-image: url("../images/our-projects-icon.svg");
@@ -210,17 +174,12 @@ body, html, main, #welfare, #map {
   .map__nav__item-wrapper--buildings .category-wrapper .map__nav__item__name {
     font-family: "FiraSans", "Droid Arabic Kufi"; }
 
-.js-layerIsOpened .map__nav__item--layer {
-  background: #000; }
-
 .map__nav__item--layer {
-  display: inline-block;
-  width: 150px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
   border-right: 1px solid #BE4459;
   color: #FFF; }
-  .js-active .map__nav__item--layer {
-    border-right: 0;
-    background-color: #2C2B2B; }
 
 .map__nav__item__icon {
   display: block;
@@ -241,8 +200,9 @@ body, html, main, #welfare, #map {
   vertical-align: top; }
 
 .category-wrapper {
-  display: inline-block;
-  width: 150px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 150px;
+          flex: 0 0 150px;
   height: 100%;
   vertical-align: top;
   border-right: 1px solid #FCCA34;
@@ -291,8 +251,6 @@ body, html, main, #welfare, #map {
   white-space: normal; }
   .map__nav__item--project:not(last-child) {
     border-right: 1px solid #FCCA34; }
-  .map__nav__item--project.js-active {
-    background-color: #4F545D; }
 
 .map__nav__item__title {
   font-size: 1.4em;
@@ -311,6 +269,70 @@ body, html, main, #welfare, #map {
 
 .js-view-mode .map__nav {
   background: black; }
+
+.js-layerIsOpened {
+  overflow: hidden; }
+  .js-layerIsOpened .map__nav__item--layer {
+    background: #000; }
+
+.js-active.map__nav__item-wrapper {
+  width: 100%;
+  min-width: 100vw; }
+
+.js-active.map__nav__item--category .category__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: calc(100% - 155px); }
+  .js-active.map__nav__item--category .category__inner .map__nav__item {
+    width: 150px; }
+
+.js-active.map__nav__item--category .category-wrapper {
+  border-right: 0; }
+  .js-active.map__nav__item--category .category-wrapper:after {
+    border-left: 7px solid #373535; }
+
+.js-active.map__nav__item--project {
+  background-color: #4F545D; }
+
+.js-active .map__nav__item__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-transition: -webkit-transform 0.3s linear;
+  transition: -webkit-transform 0.3s linear;
+  transition: transform 0.3s linear;
+  transition: transform 0.3s linear, -webkit-transform 0.3s linear;
+  white-space: nowrap;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; }
+
+.js-active .map__nav__item--layer {
+  z-index: 3; }
+
+.js-active .map__nav__item--layer {
+  border-right: 0;
+  background-color: #2C2B2B; }
+
+.js-catIsOpened.map__nav {
+  overflow: hidden; }
+
+.js-catIsOpened .js-active.map__nav__item--category {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 100%;
+          flex: 0 0 100%;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; }
+
+.js-catIsOpened .js-active .map__nav__item__inner {
+  overflow: hidden;
+  -ms-flex-negative: 0;
+      flex-shrink: 0; }
+
+.js-catIsOpened .js-active .category__inner {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; }
 
 .map-info {
   position: absolute;

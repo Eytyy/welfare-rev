@@ -12,6 +12,8 @@ var NAV = function NAV(shell) {
     activeLayer: null
   };
 
+  var debugmode = true;
+
   return {
     init: function init() {
       // Cache dom elements
@@ -29,7 +31,6 @@ var NAV = function NAV(shell) {
       shell.listen({
         'layers-created': this.setMainNav,
         'layers-data-updated': this.updateMainNav,
-        'project-nav-click-info': this.updateProject,
         'update-project': this.updateProject,
         'reset-project': this.resetProject
       });
@@ -42,6 +43,7 @@ var NAV = function NAV(shell) {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav: function updateMainNav(layers) {
+      console.log('update nav');
       var data = layers.active && layers.active.data;
       var active = layers.active && layers.active.name;
       var previous = layers.previous && layers.previous.name;
@@ -110,7 +112,9 @@ var NAV = function NAV(shell) {
             var itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs']({ title: id, cat: catName });
             shell.injectTemplateText(itemTpl, $catInner);
           } else {
-            console.log(id + ' does not have geometry');
+            if (debugmode) {
+              console.log(id + ' does not have geometry');
+            }
           }
         });
         return $catWrapper;
@@ -179,7 +183,9 @@ var NAV = function NAV(shell) {
             var itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs']({ title: id, cat: catName });
             shell.injectTemplateText(itemTpl, $catInner);
           } else {
-            console.log(id + ' does not have geometry');
+            if (debugmode) {
+              console.log(id + ' does not have geometry');
+            }
           }
         });
         return $catWrapper;
@@ -377,19 +383,23 @@ var NAV = function NAV(shell) {
       // NOTE: update project navigation classes here
       var activeLayer = event.activeLayer;
       var opts = {};
+      var prevProj = void 0;
+      var activeProj = void 0;
+      var catEl = void 0;
+      var catInner = void 0;
 
       if (activeLayer !== 'housing') {
         if (event.previousProjectName) {
-          var prevProj = shell.find('[data-target="' + event.previousProjectName + '"]');
+          prevProj = shell.find('[data-target="' + event.previousProjectName + '"]');
           opts.prevProjCat = shell.find('.map__nav__item--category--' + prevProj.dataset.cat);
           opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
 
           prevProj.classList.remove('js-active');
         }
 
-        var activeProj = shell.find('[data-target="' + event.activeProjectName + '"]');
-        var catEl = shell.find('.map__nav__item--category--' + activeProj.dataset.cat);
-        var catInner = catEl.querySelector('.category__inner');
+        activeProj = shell.find('[data-target="' + event.activeProjectName + '"]');
+        catEl = shell.find('.map__nav__item--category--' + activeProj.dataset.cat);
+        catInner = catEl.querySelector('.category__inner');
 
         activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
@@ -397,57 +407,91 @@ var NAV = function NAV(shell) {
 
         this.toggleCategory(catEl, catInner, true, opts);
       } else {
-        // console.log(event);
         if (event.previousProjectName) {
-          var _prevProj = shell.find('[data-target="' + event.previousProjectName + '"]');
-          _prevProj.classList.remove('js-active');
+          var _cat = event.previousProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+
+          prevProj = shell.find('[data-target="' + event.previousProjectName + '"][data-cat="' + _cat + '"]');
+
+          opts.prevProjCat = shell.find('.map__nav__item--category--' + _cat);
+          opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
+
+          prevProj.classList.remove('js-active');
         }
 
-        var _activeProj = shell.find('[data-target="' + event.activeProjectName + '"]');
+        var cat = event.activeProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+        activeProj = shell.find('[data-target="' + event.activeProjectName + '"][data-cat="' + cat + '"]');
 
-        _activeProj.classList.add('js-active');
+        catEl = shell.find('.map__nav__item--category--' + cat);
+        catInner = catEl.querySelector('.category__inner');
+
+        activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
+        opts.activeProj = activeProj;
 
-        // setTimeout(() => {
-        //   content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
-        // }, 10);
+        this.toggleCategory(catEl, catInner, true, opts);
       }
     },
     adjustProjectInnerPosition: function adjustProjectInnerPosition(el, left, width, content) {
       var element = el;
       var categoryInner = content;
-      var trnsLeft = void 0;
-      var wdthLeft = void 0;
+      var trns = 0;
+      var wdth = 0;
+      var innerwidth = left + 3;
 
       if (navState.activeLayer === 'projects') {
-        trnsLeft = -left;
+        trns = (left + 3 - width) * -1;
+        wdth = trns * -1 - 150;
       } else if (navState.activeLayer === 'buildings') {
-        trnsLeft = -left + 300;
+        trns = (left + 3 - width * 2) * -1;
+        wdth = trns * -1 + 300;
+        innerwidth = left + 3 + 300;
       } else {
-        trnsLeft = -left + 600;
+        trns = (left + 3 - width * 3) * -1;
+        wdth = trns * -1 + 450;
+        innerwidth = left + 3 + 450;
       }
-      if (navState.activeLayer === 'projects') {
-        wdthLeft = left;
-      } else if (navState.activeLayer === 'buildings') {
-        wdthLeft = left - 300;
-      } else {
-        wdthLeft = left - 300;
-      }
-
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation
-      if (left > '150') {
-        // reset map nav inner scroll position
-        element.parentNode.scrollLeft = 0;
-        // reposition map nav inner and adjust width
-        setTimeout(function () {
-          element.parentNode.style.transform = 'translate3d(' + (trnsLeft + width) + 'px, 0, 0)';
-          element.parentNode.style.width = 'calc(100% + ' + (wdthLeft + width) + 'px)';
-        }, 100);
-        // Adjust category inner wrapper width
-        var categoryInnerWidth = left + width + 300;
-        categoryInner.style.width = 'calc(100% - ' + categoryInnerWidth + 'px)';
-      }
+
+      // reset map nav inner scroll position
+      element.parentNode.scrollLeft = 0;
+
+      // reposition map nav inner and adjust width
+      var adjustPosition = function adjustPosition() {
+        return new Promise(function (resolve, reject) {
+          try {
+            setTimeout(function () {
+              element.parentNode.style.transform = 'translate3d(' + trns + 'px, 0, 0)';
+              resolve();
+            }, 200);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      };
+
+      var adjustWidth = function adjustWidth() {
+        return new Promise(function (resolve, reject) {
+          try {
+            setTimeout(function () {
+              element.parentNode.style.width = 'calc(100% + ' + wdth + 'px)';
+              resolve();
+            }, 300);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      };
+
+      adjustPosition().then(function () {
+        adjustWidth().then(function () {
+          categoryInner.style.width = 'calc(100% - ' + innerwidth + 'px)';
+        }).catch(function (err) {
+          console.log('adjusting width error: ' + err);
+        });
+      }).catch(function (err) {
+        console.log('adjusting position error: ' + err);
+      });
     },
     resetProjectInnerPosition: function resetProjectInnerPosition(el, content) {
       var element = el;
@@ -456,7 +500,7 @@ var NAV = function NAV(shell) {
       element.parentNode.removeAttribute('style');
       categoryInner.removeAttribute('style');
     },
-    closeCategory: function closeCategory(el, content) {
+    closeCategory: function closeCategory(el, content, fromMap) {
       var element = el || navState.activeCategory;
       if (!element) return;
       if (element && content) {
@@ -464,10 +508,12 @@ var NAV = function NAV(shell) {
       }
       element.classList.remove('js-active');
       domMap.$nav.classList.remove('js-catIsOpened');
-      shell.notify({
-        type: 'category-closed',
-        data: {}
-      });
+      if (!fromMap) {
+        shell.notify({
+          type: 'category-closed',
+          data: { fromMap: fromMap }
+        });
+      }
     },
     openCategory: function openCategory(el, content) {
       var element = el || navState.activeCategory;
@@ -481,6 +527,7 @@ var NAV = function NAV(shell) {
 
       element.classList.add('js-active');
       domMap.$nav.classList.add('js-catIsOpened');
+
       this.adjustProjectInnerPosition(element, elLeft, elWidth, content);
     },
     toggleCategory: function toggleCategory(el, content, fromMap, opts) {

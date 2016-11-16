@@ -1,4 +1,6 @@
 const INFO = (shell) => {
+  const debugmode = true;
+
   const domMap = {};
 
   const tplMap = {
@@ -40,7 +42,10 @@ const INFO = (shell) => {
       domMap.$info.classList.add('js-view-mode');
     },
 
-    hideInfoWindow() {
+    hideInfoWindow(e) {
+      if (e.fromMap) {
+        return true;
+      }
       domMap.$info.classList.remove('js-view-mode');
     },
 
@@ -89,7 +94,6 @@ const INFO = (shell) => {
 
       // Add Project info to html
       function appendInfo(infoData) {
-        console.log(infoData);
         const tpl = tplMap[data.activeLayer];
 
         Handlebars.registerHelper({
@@ -139,8 +143,9 @@ const INFO = (shell) => {
             message: '',
           },
         });
-
-        console.log('loaded');
+        if (debugmode) {
+          console.log('loaded');
+        }
       }
 
       if (dataCache[activeLayer][activeProjectID]) {
@@ -273,7 +278,9 @@ const INFO = (shell) => {
       }
 
       function fetchHousingResources() {
-        console.log('fetch housing');
+        if (debugmode) {
+          console.log('fetch housing');
+        }
 
         fetchImages(activeProjectID).then(allData => {
           const regex = /\w*(?:\.jpg)/i;

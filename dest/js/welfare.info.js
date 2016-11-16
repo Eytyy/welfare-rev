@@ -1,6 +1,8 @@
 'use strict';
 
 var INFO = function INFO(shell) {
+  var debugmode = true;
+
   var domMap = {};
 
   var tplMap = {
@@ -39,7 +41,10 @@ var INFO = function INFO(shell) {
     showInfoWindow: function showInfoWindow() {
       domMap.$info.classList.add('js-view-mode');
     },
-    hideInfoWindow: function hideInfoWindow() {
+    hideInfoWindow: function hideInfoWindow(e) {
+      if (e.fromMap) {
+        return true;
+      }
       domMap.$info.classList.remove('js-view-mode');
     },
     toggleInfoExpand: function toggleInfoExpand() {
@@ -81,7 +86,6 @@ var INFO = function INFO(shell) {
 
       // Add Project info to html
       function appendInfo(infoData) {
-        console.log(infoData);
         var tpl = tplMap[data.activeLayer];
 
         Handlebars.registerHelper({
@@ -131,8 +135,9 @@ var INFO = function INFO(shell) {
             message: ''
           }
         });
-
-        console.log('loaded');
+        if (debugmode) {
+          console.log('loaded');
+        }
       }
 
       if (dataCache[activeLayer][activeProjectID]) {
@@ -260,7 +265,9 @@ var INFO = function INFO(shell) {
       }
 
       function fetchHousingResources() {
-        console.log('fetch housing');
+        if (debugmode) {
+          console.log('fetch housing');
+        }
 
         fetchImages(activeProjectID).then(function (allData) {
           var regex = /\w*(?:\.jpg)/i;

@@ -2,6 +2,8 @@
 
 /* MAP MODULE */
 var WELFARE = function WELFARE(shell) {
+  var debugmode = false;
+
   // State map: object to be used as the single source for the app state
   var state = {
     activeLayer: null,
@@ -33,9 +35,10 @@ var WELFARE = function WELFARE(shell) {
   var updateLayerState = function updateLayerState(activeLayer) {
     state.previousLayer = state.activeLayer;
     state.activeLayer = activeLayer;
-
-    var logMsg = '<layer-update> Prev: ' + state.previousLayer + ' | Active: ' + state.activeLayer;
-    console.log(logMsg);
+    if (debugmode) {
+      var logMsg = '<layer-update> Prev: ' + state.previousLayer + ' | Active: ' + state.activeLayer;
+      console.log(logMsg);
+    }
     shell.notify({
       type: 'reset-project',
       data: {
@@ -84,7 +87,9 @@ var WELFARE = function WELFARE(shell) {
         obj = event.data[state.activeLayer][event.category][event.target];
         break;
     }
-    console.log(obj);
+    if (debugmode) {
+      console.log(obj);
+    }
 
     var latLngs = obj.getGeometry().getAt(0).getAt(0);
 
@@ -99,6 +104,7 @@ var WELFARE = function WELFARE(shell) {
   };
 
   var onProjectMapClick = function onProjectMapClick(event) {
+
     state.previousProject = state.activeProject;
     state.previousProjectName = state.activeProjectName;
 
@@ -113,6 +119,7 @@ var WELFARE = function WELFARE(shell) {
         state.activeProjectName = state.activeProject.alldata.BuildingName;
         break;
       case 'housing':
+        state.activeProjectName = '1';
         break;
       default:
         break;
@@ -122,8 +129,8 @@ var WELFARE = function WELFARE(shell) {
   };
 
   var onCategoryClosed = function onCategoryClosed() {
+    console.log('cat closed');
     if (state.activeProject) {
-      // console.log('reset project and map');
       shell.notify({
         type: 'reset-project',
         data: {
@@ -131,6 +138,10 @@ var WELFARE = function WELFARE(shell) {
           activeLayer: state.activeLayer
         }
       });
+
+      if (debugmode) {
+        console.log('reset project and map');
+      }
     }
   };
 

@@ -12,6 +12,7 @@
     transform: translateY(-50%);
   }
 }
+
 .map__nav {
   position: absolute;
   display: flex; // flex container
@@ -27,9 +28,6 @@
   > * {
     height: 150px;
   }
-  &.js-catIsOpened {
-    overflow: hidden;
-  }
   &.buildings {
     left: -150px;
     width: calc(100% + 150px);
@@ -39,57 +37,29 @@
     width: calc(100% + 300px);
   }
 }
+
 .map__nav__item-wrapper {
-  display: inline-block;
-  &.js-active {
-    width: 100%;
-    min-width: 100vw;
-  }
+  display: flex;
+  flex: 0 0 150px;
+  overflow: hidden;
   > * {
     height: 150px;
   }
 }
+
 .map__nav__item__inner {
   display: none;
   vertical-align: top;
-  width: calc(100% - 155px);
   margin-left: -3px;
-}
-.js-active {
-  .map__nav__item__inner {
-    display: inline-block;
-    transition: transform 0.3s linear;
-    white-space: nowrap;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-  .map__nav__item--layer {
-    @extend %nav-arrow;
-    z-index: 3;
-  }
 }
 
 .map__nav__item--category {
-  display: inline-block;
+  display: flex;
   height: 100%;
+  flex: 0 0 150px;
   cursor: pointer;
-  &.js-active {
-    .category__inner {
-      display: inline-block;;
-      width: calc(100% - 155px);
-      .map__nav__item {
-        width: 150px;
-      }
-    }
-    .category-wrapper {
-      @extend %nav-arrow;
-      border-right: 0;
-      &:after {
-        border-left: 7px solid #373535;
-      }
-    }
-  }
 }
+
 .category__inner {
   display: none;
   width: 0;
@@ -97,33 +67,6 @@
   margin-left: -3px;
   vertical-align: top;
   overflow: hidden;
-}
-.js-layerIsOpened {
-  overflow: hidden;
-}
-.js-catIsOpened {
-  .js-active {
-    width: 100%;
-    .map__nav__item__inner {
-      overflow: hidden;
-      position: absolute;
-      left: 150px;
-    }
-    .category__inner {
-      overflow-x: scroll;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-  &.buildings{
-    .js-active {
-      width: calc(100% + 150px);
-    }
-  }
-  &.buildings{
-    .js-active {
-      width: calc(100% + 300px);
-    }
-  }
 }
 
 .map__nav__item--projects {
@@ -139,12 +82,14 @@
     width: 33px;
   }
 }
+
 .map__nav__item--housing {
   .map__nav__item__icon {
     background-image: url('../images/housing-study-icon.svg');
     width: 59px;
   }
 }
+
 .map__nav__item--layer,
 .category-wrapper {
   padding: 3em 3em 0;
@@ -155,6 +100,7 @@
   position: relative;
   z-index: 1;
 }
+
 .map__nav__item-wrapper--buildings,
 .map__nav__item-wrapper--housing {
   .category-wrapper {
@@ -176,6 +122,7 @@
     text-align: center;
   }
 }
+
 .map__nav__item-wrapper--buildings {
   .map__nav__item--project {
     font-family: $font__light--fb;
@@ -188,19 +135,12 @@
   }
 }
 
-.js-layerIsOpened .map__nav__item--layer {
-  background: #000;
-}
 .map__nav__item--layer {
-  display: inline-block;
-  width: 150px;
+  flex: 0 0 150px;
   border-right: 1px solid $red;
   color: #FFF;
-  .js-active & {
-    border-right: 0;
-    background-color: #2C2B2B;
-  }
 }
+
 .map__nav__item__icon {
   display: block;
   background-position: center bottom;
@@ -215,13 +155,14 @@
   font-size: 1.4em;
   white-space: normal;
 }
+
 .map__nav__item--category {
   position: relative;
   vertical-align: top;
 }
+
 .category-wrapper {
-  display: inline-block;
-  width: 150px;
+  flex: 0 0 150px;
   height: 100%;
   vertical-align: top;
   border-right: 1px solid $gold;
@@ -231,34 +172,42 @@
     font-size: 1.3em;
   }
 }
+
 .category-wrapper--Institutional .map__nav__item__icon {
   background-image: url('../images/Institutional.svg');
   width: 31px;
 }
+
 .category-wrapper--Social .map__nav__item__icon {
   background-image: url('../images/Social.svg');
   width: 46px;
 }
+
 .category-wrapper--Educational .map__nav__item__icon {
   background-image: url('../images/Educational.svg');
   width: 42px;
 }
+
 .category-wrapper--Cultural .map__nav__item__icon {
   background-image: url('../images/Cultural.svg');
   width: 25px;
 }
+
 .category-wrapper--Commercial .map__nav__item__icon {
   background-image: url('../images/Commercial.svg');
   width: 34px;
 }
+
 .category-wrapper--Religious .map__nav__item__icon {
   background-image: url('../images/Religious.svg');
   width: 38px;
 }
+
 .category-wrapper--Residential-Hosh .map__nav__item__icon {
   background-image: url('../images/ResidentialHosh.svg');
   width: 52px;
 }
+
 .category-wrapper--Residential .map__nav__item__icon {
   background-image: url('../images/Residential.svg');
   width: 37px;
@@ -273,9 +222,6 @@
   &:not(last-child) {
     border-right: 1px solid $gold;
   }
-  &.js-active {
-    background-color: #4F545D;
-  }
 }
 
 .map__nav__item__title {
@@ -289,8 +235,95 @@
   align-items: center;
   padding: 0 15px;
 }
+
+// States
 .js-view-mode {
   .map__nav {
     background: rgba(0, 0, 0, 1);
   }
+}
+
+.js-layerIsOpened {
+  overflow: hidden;
+  .map__nav__item--layer {
+    background: #000;
+  }
+}
+
+.js-active {
+  &.map__nav__item-wrapper {
+    width: 100%;
+    min-width: 100vw;
+  }
+
+  &.map__nav__item--category {
+    .category__inner {
+      display: flex;
+      width: calc(100% - 155px);
+      .map__nav__item {
+        width: 150px;
+      }
+    }
+    .category-wrapper {
+      @extend %nav-arrow;
+      border-right: 0;
+      &:after {
+        border-left: 7px solid #373535;
+      }
+    }
+  }
+
+  &.map__nav__item--project {
+    background-color: #4F545D;
+  }
+
+  .map__nav__item__inner {
+    display: flex;
+    width: 100%;
+    transition: transform 0.3s linear;
+    white-space: nowrap;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .map__nav__item--layer {
+    @extend %nav-arrow;
+    z-index: 3;
+  }
+  .map__nav__item--layer {
+    border-right: 0;
+    background-color: #2C2B2B;
+  }
+}
+
+.js-catIsOpened {
+  &.map__nav {
+    overflow: hidden;
+  }
+  .js-active {
+    &.map__nav__item--category {
+      flex: 0 0 100%;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .map__nav__item__inner {
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .category__inner {
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+  // &.buildings{
+  //   .js-active {
+  //     width: calc(100% + 150px);
+  //   }
+  // }
+  // &.buildings{
+  //   .js-active {
+  //     width: calc(100% + 300px);
+  //   }
+  // }
 }

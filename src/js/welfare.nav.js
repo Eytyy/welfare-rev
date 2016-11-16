@@ -10,6 +10,8 @@ const NAV = (shell) => {
     activeLayer: null,
   };
 
+  const debugmode = true;
+
   return {
     init() {
       // Cache dom elements
@@ -27,7 +29,6 @@ const NAV = (shell) => {
       shell.listen({
         'layers-created': this.setMainNav,
         'layers-data-updated': this.updateMainNav,
-        'project-nav-click-info': this.updateProject,
         'update-project': this.updateProject,
         'reset-project': this.resetProject,
       });
@@ -39,6 +40,7 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
+      console.log('update nav');
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
@@ -112,7 +114,9 @@ const NAV = (shell) => {
             shell.injectTemplateText(itemTpl, $catInner);
           }
           else {
-            console.log(`${id} does not have geometry`);
+            if (debugmode) {
+              console.log(`${id} does not have geometry`);
+            }
           }
         });
         return $catWrapper;
@@ -162,7 +166,9 @@ const NAV = (shell) => {
             shell.injectTemplateText(itemTpl, $catInner);
           }
           else {
-            console.log(`${id} does not have geometry`);
+            if (debugmode) {
+              console.log(`${id} does not have geometry`);
+            }
           }
         });
         return $catWrapper;
@@ -314,19 +320,23 @@ const NAV = (shell) => {
       // NOTE: update project navigation classes here
       const activeLayer = event.activeLayer;
       const opts = {};
+      let prevProj;
+      let activeProj;
+      let catEl;
+      let catInner;
 
       if (activeLayer !== 'housing') {
         if (event.previousProjectName) {
-          const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+          prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
           opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
           opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
 
           prevProj.classList.remove('js-active');
         }
 
-        const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
-        const catEl = shell.find(`.map__nav__item--category--${activeProj.dataset.cat}`);
-        const catInner = catEl.querySelector('.category__inner');
+        activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
+        catEl = shell.find(`.map__nav__item--category--${activeProj.dataset.cat}`);
+        catInner = catEl.querySelector('.category__inner');
 
         activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
@@ -335,63 +345,97 @@ const NAV = (shell) => {
         this.toggleCategory(catEl, catInner, true, opts);
       }
       else {
-        // console.log(event);
         if (event.previousProjectName) {
-          const prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+          const cat = event.previousProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+
+          prevProj = shell
+            .find(`[data-target="${event.previousProjectName}"][data-cat="${cat}"]`);
+
+          opts.prevProjCat = shell.find(`.map__nav__item--category--${cat}`);
+          opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
+
           prevProj.classList.remove('js-active');
         }
 
-        const activeProj = shell.find(`[data-target="${event.activeProjectName}"]`);
+        const cat = event.activeProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+        activeProj = shell.find(`[data-target="${event.activeProjectName}"][data-cat="${cat}"]`);
+
+        catEl = shell.find(`.map__nav__item--category--${cat}`);
+        catInner = catEl.querySelector('.category__inner');
 
         activeProj.classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened');
+        opts.activeProj = activeProj;
 
-
-        // setTimeout(() => {
-        //   content.scrollLeft = opts.activeProj.offsetLeft - opts.activeProj.offsetWidth;
-        // }, 10);
+        this.toggleCategory(catEl, catInner, true, opts);
       }
     },
 
     adjustProjectInnerPosition(el, left, width, content) {
       const element = el;
       const categoryInner = content;
-      let trnsLeft;
-      let wdthLeft
+      let trns = 0;
+      let wdth = 0;
+      let innerwidth = left + 3;
 
       if (navState.activeLayer === 'projects') {
-        trnsLeft = -left;
+        trns = (left + 3 - width) * -1;
+        wdth = (trns * -1) - 150;
       }
       else if (navState.activeLayer === 'buildings') {
-        trnsLeft = -left + 300;
+        trns = (left + 3 - (width * 2)) * -1;
+        wdth = (trns * -1) + 300;
+        innerwidth = left + 3 + 300;
       }
       else {
-        trnsLeft = -left + 600;
+        trns = (left + 3 - (width * 3)) * -1;
+        wdth = (trns * -1) + 450;
+        innerwidth = left + 3 + 450;
       }
-      if (navState.activeLayer === 'projects') {
-        wdthLeft = left;
-      }
-      else if (navState.activeLayer === 'buildings') {
-        wdthLeft = left - 300;
-      }
-      else {
-        wdthLeft = left - 300;
-      }
-
       // If any of the categories expanded except for the first category
       // update the styles of the project navigation
-      if (left > '150') {
-        // reset map nav inner scroll position
-        element.parentNode.scrollLeft = 0;
-        // reposition map nav inner and adjust width
-        setTimeout(() => {
-          element.parentNode.style.transform = `translate3d(${trnsLeft + width}px, 0, 0)`;
-          element.parentNode.style.width = `calc(100% + ${wdthLeft + width}px)`;
-        }, 100);
-        // Adjust category inner wrapper width
-        const categoryInnerWidth = left + width + 300;
-        categoryInner.style.width = `calc(100% - ${categoryInnerWidth}px)`;
-      }
+
+      // reset map nav inner scroll position
+      element.parentNode.scrollLeft = 0;
+
+      // reposition map nav inner and adjust width
+      const adjustPosition = () => (
+        new Promise((resolve, reject) => {
+          try {
+            setTimeout(() => {
+              element.parentNode.style.transform = `translate3d(${trns}px, 0, 0)`;
+              resolve();
+            }, 200);
+          }
+          catch (error) {
+            reject(error);
+          }
+        })
+      );
+
+      const adjustWidth = () => (
+        new Promise((resolve, reject) => {
+          try {
+            setTimeout(() => {
+              element.parentNode.style.width = `calc(100% + ${wdth}px)`;
+              resolve();
+            }, 300);
+          }
+          catch (error) {
+            reject(error);
+          }
+        })
+      );
+
+      adjustPosition().then(() => {
+        adjustWidth().then(() => {
+          categoryInner.style.width = `calc(100% - ${innerwidth}px)`;
+        }).catch((err) => {
+          console.log(`adjusting width error: ${err}`);
+        });
+      }).catch((err) => {
+        console.log(`adjusting position error: ${err}`);
+      });
     },
 
     resetProjectInnerPosition(el, content) {
@@ -402,7 +446,7 @@ const NAV = (shell) => {
       categoryInner.removeAttribute('style');
     },
 
-    closeCategory(el, content) {
+    closeCategory(el, content, fromMap) {
       const element = el || navState.activeCategory;
       if (!element) return;
       if (element && content) {
@@ -410,10 +454,12 @@ const NAV = (shell) => {
       }
       element.classList.remove('js-active');
       domMap.$nav.classList.remove('js-catIsOpened');
-      shell.notify({
-        type: 'category-closed',
-        data: {},
-      });
+      if (!fromMap) {
+        shell.notify({
+          type: 'category-closed',
+          data: { fromMap },
+        });
+      }
     },
 
     openCategory(el, content) {
@@ -428,6 +474,7 @@ const NAV = (shell) => {
 
       element.classList.add('js-active');
       domMap.$nav.classList.add('js-catIsOpened');
+
       this.adjustProjectInnerPosition(element, elLeft, elWidth, content);
     },
 
