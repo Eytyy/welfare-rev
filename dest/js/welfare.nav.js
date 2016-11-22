@@ -380,6 +380,7 @@ var NAV = function NAV(shell) {
       });
     },
     updateProject: function updateProject(event) {
+      console.log(event);
       // NOTE: update project navigation classes here
       var activeLayer = event.activeLayer;
       var opts = {};

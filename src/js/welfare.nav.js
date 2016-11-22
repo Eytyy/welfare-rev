@@ -317,6 +317,7 @@ const NAV = (shell) => {
     },
 
     updateProject(event) {
+      console.log(event);
       // NOTE: update project navigation classes here
       const activeLayer = event.activeLayer;
       const opts = {};

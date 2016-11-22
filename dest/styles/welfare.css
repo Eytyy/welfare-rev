@@ -569,12 +569,15 @@ img {
 .project--buildings {
   font-family: "FiraSans-Light", "Droid Arabic Kufi";
   text-align: right; }
+  .project--buildings .details__item__label {
+    font-family: "FiraSans", "Droid Arabic Kufi";
+    line-height: 1.5; }
   .project--buildings .project__title {
     font-family: "FiraSans", "Droid Arabic Kufi";
     font-size: 3.2em;
     line-height: 1.5; }
   .project--buildings .details__item__value {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.5;
     direction: rtl;
     text-align: right; }

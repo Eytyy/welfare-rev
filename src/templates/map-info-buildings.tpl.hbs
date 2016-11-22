@@ -7,12 +7,12 @@
       <div class="project__details project__details--main">
         {{#if (ne this.Founder " ")}}
           <div class="project__details__item project__founder">
-            <div class="details__item__label">FOUNDER</div>
+            <div class="details__item__label">المؤسس أو الواقف</div>
             <div class="details__item__value">{{this.Founder}}</div>
           </div>
         {{/if}}
         <div class="project__details__item project__knownRelations">
-          <div class="details__item__label">KNOWN RELATION</div>
+          <div class="details__item__label">بعض الأعلام التي لها علاقة بالمبنى</div>
           <div class="details__item__value">
             {{#each this.Relation}}
               {{this.Relation}}<br />
@@ -24,37 +24,37 @@
     <aside class="project__details">
       {{#if (ne this.otherName " ")}}
         <div class="project__details__item project__otherNames">
-          <div class="details__item__label">OTHER NAMES</div>
+          <div class="details__item__label">أسماء المبنى الأخرى</div>
           <div class="details__item__value">{{this.otherName}}</div>
         </div>
       {{/if}}
       {{#if (ne this.TimePeriod " ")}}
         <div class="project__details__item project__timePeriod">
-          <div class="details__item__label">TIME PERIOD</div>
+          <div class="details__item__label">الفترة الزمنية</div>
           <div class="details__item__value">{{this.TimePeriod}}</div>
         </div>
       {{/if}}
       {{#if (ne this.BuildingImportance " ")}}
         <div class="project__details__item project_buildingImportance">
-          <div class="details__item__label">BUILDING IMPORTANNCE</div>
+          <div class="details__item__label">أهمية المبنى</div>
           <div class="details__item__value">{{this.BuildingImportance}}</div>
         </div>
       {{/if}}
       {{#if (ne this.BuildingUse " ")}}
         <div class="project__details__item project__usage">
-          <div class="details__item__label">USGAE</div>
+          <div class="details__item__label">تصنيف الوظيفة</div>
           <div class="details__item__value">{{this.BuildingUse}}</div>
         </div>
       {{/if}}
       {{#if (ne this.FounderType " ")}}
         <div class="project__details__item project__founderType">
-          <div class="details__item__label">FOUNDER TYPE</div>
+          <div class="details__item__label">فئة المؤسس</div>
           <div class="details__item__value">{{this.FounderType}}</div>
         </div>
       {{/if}}
       {{#if (ne this.Reference " ")}}
         <div class="project__details__item project__reference">
-          <div class="details__item__label">REFERENCES</div>
+          <div class="details__item__label">المصادر والمراجع الأساسية</div>
           <div class="details__item__value">{{this.Reference}}</div>
         </div>
       {{/if}}
@@ -62,31 +62,31 @@
     <div class="project__details--buildings-extras">
       {{#if (ne this.BuildingType " ")}}
         <div class="project__details__item project__buildingType">
-          <div class="details__item__label">BUILDING TYPE</div>
+          <div class="details__item__label">تصنيف المبنى</div>
           <div class="details__item__value">{{this.BuildingType}}</div>
         </div>
       {{/if}}
       {{#if (ne this.BuildingDate " ")}}
         <div class="project__details__item project__buildingDate">
-          <div class="details__item__label">BUILDING Date</div>
+          <div class="details__item__label">تاريخ التأسيس</div>
           <div class="details__item__value">{{this.BuildingDate}}</div>
         </div>
       {{/if}}
       {{#if (ne this.RestoredIn " ")}}
         <div class="project__details__item project__restoredIn">
-          <div class="details__item__label">Restored In</div>
+          <div class="details__item__label">تاريخ بعض مراحل الترميم</div>
           <div class="details__item__value">{{this.RestoredIn}}</div>
         </div>
       {{/if}}
       {{#if (ne this.originalUse " ")}}
         <div class="project__details__item project__originalUse">
-          <div class="details__item__label">Original Use</div>
+          <div class="details__item__label">وظيفة المبنى الأصلية</div>
           <div class="details__item__value">{{this.originalUse}}</div>
         </div>
       {{/if}}
       {{#if (ne this.CurrentUse " ")}}
         <div class="project__details__item project__currentUse">
-          <div class="details__item__label">Current Use</div>
+          <div class="details__item__label">الحالة الوظيفة حاليا</div>
           <div class="details__item__value">{{this.CurrentUse}}</div>
         </div>
       {{/if}}

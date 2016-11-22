@@ -258,13 +258,17 @@ img {
 .project--buildings {
   font-family: $font__light--fb;
   text-align: right;
+  .details__item__label {
+    font-family: $font--fb;
+    line-height: 1.5;
+  }
   .project__title {
     font-family: $font--fb;
     font-size: 3.2em;
     line-height: 1.5;
   }
   .details__item__value {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.5;
     direction: rtl;
     text-align: right;
