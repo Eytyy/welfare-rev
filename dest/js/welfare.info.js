@@ -150,7 +150,7 @@ var INFO = function INFO(shell) {
         if (activeLayer === 'housing') {
           appendInfo(Object.assign({}, dataCache[activeLayer][activeProjectID].alldata[activeProjectName], { images: dataCache[activeLayer][activeProjectID].images }, {
             building: dataCache[activeLayer][activeProjectID].buildingName,
-            study: 'Study No. ' + (activeProjectName + 1)
+            study: 'Unit No. ' + (activeProjectName + 1)
           }));
         } else {
           appendInfo(dataCache[activeLayer][activeProjectID]);
@@ -283,14 +283,14 @@ var INFO = function INFO(shell) {
           dataCache[activeLayer][activeProjectID] = completeData;
           appendInfo(Object.assign({}, completeData.alldata[activeProjectName], { images: completeData.images }, {
             building: completeData.buildingName,
-            study: 'Study No. ' + (activeProjectName + 1)
+            study: 'Unit No. ' + (activeProjectName + 1)
           }));
         }).catch(function (err) {
           console.log(err);
 
           appendInfo(Object.assign({}, projectData.alldata[activeProjectName], {
             building: projectData.buildingName,
-            study: 'Study No. ' + (activeProjectName + 1)
+            study: 'Unit No. ' + (activeProjectName + 1)
           }));
         });
 

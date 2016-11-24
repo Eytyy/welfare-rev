@@ -283,7 +283,7 @@ var NAV = function NAV(shell) {
 
         // loop through each building to add children studies to the navigation
         catData.alldata.forEach(function (el, index) {
-          var title = 'Study No.' + (index + 1);
+          var title = 'Unit No.' + (index + 1);
           var itemTpl = Handlebars.templates['nav-layer-housing.tpl.hbs']({ target: index + 1, title: title, cat: catName });
           shell.injectTemplateText(itemTpl, $catInner);
         });

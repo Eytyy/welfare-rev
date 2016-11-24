@@ -162,7 +162,7 @@ const INFO = (shell) => {
             { images: dataCache[activeLayer][activeProjectID].images },
             {
               building: dataCache[activeLayer][activeProjectID].buildingName,
-              study: `Study No. ${activeProjectName + 1}`,
+              study: `Unit No. ${activeProjectName + 1}`,
             }
           ));
         }
@@ -300,7 +300,7 @@ const INFO = (shell) => {
             { images: completeData.images },
             {
               building: completeData.buildingName,
-              study: `Study No. ${activeProjectName + 1}`,
+              study: `Unit No. ${activeProjectName + 1}`,
             }
           ));
         }).catch(err => {
@@ -311,7 +311,7 @@ const INFO = (shell) => {
             projectData.alldata[activeProjectName],
             {
               building: projectData.buildingName,
-              study: `Study No. ${activeProjectName + 1}`,
+              study: `Unit No. ${activeProjectName + 1}`,
             }
           ));
         });

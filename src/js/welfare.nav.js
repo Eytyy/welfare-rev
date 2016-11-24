@@ -237,7 +237,7 @@ const NAV = (shell) => {
 
         // loop through each building to add children studies to the navigation
         catData.alldata.forEach((el, index) => {
-          const title = `Study No.${index + 1}`;
+          const title = `Unit No.${index + 1}`;
           const itemTpl = Handlebars.templates['nav-layer-housing.tpl.hbs'](
             { target: index + 1, title, cat: catName });
           shell.injectTemplateText(itemTpl, $catInner);
