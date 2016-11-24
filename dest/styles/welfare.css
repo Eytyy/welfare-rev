@@ -613,7 +613,8 @@ img {
   padding-bottom: 5px;
   line-height: 1.2;
   text-transform: uppercase;
-  margin-bottom: 40px; }
+  margin-bottom: 40px;
+  color: #FCCA34; }
 
 .housing-sub__title {
   font-family: "FiraSans-Light";
@@ -641,12 +642,13 @@ img {
     border-right: 1px solid #D5D3D3; }
 
 .housing-details__item__label {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.2em;
-  color: #BE4459; }
+  color: #BE4459;
+  margin-bottom: 5px; }
 
 .housing-details__item__value {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.2em; }
 
 .icon {
@@ -665,7 +667,7 @@ img {
 .housing-sub {
   width: 100%;
   margin-bottom: 60px;
-  padding-bottom: 40px; }
+  padding: 0 0 40px 20px; }
   .housing-sub h2 {
     font-size: 20px;
     line-height: 1.2;
@@ -723,6 +725,9 @@ img {
 .housing-sub__info__item__label {
   margin-bottom: 5px; }
 
+.housing-sub__info__item__value {
+  text-transform: capitalize; }
+
 .housing-sub__header .wrap:not(:last-child) {
   padding-right: 10px;
   margin-right: 10px;
@@ -759,7 +764,8 @@ img {
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
     border-bottom: 0;
-    padding-bottom: 0; }
+    padding-bottom: 0;
+    padding-left: 0; }
 
 .housing-images {
   display: -webkit-box;
