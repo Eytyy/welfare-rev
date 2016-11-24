@@ -667,7 +667,8 @@ img {
 .housing-sub {
   width: 100%;
   margin-bottom: 60px;
-  padding: 0 0 40px 20px; }
+  padding: 0 0 40px 0;
+  margin-left: 20px; }
   .housing-sub h2 {
     font-size: 20px;
     line-height: 1.2;
@@ -765,7 +766,7 @@ img {
             flex: 1 1 50%;
     border-bottom: 0;
     padding-bottom: 0;
-    padding-left: 0; }
+    margin-left: 0; }
 
 .housing-images {
   display: -webkit-box;
