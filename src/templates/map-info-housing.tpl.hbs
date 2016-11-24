@@ -23,25 +23,29 @@
           <div class="housing-details__item__value">{{this.NoOfResident}}</div>
         </div>
       {{/if}}
-      {{#if (ne this.LivingDuration "")}}
         <div class="housing-details__item">
-          <div class="housing-details__item__label">LIVING DURATION</div>
-          <div class="housing-details__item__value">{{this.LivingDuration}}</div>
+          <div class="housing-details__item__label">Start Of Use</div>
+          {{#if (ne this.LivingDuration "")}}
+            <div class="housing-details__item__value">{{this.LivingDuration}}</div>
+          {{else}}
+          <div class="housing-details__item__value">Not Available</div>
+          {{/if}}
         </div>
-      {{/if}}
       {{#if (ne this.PartOfHoush "")}}
         <div class="housing-details__item">
           <div class="housing-details__item__label">Part of Housh</div>
-          <div class="housing-details__item__value">{{this.PartOfHoush}}</div>
+          <div class="housing-details__item__value">
+            <i class="icon icon--{{ico this.PartOfHoush}}"></i>
+          </div>
         </div>
       {{/if}}
     </div>
   </div>
   <div class="project__bottom">
-    {{#if (notEmpty OriginalRooms "")}}
       <section class="housing-section">
         <h2 class="housing-section__title">Building Original Rooms</h2>
-        <section class="housing-sub">
+        {{#if (notEmpty OriginalRooms "")}}
+          <section class="housing-sub">
           <h3 class="housing-sub__title">STRUCTURAL ASSESSMENT</h3>
           <div class="housing-sub__header">
             <div class="housing-sub__header__item">Use</div>
@@ -62,11 +66,10 @@
             {{/each}}
           </div>
         </section>
-        <section class="housing-sub">
+          <section class="housing-sub">
           <h3 class="housing-sub__title">PHYSICAL ASSESSMENT</h3>
           <div class="housing-sub__header">
             <div class="housing-sub__header__item">Use</div>
-            <div class="housing-sub__header__item">Size Area(M2)</div>
             {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
               <div class="housing-sub__header__item">Algae/ fungus or erosion of stone</div>
             {{/if}}
@@ -87,7 +90,6 @@
             {{#each OriginalRooms}}
               <div class="housing-sub__body__row">
                 <div class="housing-sub__body__item">{{this.UseAs}}</div>
-                <div class="housing-sub__body__item">{{this.SizeArea}}</div>
                 {{#if (ne this.AlgaeFungusOrErosionOfStone "")}}
                   <div class="housing-sub__body__item">
                     <i class="icon icon--{{ico this.AlgaeFungusOrErosionOfStone}}"></i>
@@ -111,8 +113,8 @@
             {{/each}}
           </div>
         </section>
+        {{/if}}
       </section>
-    {{/if}}
 
     {{#if (notEmpty AnnexRooms "")}}
       <section class="housing-section">
@@ -272,22 +274,12 @@
             {{#if (ne this.Use "")}}
               <div class="housing-sub__header__item">Use</div>
             {{/if}}
-            <div class="wrap">
-              {{#if (ne this.KitchenSink "")}}
-                <div class="housing-sub__header__item">Kitchen sink</div>
-              {{/if}}
-              {{#if (ne this.KitchenSinkCondition "")}}
-                <div class="housing-sub__header__item">Kitchen sink condition</div>
-              {{/if}}
-            </div>
-            <div class="wrap">
-              {{#if (ne this.KitchenCupboards "")}}
-                <div class="housing-sub__header__item">Kitchen Cupboards</div>
-              {{/if}}
-              {{#if (ne this.KitchenCupboardssCondition "")}}
-                <div class="housing-sub__header__item">Kitchen Cupboardss Condition</div>
-              {{/if}}
-            </div>
+            {{#if (ne this.KitchenSinkCondition "")}}
+              <div class="housing-sub__header__item">Kitchen sink condition</div>
+            {{/if}}
+            {{#if (ne this.KitchenCupboardssCondition "")}}
+              <div class="housing-sub__header__item">Kitchen Cupboardss Condition</div>
+            {{/if}}
             {{#if (ne this.GazLocation "")}}
               <div class="housing-sub__header__item">Gaz Location</div>
             {{/if}}
@@ -298,30 +290,16 @@
                 {{#if (ne this.Use "")}}
                   <div class="housing-sub__body__item">{{this.Use}}</div>
                 {{/if}}
-                <div class="wrap">
-                  {{#if (ne this.KitchenSink "")}}
-                    <div class="housing-sub__body__item">
-                      <i class="icon icon--{{ico this.KitchenSink}}"></i>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.KitchenSinkCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.KitchenSinkCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
-                <div class="wrap">
-                  {{#if (ne this.KitchenCupboards "")}}
-                    <div class="housing-sub__body__item">
-                      <i class="icon icon--{{ico this.KitchenCupboards}}"></i>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.KitchenCupboardssCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.KitchenCupboardssCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
+                {{#if (ne this.KitchenSinkCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.KitchenSinkCondition}}</div>
+                  </div>
+                {{/if}}
+                {{#if (ne this.KitchenCupboardssCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.KitchenCupboardssCondition}}</div>
+                  </div>
+                {{/if}}
                 {{#if (ne this.GazLocation "")}}
                   <div class="housing-sub__body__item">
                     <div class="housing-sub__body__item">{{this.GazLocation}}</div>
@@ -340,38 +318,18 @@
             {{#if (ne this.Use "")}}
               <div class="housing-sub__header__item">Use</div>
             {{/if}}
-            <div class="wrap">
-              {{#if (ne this.BatTub "")}}
-                <div class="housing-sub__header__item">Bath Tub</div>
-              {{/if}}
-              {{#if (ne this.BathTubCondition "")}}
-                <div class="housing-sub__header__item">Bath Tub Condition</div>
-              {{/if}}
-            </div>
-            <div class="wrap">
-              {{#if (ne this.BathSower "")}}
-                <div class="housing-sub__header__item">Bath Shower</div>
-              {{/if}}
-              {{#if (ne this.BathShowerCondition "")}}
-                <div class="housing-sub__header__item">Bath Shower Condition</div>
-              {{/if}}
-            </div>
-            <div class="wrap">
-              {{#if (ne this.ClosetBat "")}}
-                <div class="housing-sub__header__item">Closet</div>
-              {{/if}}
-              {{#if (ne this.ClosetBatCondition "")}}
-                <div class="housing-sub__header__item">Closet Condition</div>
-              {{/if}}
-            </div>
-            <div class="wrap">
-              {{#if (ne this.BathLavatory "")}}
-                <div class="housing-sub__header__item">BathLavatory</div>
-              {{/if}}
-              {{#if (ne this.BathLavatoryCondition "")}}
-                <div class="housing-sub__header__item">BathLavatory Condition</div>
-              {{/if}}
-            </div>
+            {{#if (ne this.BathTubCondition "")}}
+              <div class="housing-sub__header__item">Bath Tub Condition</div>
+            {{/if}}
+            {{#if (ne this.BathShowerCondition "")}}
+              <div class="housing-sub__header__item">Bath Shower Condition</div>
+            {{/if}}
+            {{#if (ne this.ClosetBatCondition "")}}
+              <div class="housing-sub__header__item">Closet Condition</div>
+            {{/if}}
+            {{#if (ne this.BathLavatoryCondition "")}}
+              <div class="housing-sub__header__item">Bath Lavatory Condition</div>
+            {{/if}}
           </div>
           <div class="housing-sub__body">
             {{#each Bathroom_Toliets}}
@@ -381,54 +339,26 @@
                     <div class="housing-sub__body__item">{{this.Use}}</div>
                   </div>
                 {{/if}}
-                <div class="wrap">
-                  {{#if (ne this.BatTub "")}}
-                    <div class="housing-sub__body__item">
-                      <i class="icon icon--{{ico this.BatTub}}"></i>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.BathTubCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.BathTubCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
-                <div class="wrap">
-                  {{#if (ne this.BathSower "")}}
-                    <div class="housing-sub__body__item">
-                      <i class="icon icon--{{ico this.BathSower}}"></i>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.BathShowerCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.BathShowerCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
-                <div class="wrap">
-                  {{#if (ne this.ClosetBat "")}}
-                    <div class="housing-sub__body__item">
-                      <i class="icon icon--{{ico this.ClosetBat}}"></i>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.ClosetBatCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.ClosetBatCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
-                <div class="wrap">
-                  {{#if (ne this.BathLavatory "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.BathLavatory}}</div>
-                    </div>
-                  {{/if}}
-                  {{#if (ne this.BathLavatoryCondition "")}}
-                    <div class="housing-sub__body__item">
-                      <div class="housing-sub__body__item">{{this.BathLavatoryCondition}}</div>
-                    </div>
-                  {{/if}}
-                </div>
+                {{#if (ne this.BathTubCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.BathTubCondition}}</div>
+                  </div>
+                {{/if}}
+                {{#if (ne this.BathShowerCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.BathShowerCondition}}</div>
+                  </div>
+                {{/if}}
+                {{#if (ne this.ClosetBatCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.ClosetBatCondition}}</div>
+                  </div>
+                {{/if}}
+                {{#if (ne this.BathLavatoryCondition "")}}
+                  <div class="housing-sub__body__item">
+                    <div class="housing-sub__body__item">{{this.BathLavatoryCondition}}</div>
+                  </div>
+                {{/if}}
               </div>
             {{/each}}
           </div>
@@ -444,7 +374,9 @@
           {{#if (ne this.PreviousInterventionRestoraion "")}}
             <div class="housing-sub__info__item">
               <div class="housing-sub__info__item__label">PREVIOUS INTERVENTION/RESTORATION</div>
-              <div class="housing-sub__info__item__value">{{this.PreviousInterventionRestoraion}}</div>
+              <div class="housing-sub__info__item__value">
+                <i class="icon icon--{{ico this.PreviousInterventionRestoraion}}"></i>
+              </div>
             </div>
           {{/if}}
           {{#if (ne this.InterventionWas "")}}
@@ -499,18 +431,6 @@
             <div class="housing-sub__info__item">
               <div class="housing-sub__info__item__label">Common/ Shared Courtyard</div>
               <div class="housing-sub__info__item__value">{{this.CommonSharedCourtyard}}</div>
-            </div>
-          {{/if}}
-          {{#if (ne this.Couryard2CommonSharedCourtyard "")}}
-            <div class="housing-sub__info__item">
-              <div class="housing-sub__info__item__label">Courtyard 2 common or shared</div>
-              <div class="housing-sub__info__item__value">{{this.Couryard2CommonSharedCourtyard}}</div>
-            </div>
-          {{/if}}
-          {{#if (ne this.Couryard2CourtyardCoveredOpen "")}}
-            <div class="housing-sub__info__item">
-              <div class="housing-sub__info__item__label">Courtyard 2 open or closed </div>
-              <div class="housing-sub__info__item__value">{{this.Couryard2CourtyardCoveredOpen}}</div>
             </div>
           {{/if}}
           {{#if (ne this.IfCoveredNewlyIsItPatialOrCompleteClosoure "")}}
