@@ -54,6 +54,7 @@ const MAP = (shell) => {
         'layer-updated': this.updateMap,
         'update-project': this.updateProject,
         'reset-project': this.resetProject,
+        'reset-map': this.resetProject,
       });
     },
 

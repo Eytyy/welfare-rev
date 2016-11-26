@@ -59,7 +59,8 @@ var MAP = function MAP(shell) {
         'init-layer-state': this.updateMap,
         'layer-updated': this.updateMap,
         'update-project': this.updateProject,
-        'reset-project': this.resetProject
+        'reset-project': this.resetProject,
+        'reset-map': this.resetProject
       });
     },
     destroy: function destroy() {},

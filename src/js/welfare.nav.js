@@ -24,6 +24,7 @@ const NAV = (shell) => {
       this.updateMainNav = this.updateMainNav.bind(this);
       this.updateProject = this.updateProject.bind(this);
       this.resetProject = this.resetProject.bind(this);
+      this.onMapReset = this.onMapReset.bind(this);
 
       // Listen to global events
       shell.listen({
@@ -31,10 +32,17 @@ const NAV = (shell) => {
         'layers-data-updated': this.updateMainNav,
         'update-project': this.updateProject,
         'reset-project': this.resetProject,
+        'reset-map': this.onMapReset,
       });
 
       // Listen to click events on navigation
       domMap.$nav.addEventListener('click', this.onNavClick, false);
+    },
+
+    onMapReset(data) {
+      this.resetProject(data);
+      this.resetNav(data);
+      console.log(history);
     },
 
     // Should be called on layer update always regardless to state
@@ -323,7 +331,6 @@ const NAV = (shell) => {
     },
 
     updateProject(event) {
-      console.log(event);
       // NOTE: update project navigation classes here
       const activeLayer = event.activeLayer;
       const opts = {};

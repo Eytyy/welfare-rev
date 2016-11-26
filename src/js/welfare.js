@@ -28,6 +28,16 @@ const WELFARE = (shell) => {
     });
   };
 
+  const onBack2Map = () => {
+    shell.notify({
+      type: 'reset-map',
+      data: {
+        activeProject: state.activeProject,
+        activeLayer: state.activeLayer,
+      },
+    });
+  };
+
   /* Changes the active layer, and triggers a `layer-update` event.
    */
   const updateLayerState = (activeLayer) => {
@@ -152,6 +162,7 @@ const WELFARE = (shell) => {
         'project-clicked': onProjectMapClick,
         'project-nav-clicked': onProjectNavClick,
         'category-closed': onCategoryClosed,
+        back2map: onBack2Map,
       });
     },
     destroy() {

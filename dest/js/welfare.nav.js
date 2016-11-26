@@ -26,17 +26,24 @@ var NAV = function NAV(shell) {
       this.updateMainNav = this.updateMainNav.bind(this);
       this.updateProject = this.updateProject.bind(this);
       this.resetProject = this.resetProject.bind(this);
+      this.onMapReset = this.onMapReset.bind(this);
 
       // Listen to global events
       shell.listen({
         'layers-created': this.setMainNav,
         'layers-data-updated': this.updateMainNav,
         'update-project': this.updateProject,
-        'reset-project': this.resetProject
+        'reset-project': this.resetProject,
+        'reset-map': this.onMapReset
       });
 
       // Listen to click events on navigation
       domMap.$nav.addEventListener('click', this.onNavClick, false);
+    },
+    onMapReset: function onMapReset(data) {
+      this.resetProject(data);
+      this.resetNav(data);
+      console.log(history);
     },
 
 
@@ -387,7 +394,6 @@ var NAV = function NAV(shell) {
       });
     },
     updateProject: function updateProject(event) {
-      console.log(event);
       // NOTE: update project navigation classes here
       var activeLayer = event.activeLayer;
       var opts = {};

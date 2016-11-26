@@ -445,8 +445,8 @@ body, html, main, #welfare, #map {
   color: #FFF; }
 
 .js-view-mode {
-  -webkit-transform: translate3d(0, -300px, 0);
-          transform: translate3d(0, -300px, 0);
+  -webkit-transform: translate3d(0, -330px, 0);
+          transform: translate3d(0, -330px, 0);
   opacity: 1; }
   .js-view-mode .map-info__grabber {
     opacity: 1; }
@@ -462,7 +462,7 @@ body, html, main, #welfare, #map {
 
 .map-info__inner {
   position: relative;
-  padding: 5em 5em 20em;
+  padding: 7em 5em 20em;
   margin-top: 15px;
   border-top: 3px solid #BE4459;
   background: rgba(26, 26, 25, 0.9);
@@ -506,6 +506,23 @@ body, html, main, #welfare, #map {
   top: 50%;
   -webkit-transform: translate(-50%, -50%) rotate(90deg);
           transform: translate(-50%, -50%) rotate(90deg); }
+
+.back2map-btn {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 45px;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  text-transform: uppercase;
+  color: #BE4459;
+  font-size: 18px;
+  opacity: 0;
+  cursor: pointer; }
+
+.js-infoExpanded .back2map-btn {
+  opacity: 1;
+  z-index: 4; }
 
 .project {
   max-width: 1120px;

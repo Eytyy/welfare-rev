@@ -30,12 +30,19 @@ var INFO = function INFO(shell) {
       this.setupInfoWindow();
 
       shell.find('.map-info__grabber').addEventListener('click', this.toggleInfoExpand);
+      shell.find('.back2map-btn').addEventListener('click', this.onBack2mapClick);
 
       // Listen to global events
       shell.listen({
         'update-project': this.updateProject,
         'layer-updated': this.hideInfoWindow,
         'category-closed': this.hideInfoWindow
+      });
+    },
+    onBack2mapClick: function onBack2mapClick() {
+      shell.notify({
+        type: 'back2map',
+        data: ''
       });
     },
     showInfoWindow: function showInfoWindow() {

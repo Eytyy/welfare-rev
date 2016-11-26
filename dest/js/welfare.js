@@ -30,6 +30,16 @@ var WELFARE = function WELFARE(shell) {
     });
   };
 
+  var onBack2Map = function onBack2Map() {
+    shell.notify({
+      type: 'reset-map',
+      data: {
+        activeProject: state.activeProject,
+        activeLayer: state.activeLayer
+      }
+    });
+  };
+
   /* Changes the active layer, and triggers a `layer-update` event.
    */
   var updateLayerState = function updateLayerState(activeLayer) {
@@ -153,7 +163,8 @@ var WELFARE = function WELFARE(shell) {
         'session-state-pop': updateLayerState,
         'project-clicked': onProjectMapClick,
         'project-nav-clicked': onProjectNavClick,
-        'category-closed': onCategoryClosed
+        'category-closed': onCategoryClosed,
+        back2map: onBack2Map
       });
     },
     destroy: function destroy() {}
