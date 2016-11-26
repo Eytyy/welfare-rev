@@ -450,11 +450,11 @@ var NAV = function NAV(shell) {
         trns = (left + 3 - width) * -1;
         wdth = trns * -1 - 150;
       } else if (navState.activeLayer === 'buildings') {
-        trns = (left + 3 - width * 2) * -1;
+        trns = (left + 3 - width) * -1;
         wdth = trns * -1 + 300;
-        innerwidth = left + 3 + 300;
+        innerwidth = left + 3;
       } else {
-        trns = (left + 3 - width * 3) * -1;
+        trns = (left + 3 - width) * -1;
         wdth = trns * -1 + 450;
         innerwidth = left + 3 + 450;
       }
