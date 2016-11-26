@@ -83,6 +83,7 @@ const NAV = (shell) => {
 
       domMap.navItemWrapper = shell.findAll('.map__nav__item-wrapper');
       domMap.navItem = shell.findAll('.map__nav__item--layer');
+      domMap.$about = shell.findAll('.about-btn');
 
       Object.keys(layers).forEach(key => {
         const obj = {};
@@ -90,6 +91,11 @@ const NAV = (shell) => {
         obj.parentEL = document.querySelector(`.map__nav__item--${key}`);
         obj.data = null;
         navMap[key] = obj;
+      });
+
+
+      domMap.$about.forEach((item) => {
+        item.addEventListener('click', this.onAboutClick);
       });
     },
 
@@ -565,6 +571,13 @@ const NAV = (shell) => {
       }
       event.stopPropagation();
       return true;
+    },
+
+    onAboutClick(event) {
+      shell.notify({
+        type: 'about-clicked',
+        data: event.target.dataset.target,
+      });
     },
   };
 };

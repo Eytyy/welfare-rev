@@ -42,6 +42,7 @@
   display: flex;
   flex: 0 0 150px;
   overflow: hidden;
+  position: relative;
   > * {
     height: 150px;
   }
@@ -67,6 +68,20 @@
   margin-left: -3px;
   vertical-align: top;
   overflow: hidden;
+}
+
+.about-btn {
+  height: 10px;
+  position: absolute;
+  z-index: 4;
+  left: 120px;
+  top: 6px;
+  width: 23px;
+  height: 23px;
+  display: block;
+  background-image: url('../images/about-icon.svg');
+  background-size: contain;
+  background-position: center;
 }
 
 .map__nav__item--projects {
@@ -306,7 +321,7 @@
       overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
     }
-    
+
     .map__nav__item__inner {
       overflow: hidden;
       flex-shrink: 0;

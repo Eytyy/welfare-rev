@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "id": 1,
+    "title": "our projects",
+    "desc": "<p> The Old City of Jerusalem Revitalisation Programme (OCJRP) woks on preserving the historic urban fabric of Jerusalem, Nablus and other cities upgrading the living conditions for their residents while also preserving Palestine’s cultural heritage. OCJRP restores houses, traditional multifamily complexes and public buildings that host cultural, social, and economic activities through the adaptive reuse of historic structures.<\/p><p>This layer presents part of the restoration projects implemented by OCJRP in Jerusalem 1995 onwards. For more information about projects and other activities please visit the <a href=\"http://ocjrp.welfare-association.org/en\" target=\"_blank\">OCJRP website</a>.<\/p><p>The information presented here on the map as well as the base map are both owned by OCJRP and are a result of numerous researches along with a comprehensive GIS database for the Old City of Jerusalem.<\/p>"
+  },
+  "buildings": {
+    "id": 2,
+    "title": "public buildings",
+    "desc": "<p>The Old City of Jerusalem Revitalisation Programme (OCJRP) researches, studies and collects data in a systematic manner providing researchers and professionals with needed resources relating to historic buildings and monuments in the Old City, conservation and restoration methods, heritage preservation laws and regulations and general references on conservation issues.<\/p><p>This layer presents selected information on major historic buildings and monuments in the Old City of Jerusalem. The data presented here provides historical and architectural information including the date of construction, founder, changes on building usage, importance, architectural elements, and much more. For more information please visit the <a href=\"http://ocjrp.welfare-association.org/en\" target=\"_blank\">OCJRP website</a>.<\/p><p>The information presented here on the map as well as the base map are both owned by OCJRP and are a result of numerous researches along with a comprehensive GIS database for the Old City of Jerusalem.<\/p>"
+  },
+  "housing": {
+    "id": 2,
+    "title": "housing study",
+    "desc": "<p>The Old City of Jerusalem Revitalisation Programme (OCJRP) researches, studies and collects data in a systematic manner providing researchers and professionals with needed resources relating to historic buildings and monuments in the Old City, conservation and restoration methods, heritage preservation laws and regulations and general references on conservation issues.<\/p><p>This layer presents selected information collected through a survey of 300 houses in the Old City of Jerusalem, it includes detailed assessments about the structural, physical and environmental conditions of the selected houses in different neighborhoods of the historic urban core of Jerusalem. For information about the analysis report, please visit the <a href=\"http://ocjrp.welfare-association.org/en\" target=\"_blank\">OCJRP website<\/a>.<\/p><p>The information presented here on the map as well as the base map are both owned by OCJRP and are a result of numerous researches along with a comprehensive GIS database for the Old City of Jerusalem.<\/p>"
+  }
+}

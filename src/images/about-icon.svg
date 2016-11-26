@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="alert" transform="translate(-7.000000, -12.000000)" fill="#FCCA34">
+            <g id="Group" transform="translate(7.000000, 12.000000)">
+                <path d="M10,0 C4.47826087,0 -1.77635684e-15,4.47826087 -1.77635684e-15,10 C-1.77635684e-15,15.5217391 4.47826087,20 10,20 C15.5217391,20 20,15.5217391 20,10 C20,4.47826087 15.5217391,0 10,0 L10,0 Z M1.97128713,10.0434783 C1.97128713,5.62023887 5.57678478,2.01474122 10.0000242,2.01474122 C14.4232636,2.01474122 18.0287612,5.62023887 18.0287612,10.0434783 C18.0659313,14.4295476 14.4604336,18.0722153 10.0000242,18.0722153 C5.57678478,18.0722153 1.97128713,14.4667176 1.97128713,10.0434783 Z" id="Shape"></path>
+                <text id="!" font-family=".SFNSDisplay-Bold, .SF NS Display" font-size="16" font-weight="bold">
+                    <tspan x="7.80754961" y="16">!</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

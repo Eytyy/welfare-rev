@@ -1,5 +1,8 @@
 {{#each this}}
   <div class="map__nav__item-wrapper map__nav__item-wrapper--{{this.name}}">
+    <span class="about-btn" data-target="{{this.name}}">
+      <i class="icon icon--about"></i>
+    </span>
     <a href="#{{this.name}}" class="map__nav__item map__nav__item--layer map__nav__item--{{this.name}}">
       <i class="map__nav__item__icon"></i>
       <span class="map__nav__item__name">{{this.title}}</span>

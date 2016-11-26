@@ -6,6 +6,7 @@ var MAIN = {
     CORE.register('overlay', OVERLAY);
     CORE.register('messages', MESSAGES);
     CORE.register('info', INFO);
+    CORE.register('about', ABOUT);
     CORE.register('nav', NAV);
     CORE.register('map', MAP);
     CORE.register('welfare', WELFARE);

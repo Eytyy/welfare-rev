@@ -79,11 +79,14 @@ var NAV = function NAV(shell) {
       }
     },
     setMainNav: function setMainNav(layers) {
+      var _this = this;
+
       var tpl = Handlebars.templates['nav.tpl.hbs'](layers);
       shell.injectTemplateText(tpl, domMap.$nav);
 
       domMap.navItemWrapper = shell.findAll('.map__nav__item-wrapper');
       domMap.navItem = shell.findAll('.map__nav__item--layer');
+      domMap.$about = shell.findAll('.about-btn');
 
       Object.keys(layers).forEach(function (key) {
         var obj = {};
@@ -91,6 +94,10 @@ var NAV = function NAV(shell) {
         obj.parentEL = document.querySelector('.map__nav__item--' + key);
         obj.data = null;
         navMap[key] = obj;
+      });
+
+      domMap.$about.forEach(function (item) {
+        item.addEventListener('click', _this.onAboutClick);
       });
     },
     buildProjectsLayerNavigation: function buildProjectsLayerNavigation(wrapper, data, activeLayer) {
@@ -613,6 +620,12 @@ var NAV = function NAV(shell) {
       }
       event.stopPropagation();
       return true;
+    },
+    onAboutClick: function onAboutClick(event) {
+      shell.notify({
+        type: 'about-clicked',
+        data: event.target.dataset.target
+      });
     }
   };
 };

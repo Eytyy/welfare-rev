@@ -5,7 +5,9 @@ templates['nav.tpl.hbs'] = template({"1":function(container,depth0,helpers,parti
 
   return "  <div class=\"map__nav__item-wrapper map__nav__item-wrapper--"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
-    + "\">\n    <a href=\"#"
+    + "\">\n    <span class=\"about-btn\" data-target=\""
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+    + "\">\n      <i class=\"icon icon--about\"></i>\n    </span>\n    <a href=\"#"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "\" class=\"map__nav__item map__nav__item--layer map__nav__item--"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
