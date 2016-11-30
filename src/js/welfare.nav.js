@@ -48,11 +48,14 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
-      console.log('update nav');
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
       const populated = active && navMap[active].populated;
+
+      if (!active && !previous) {
+        return true;
+      }
 
       navState.activeLayer = active;
 

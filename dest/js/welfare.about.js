@@ -57,13 +57,12 @@ var ABOUT = function ABOUT(shell) {
         }
     },
     updateAbout: function updateAbout(target) {
-      if (aboutState.currentAbout === target) {
-        console.log('content already in view');
-      } else {
+      if (aboutState.currentAbout !== target) {
         var data = dataCache[target];
         domMap.$title.innerHTML = data.title;
         domMap.$desc.innerHTML = data.desc;
       }
+
       this.toggleAbout(target);
       aboutState.currentAbout = target;
     },

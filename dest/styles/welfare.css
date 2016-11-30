@@ -299,7 +299,9 @@ body, html, main, #welfare, #map {
   display: flex;
   width: calc(100% - 155px); }
   .js-active.map__nav__item--category .category__inner .map__nav__item {
-    width: 150px; }
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 150px;
+            flex: 0 0 150px; }
 
 .js-active.map__nav__item--category .category-wrapper {
   border-right: 0; }

@@ -34,19 +34,6 @@ var MAP = function MAP(shell) {
       // Retrieve the layers and set them up
       shell.get('data/layers.json').then(function (data) {
         _this.setupLayers(data);
-
-        // Notify modules that map setup is done
-        shell.notify({
-          type: 'map-is-loaded',
-          data: map
-        });
-
-        shell.notify({
-          type: 'app-updated',
-          data: {
-            message: ''
-          }
-        });
       });
 
       // Bind methods to this
@@ -78,15 +65,30 @@ var MAP = function MAP(shell) {
         obj.visible = false;
         config.layers[key] = Object.assign({}, obj, data[key]);
       });
+
+      shell.notify({
+        type: 'map-is-loaded',
+        data: map
+      });
+
+      shell.notify({
+        type: 'app-updated',
+        data: {
+          message: 'yo'
+        }
+      });
+
       shell.notify({
         type: 'layers-created',
         data: config.layers
       });
     },
     disableLayer: function disableLayer(layer) {
-      var affectedLayer = layer;
-      affectedLayer.visible = false;
-      affectedLayer.dataLayer.setMap(null);
+      if (layer) {
+        var affectedLayer = layer;
+        affectedLayer.visible = false;
+        affectedLayer.dataLayer.setMap(null);
+      }
     },
     enableLayer: function enableLayer(layer) {
       var affectedLayer = layer;
@@ -405,6 +407,7 @@ var MAP = function MAP(shell) {
       };
     },
     resetProject: function resetProject(event) {
+      console.log('reset');
       var activeProject = event.activeProject;
       var dataLayer = config.layers[event.activeLayer].dataLayer;
 
@@ -437,7 +440,7 @@ var MAP = function MAP(shell) {
 
       // reposition map and set zeft
       map.panTo(activeProjectLatLang);
-      map.setZoom(19);
+      map.setZoom(18);
     }
   };
 };
