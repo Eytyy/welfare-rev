@@ -50,8 +50,7 @@ var ABOUT = function ABOUT(shell) {
       if (aboutState.active && aboutState.currentAbout === target) {
         this.closeAbout();
       }
-      // if about section is not active; hidden,
-      // show it
+      // if about section is not active; hidden, show it
       else if (!aboutState.active) {
           this.openAbout();
         }
@@ -76,6 +75,7 @@ var ABOUT = function ABOUT(shell) {
       }
       // Else fetch data, update the cache, then call update
       this.fetchData().then(function (results) {
+        console.log(results);
         dataCache = results;
         _this.updateAbout(data);
       }).catch(function (err) {
