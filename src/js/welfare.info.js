@@ -24,6 +24,7 @@ const INFO = (shell) => {
       // Bind methods to this
       this.updateProject = this.updateProject.bind(this);
       this.hideInfoWindow = this.hideInfoWindow.bind(this);
+      this.resetInfo = this.resetInfo.bind(this);
 
       // setup window
       this.setupInfoWindow();
@@ -36,6 +37,7 @@ const INFO = (shell) => {
         'update-project': this.updateProject,
         'layer-updated': this.hideInfoWindow,
         'category-closed': this.hideInfoWindow,
+        'reset-map': this.resetInfo,
       });
     },
 
@@ -64,6 +66,10 @@ const INFO = (shell) => {
       else {
         domMap.$info.classList.add('js-infoExpanded');
       }
+    },
+
+    resetInfo() {
+      domMap.$info.classList.remove('js-infoExpanded');
     },
 
     updateInfoWindow(data) {

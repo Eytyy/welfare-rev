@@ -25,6 +25,7 @@ var INFO = function INFO(shell) {
       // Bind methods to this
       this.updateProject = this.updateProject.bind(this);
       this.hideInfoWindow = this.hideInfoWindow.bind(this);
+      this.resetInfo = this.resetInfo.bind(this);
 
       // setup window
       this.setupInfoWindow();
@@ -36,7 +37,8 @@ var INFO = function INFO(shell) {
       shell.listen({
         'update-project': this.updateProject,
         'layer-updated': this.hideInfoWindow,
-        'category-closed': this.hideInfoWindow
+        'category-closed': this.hideInfoWindow,
+        'reset-map': this.resetInfo
       });
     },
     onBack2mapClick: function onBack2mapClick() {
@@ -60,6 +62,9 @@ var INFO = function INFO(shell) {
       } else {
         domMap.$info.classList.add('js-infoExpanded');
       }
+    },
+    resetInfo: function resetInfo() {
+      domMap.$info.classList.remove('js-infoExpanded');
     },
     updateInfoWindow: function updateInfoWindow(data) {
       shell.notify({

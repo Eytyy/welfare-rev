@@ -407,7 +407,6 @@ var MAP = function MAP(shell) {
       };
     },
     resetProject: function resetProject(event) {
-      console.log('reset');
       var activeProject = event.activeProject;
       var dataLayer = config.layers[event.activeLayer].dataLayer;
 

@@ -75,7 +75,6 @@ const ABOUT = (shell) => {
       }
       // Else fetch data, update the cache, then call update
       this.fetchData().then(results => {
-        console.log(results);
         dataCache = results;
         this.updateAbout(data);
       }).catch(err => {

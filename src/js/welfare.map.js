@@ -313,7 +313,6 @@ const MAP = (shell) => {
     },
 
     resetProject(event) {
-      console.log('reset');
       const activeProject = event.activeProject;
       const dataLayer = config.layers[event.activeLayer].dataLayer;
 

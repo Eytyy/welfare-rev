@@ -137,7 +137,6 @@ const WELFARE = (shell) => {
   };
 
   const onCategoryClosed = () => {
-    console.log('cat closed');
     if (state.activeProject) {
       shell.notify({
         type: 'reset-project',
