@@ -9,17 +9,20 @@
 </head>
 <body>
   {% block content %}{% endblock %}
-  <!-- bower:js -->
-  <!-- <script src="js/vendor/jquery.js"></script> -->
-  <!-- endbower -->
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIFeSNFnuXq-KGGKkqMGGmD82fugLAgi0"></script>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  {% if env == "production" %}
+  <script src="js/vendor/vendor.min.js"></script>
+  <script src="templates/templates.min.js"></script>
+  <script src="js/main.min.js"></script>
+  {% else %}
   <script src="js/vendor/underscore-min.js"></script>
-  <script src="js/vendor/polyfill.min.js"></script>
   <script src="js/vendor/handlebars.runtime.min.js"></script>
-  <script src="templates/templates.js"></script>
+  <script src="templates/templates.min.js"></script>
   <script src="js/core.js"></script>
   <script src="js/shell.js"></script>
   <script src="js/welfare.js"></script>
+  <script src="js/map.styles.js"></script>
   <script src="js/welfare.map.js"></script>
   <script src="js/welfare.map.overlay.js"></script>
   <script src="js/welfare.nav.js"></script>
@@ -27,7 +30,7 @@
   <script src="js/welfare.info.js"></script>
   <script src="js/welfare.messages.js"></script>
   <script src="js/main.js"></script>
-
+  {% endif %}
   {% block javascript %}{% endblock %}
 </body>
 </html>

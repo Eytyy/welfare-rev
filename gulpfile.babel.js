@@ -9,13 +9,18 @@ import sass from 'gulp-sass';
 import autoprefixer from 'gulp-autoprefixer';
 import sourcemaps from 'gulp-sourcemaps';
 import changed from 'gulp-changed';
-import imagemin from 'gulp-imagemin';
 import del from 'del';
 import browserSync from 'browser-sync';
+import gulpif from 'gulp-if';
+import imagemin from 'gulp-imagemin';
 import concat from 'gulp-concat';
+import uglify from 'gulp-uglify';
+import cleanCSS from 'gulp-clean-css';
+import htmlmin from 'gulp-htmlmin';
+import jsonminify from 'gulp-jsonminify';
+import globalConfig from './gulp.config';
 
 const gulp = gulpHelp(_gulp);
-const reload = browserSync.reload;
 
 const root = {
   src: './src',
@@ -27,9 +32,15 @@ const paths = {
     src: `${root.src}/styles/**/*.scss`,
     dest: `${root.dest}/styles/`,
   },
-  scripts: {
-    src: `${root.src}/js/**/*.js`,
+  js: {
+    src: [`${root.src}/js/**/*.js`, `!${root.src}/js/vendor/*.js`],
     dest: `${root.dest}/js/`,
+    buildFileName: 'main.min.js',
+  },
+  vendor: {
+    src: `${root.src}/js/vendor/*.js`,
+    dest: `${root.dest}/js/vendor/`,
+    buildFileName: 'vendor.min.js',
   },
   html: {
     src: `${root.src}/html/**/*.html`,
@@ -50,6 +61,7 @@ const paths = {
   templates: {
     src: `${root.src}/templates/**/*.js`,
     dest: `${root.dest}/templates`,
+    buildFileName: 'templates.min.js',
   },
   resources: {
     src: `${root.src}/resources/**/*`,
@@ -57,118 +69,111 @@ const paths = {
   },
 };
 
-// Start of styles related tasks ------------------------------------------
-gulp.task('styles', 'Convert Sass to CSS', () => {
+// <Styles>
+gulp.task('styles', 'Compile Sass', () => {
   gulp.src(paths.styles.src)
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(globalConfig.development(), sourcemaps.init()))
     .pipe(sass())
     .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
     .pipe(autoprefixer())
-    .pipe(sourcemaps.write('.'))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.write('.')))
+    .pipe(gulpif(globalConfig.production(), cleanCSS()))
     .pipe(gulp.dest(paths.styles.dest));
-    // .pipe(reload({ stream: true }));
 });
-// End of styles related tasks  -------------------------------------------
+// </Styles>
 
+// <Data>
 gulp.task('copyData', 'copy data from src to dest', () => {
   gulp.src(paths.data.src)
+    .pipe(gulpif(globalConfig.production(), jsonminify()))
     .pipe(gulp.dest(paths.data.dest));
-    // .pipe(reload({ stream: true }));
 });
+// </Data>
 
-gulp.task('movetemplates', 'copy templates', () => {
-  gulp.src(paths.templates.src)
-    .pipe(concat('templates.js'))
-    .pipe(gulp.dest(paths.templates.dest));
-    // .pipe(reload({ stream: true }));
-});
-
-gulp.task('copyResources', 'copy resorces from src to dest', () => {
-  gulp.src(paths.resources.src)
-    .pipe(gulp.dest(paths.resources.dest));
-});
-
-// Start of HTML related tasks --------------------------------------------
-const templatesPath = `${root.src}/html`;
-
-gulp.task('html', 'copy HTML files and move to dest folder', () => {
-  gulp.src(paths.html.src)
-    .pipe(render({
-      path: templatesPath,
-    }))
-    .pipe(gulp.dest(paths.html.dest))
-    .pipe(reload({ stream: true }));
-});
-// End of HTML related tasks   --------------------------------------------
-
-
-// Start of Images related tasks --------------------------------------------
+// <Images>
 gulp.task('images', 'Optimize images and move to dest folder', () => {
   gulp.src(paths.images.src)
     .pipe(changed(paths.images.dest)) // ignore unchanged files
     .pipe(imagemin()) // optimize
     .pipe(gulp.dest(paths.images.dest));
-    // .pipe(reload({ stream: true }));
 });
-// End of Images related tasks   --------------------------------------------
+// </Images>
 
-
-// Start of Fonts related tasks --------------------------------------------
+// <Fonts>
 gulp.task('fonts', 'copy and move font files', () => {
   gulp.src(paths.fonts.src)
     .pipe(gulp.dest(paths.fonts.dest));
     // .pipe(reload({ stream: true }));
 });
-// End of Fonts related tasks   --------------------------------------------
+// </Fonts>
 
-
-// Start of ES6 related tasks ---------------------------------------------
-// Clean Task
-gulp.task('clean-templates', 'remove generated template files in dest directory', () => {
+// <Clean>
+gulp.task('clean', 'clean up dist directory', () => {
   del([paths.templates.dest]);
+  del([paths.js.dest]);
+});
+// </Clean>
+
+// <Scripts>
+gulp.task('js', 'compile javascript: lint then transpile', () => {
+  gulp.src(paths.js.src)
+    .pipe(gulpif(globalConfig.development(), eslint()))
+    .pipe(gulpif(globalConfig.development(), plumber({ errorHandler: notify.onError('Erro: <% error.message %>') })))
+    .pipe(gulpif(globalConfig.development(), eslint.format()))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.init()))
+      .pipe(babel())
+      .pipe(gulpif(globalConfig.production(), concat(paths.js.buildFileName)))
+      .pipe(gulpif(globalConfig.production(), uglify()))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.write()))
+    .pipe(gulp.dest(paths.js.dest));
 });
 
-gulp.task('clean-scripts', 'remove generated script files in dest directory', () => {
-  del([paths.scripts.dest]);
+gulp.task('vendor', 'compile vendor files', () => {
+  gulp.src(paths.vendor.src)
+    .pipe(gulpif(globalConfig.development(), plumber({ errorHandler: notify.onError('Erro: <% error.message %>') })))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.init()))
+      .pipe(gulpif(globalConfig.production(), concat(paths.vendor.buildFileName)))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.write()))
+    .pipe(gulp.dest(paths.vendor.dest));
 });
+// </Scripts>
 
-// Babel Task
-gulp.task('babel', 'Generate es6 files in dest directory', () => {
-  gulp.src(paths.scripts.src)
-    .pipe(babel())
-    .pipe(gulp.dest(paths.scripts.dest));
-    // .pipe(reload({ stream: true }));
+// <Templates>
+gulp.task('templates', 'compress template files', () => {
+  gulp.src(paths.templates.src)
+    .pipe(gulpif(globalConfig.development(), sourcemaps.init()))
+      .pipe(concat(paths.templates.buildFileName))
+      .pipe(gulpif(globalConfig.production(), uglify()))
+    .pipe(gulpif(globalConfig.development(), sourcemaps.write()))
+    .pipe(gulp.dest(paths.templates.dest));
 });
+// </Templates>
 
-// Both (clean dest file the regenerate files in es6 compliant format using babel) Tasks
-gulp.task('es6', 'Generate the es6 library in dest', ['clean-scripts', 'babel']);
+// <HTML>
+const templatesPath = `${root.src}/html`;
 
-// End of ES6 related tasks -----------------------------------------------
-
-gulp.task('templates', 'templates task', ['clean-templates', 'movetemplates']);
-
-
-// Start of lint related tasks --------------------------------------------
-gulp.task('lint', 'run eslint on all the source files', () => {
-  gulp.src(paths.scripts.src)
-    .pipe(eslint())
-    .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
+gulp.task('html', 'compile HTML files', () => {
+  gulp.src(paths.html.src)
+    .pipe(render({
+      path: templatesPath,
+      data: {
+        env: globalConfig.production() ? 'production' : 'development',
+      },
+    }))
+    .pipe(gulpif(globalConfig.production(), htmlmin({ collapseWhitespace: true })))
+    .pipe(gulp.dest(paths.html.dest));
 });
-// End of lint related tasks ----------------------------------------------
-
+// </HTML>
 
 // Start of watch related tasks -------------------------------------------
 gulp.task('watch', 'Watcher task', () => {
   gulp.watch(paths.data.src, ['data']);
   gulp.watch(paths.html.src, ['html']);
   gulp.watch(paths.styles.src, ['styles']);
-  gulp.watch(paths.scripts.src, ['lint', 'babel']);
+  gulp.watch(paths.js.src, ['js']);
   gulp.watch(paths.templates.src, ['templates']);
 });
 // End of watch related tasks ---------------------------------------------
-
 
 // Start of serve related tasks -------------------------------------------
 gulp.task('serve', 'serve resources', () => {
@@ -177,10 +182,12 @@ gulp.task('serve', 'serve resources', () => {
   });
 });
 
-// End of serve related tasks ---------------------------------------------
-gulp.task('default', ['help', 'copyData', 'copyResources', 'templates', 'fonts',
-'images', 'html', 'styles', 'babel', 'watch']);
-// gulp.task('default', [
-//   'help', 'copyData', 'copyResources', 'templates', 'fonts',
-//   'images', 'html', 'styles', 'babel', 'serve', 'watch',
-// ]);
+gulp.task('build', ['help', 'clean', 'copyData', 'html', 'vendor', 'js', 'templates', 'styles', 'fonts', 'images', 'html', 'watch']);
+
+gulp.task('build:production', ['set-production', 'help', 'clean', 'html', 'vendor', 'js', 'templates', 'styles', 'fonts', 'images', 'html']);
+
+gulp.task('set-production', () => {
+  globalConfig.environment = 'production';
+});
+
+gulp.task('default', ['build']);

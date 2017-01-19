@@ -10,7 +10,7 @@ const NAV = (shell) => {
     activeLayer: null,
   };
 
-  const debugmode = true;
+  const debugmode = false;
 
   return {
     init() {
@@ -47,7 +47,6 @@ const NAV = (shell) => {
     // Should be called on layer update always regardless to state
     // state should be maintained by map
     updateMainNav(layers) {
-      console.log('update nav');
       const data = layers.active && layers.active.data;
       const active = layers.active && layers.active.name;
       const previous = layers.previous && layers.previous.name;
@@ -76,6 +75,7 @@ const NAV = (shell) => {
         shell.find(`.map__nav__item-wrapper--${active}`).classList.add('js-active');
         domMap.$nav.classList.add('js-layerIsOpened', `${active}`);
       }
+      return true;
     },
 
     resetNav() {
@@ -92,7 +92,7 @@ const NAV = (shell) => {
       domMap.navItem = shell.findAll('.map__nav__item--layer');
       domMap.$about = shell.findAll('.about-btn');
 
-      Object.keys(layers).forEach(key => {
+      Object.keys(layers).forEach((key) => {
         const obj = {};
         obj.populate = false;
         obj.parentEL = document.querySelector(`.map__nav__item--${key}`);
@@ -119,17 +119,15 @@ const NAV = (shell) => {
         shell.injectTemplateText(tpl, $catWrapper);
         $catWrapper.appendChild($catInner);
 
-        Object.keys(catData).forEach(key => {
+        Object.keys(catData).forEach((key) => {
           const id = catData[key].getProperty('RelatedEnglishTitle');
           if (catData[key].getGeometry().getAt(0)) {
             const itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs'](
               { title: id, cat: catName });
             shell.injectTemplateText(itemTpl, $catInner);
           }
-          else {
-            if (debugmode) {
-              console.log(`${id} does not have geometry`);
-            }
+          else if (debugmode) {
+            console.log(`${id} does not have geometry`);
           }
         });
         return $catWrapper;
@@ -151,7 +149,7 @@ const NAV = (shell) => {
         filteredData[activeLayer] = obj;
       }
       // Loop through data to add an element/link for each project in the layer navigation
-      Object.keys(filteredData[activeLayer]).forEach(key => {
+      Object.keys(filteredData[activeLayer]).forEach((key) => {
         const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
         wrapper.appendChild(navGroup);
       });
@@ -171,17 +169,15 @@ const NAV = (shell) => {
         shell.injectTemplateText(tpl, $catWrapper);
         $catWrapper.appendChild($catInner);
 
-        Object.keys(catData).forEach(key => {
+        Object.keys(catData).forEach((key) => {
           const id = catData[key].alldata.BuildingName;
           if (catData[key].getGeometry() && catData[key].getGeometry().getAt(0)) {
             const itemTpl = Handlebars.templates['nav-layer-wcat.tpl.hbs'](
               { title: id, cat: catName });
             shell.injectTemplateText(itemTpl, $catInner);
           }
-          else {
-            if (debugmode) {
-              console.log(`${id} does not have geometry`);
-            }
+          else if (debugmode) {
+            console.log(`${id} does not have geometry`);
           }
         });
         return $catWrapper;
@@ -191,9 +187,9 @@ const NAV = (shell) => {
         const obj = {};
         let sortedData = [];
         let sortData;
-        shell.get('data/sort.json').then(sdata => {
+        shell.get('data/sort.json').then((sdata) => {
           sortData = sdata.Sort;
-          sortData.forEach(el => {
+          sortData.forEach((el) => {
             el.sort = parseInt(el.sort, 10);
           });
 
@@ -215,7 +211,7 @@ const NAV = (shell) => {
           }
 
           // copy object to an array to get sorted
-          Object.keys(obj).forEach(key => {
+          Object.keys(obj).forEach((key) => {
             sortedData.push(obj[key]);
           });
           // sort data
@@ -225,7 +221,7 @@ const NAV = (shell) => {
           filteredData[activeLayer] = sortedData;
 
           // Loop through data to add an element/link for each project in the layer navigation
-          filteredData[activeLayer].forEach(cat => {
+          filteredData[activeLayer].forEach((cat) => {
             const name = cat.name.replace(/ +/g, '');
             const navGroup = buildCategoryHtml(name, cat.alldata);
             wrapper.appendChild(navGroup);
@@ -270,7 +266,7 @@ const NAV = (shell) => {
         }
         filteredData[activeLayer] = obj;
       }
-      Object.keys(filteredData[activeLayer]).forEach(key => {
+      Object.keys(filteredData[activeLayer]).forEach((key) => {
         const navGroup = buildCategoryHtml(key, filteredData[activeLayer][key]);
         wrapper.appendChild(navGroup);
       });
@@ -292,7 +288,7 @@ const NAV = (shell) => {
           this.buildHousingLayerNavigation($navWrapper, data, activeLayer);
           break;
         default:
-          return;
+          return true;
       }
     },
 
@@ -300,7 +296,7 @@ const NAV = (shell) => {
       if (!event.activeProject) {
         return true;
       }
-      let projectName = undefined;
+      let projectName;
       switch (event.activeLayer) {
         case 'projects':
           projectName = event.activeProject.getProperty('RelatedEnglishTitle') || undefined;
@@ -311,11 +307,12 @@ const NAV = (shell) => {
         case 'housing':
           break;
         default:
-          return true;
+          break;
       }
       if (projectName) {
         shell.find(`[data-target="${projectName}"]`).classList.remove('js-active');
       }
+      return true;
     },
 
     onProjectClick(el) {
@@ -392,16 +389,16 @@ const NAV = (shell) => {
       let innerwidth = left + 3;
 
       if (navState.activeLayer === 'projects') {
-        trns = (left + 3 - width) * -1;
+        trns = ((left + 3) - width) * -1;
         wdth = (trns * -1) - 150;
       }
       else if (navState.activeLayer === 'buildings') {
-        trns = (left + 3 - (width)) * -1;
+        trns = ((left + 3) - (width)) * -1;
         wdth = (trns * -1) + 300;
         innerwidth = left + 3;
       }
       else {
-        trns = (left + 3 - (width)) * -1;
+        trns = ((left + 3) - (width)) * -1;
         wdth = (trns * -1) + 450;
         innerwidth = left + 3 + 450;
       }
@@ -536,7 +533,7 @@ const NAV = (shell) => {
       return true;
     },
 
-    onNavClick() {
+    onNavClick(event) {
       let el;
       let content;
 

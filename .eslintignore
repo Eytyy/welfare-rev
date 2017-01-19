@@ -3,3 +3,4 @@ dest
 vendor
 server.js
 templates
+map.styles.js

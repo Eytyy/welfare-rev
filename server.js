@@ -20,7 +20,7 @@ const s3 = new AWS.S3();
 app.use(express.static('dest'));
 
 app.get('/', function(req, res) {
-  res.sendfile('./app/index.html');
+  res.sendfile('index.html');
   res.end();
 });
 

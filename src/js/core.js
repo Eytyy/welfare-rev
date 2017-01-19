@@ -28,7 +28,7 @@ const CORE = (() => {
 
     triggerEvent(event) {
       let module;
-      Object.keys(modules).forEach(key => {
+      Object.keys(modules).forEach((key) => {
         if (modules.hasOwnProperty(key)) {
           module = modules[key];
           if (module.events && module.events[event.type]) {
@@ -49,7 +49,7 @@ const CORE = (() => {
 
     // START ALL MODULES
     startAll() {
-      Object.keys(modules).forEach(moduleID => {
+      Object.keys(modules).forEach((moduleID) => {
         if (modules.hasOwnProperty(moduleID)) {
           this.start(moduleID);
         }
@@ -81,10 +81,10 @@ const CORE = (() => {
           // Make the request
           req.send(null);
         });
-        return prom.then(response => {
+        return prom.then((response) => {
           const data = JSON.parse(response);
           return data;
-        }).catch(err => {
+        }).catch((err) => {
           console.log(err);
         });
       },

@@ -86,7 +86,7 @@ const WELFARE = (shell) => {
         obj = event.data[state.activeLayer][event.category];
         break;
       case 'buildings':
-        cat = event.category.replace(/\-/g, ' - ');
+        cat = event.category.replace(/-/g, ' - ');
         obj = event.data[state.activeLayer]
           .find(project => project.name === cat).alldata[event.target];
         break;
@@ -112,7 +112,6 @@ const WELFARE = (shell) => {
   };
 
   const onProjectMapClick = (event) => {
-
     state.previousProject = state.activeProject;
     state.previousProjectName = state.activeProjectName;
 

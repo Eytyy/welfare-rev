@@ -1,5 +1,5 @@
 const INFO = (shell) => {
-  const debugmode = true;
+  const debugmode = false;
 
   const domMap = {};
 
@@ -30,7 +30,7 @@ const INFO = (shell) => {
       this.setupInfoWindow();
 
       shell.find('.map-info__grabber').addEventListener('click', this.toggleInfoExpand);
-      shell.find('.back2map-btn').addEventListener('click', this.onBack2mapClick)
+      shell.find('.back2map-btn').addEventListener('click', this.onBack2mapClick);
 
       // Listen to global events
       shell.listen({
@@ -52,11 +52,10 @@ const INFO = (shell) => {
       domMap.$info.classList.add('js-view-mode');
     },
 
-    hideInfoWindow(e) {
-      if (e.fromMap) {
-        return true;
+    hideInfoWindow(event) {
+      if (!event.fromMap) {
+        domMap.$info.classList.remove('js-view-mode');
       }
-      domMap.$info.classList.remove('js-view-mode');
     },
 
     toggleInfoExpand() {
@@ -177,7 +176,7 @@ const INFO = (shell) => {
             {
               building: dataCache[activeLayer][activeProjectID].buildingName,
               study: `Unit No. ${activeProjectName + 1}`,
-            }
+            },
           ));
         }
         else {
@@ -205,7 +204,8 @@ const INFO = (shell) => {
       function fetchProjectResources() {
         const resourcesID = projectData.ukey;
 
-        Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)]).then(allData => {
+        Promise.all([fetchImages(resourcesID), fetchExtraResources(resourcesID)])
+        .then((allData) => {
           const obj = {
             miscImages: [],
             otherFiles: [],
@@ -220,10 +220,8 @@ const INFO = (shell) => {
             else if (/main.jpg/i.test(item)) {
               obj.mainImage = item;
             }
-            else {
-              if (index !== 0) {
-                obj.miscImages.push(item);
-              }
+            else if (index !== 0) {
+              obj.miscImages.push(item);
             }
           });
 
@@ -238,7 +236,7 @@ const INFO = (shell) => {
           dataCache[activeLayer][activeProjectID] = completeData;
           // Update Info
           appendInfo(completeData);
-        }).catch(error => {
+        }).catch((error) => {
           console.log(error);
           // Update Cache
           dataCache[activeLayer][activeProjectID] = data;
@@ -251,7 +249,7 @@ const INFO = (shell) => {
       function fetchBuildingResources() {
         const resourcesID = projectData.ID;
 
-        fetchImages(resourcesID).then(allData => {
+        fetchImages(resourcesID).then((allData) => {
           const imageData = data.activeProject.alldata.ImageData;
           const regex = /(\w*)(?:\.jpg)/i;
 
@@ -261,8 +259,8 @@ const INFO = (shell) => {
 
           allData.data.forEach((image, index) => {
             if (index !== 0) {
-              const caption = imageData.find((el) =>
-                el.PathNew === regex.exec(image)[1]
+              const caption = imageData.find(el =>
+                el.PathNew === regex.exec(image)[1],
               ).name;
               if (caption) {
                 obj.images.push({
@@ -281,7 +279,7 @@ const INFO = (shell) => {
           appendInfo(projectData);
 
           module.showInfoWindow();
-        }).catch(error => {
+        }).catch((error) => {
           console.log(error);
           // Update Cache
           dataCache[activeLayer][activeProjectID] = data;
@@ -296,7 +294,7 @@ const INFO = (shell) => {
           console.log('fetch housing');
         }
 
-        fetchImages(activeProjectID).then(allData => {
+        fetchImages(activeProjectID).then((allData) => {
           const regex = /\w*(?:\.jpg)/i;
           const obj = {
             images: [],
@@ -315,9 +313,9 @@ const INFO = (shell) => {
             {
               building: completeData.buildingName,
               study: `Unit No. ${activeProjectName + 1}`,
-            }
+            },
           ));
-        }).catch(err => {
+        }).catch((err) => {
           console.log(err);
 
           appendInfo(Object.assign(
@@ -326,7 +324,7 @@ const INFO = (shell) => {
             {
               building: projectData.buildingName,
               study: `Unit No. ${activeProjectName + 1}`,
-            }
+            },
           ));
         });
 

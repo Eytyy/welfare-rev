@@ -27,7 +27,7 @@ const ABOUT = (shell) => {
     fetchData() {
       return shell.get(dataURL)
         .then(results => results)
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           return '';
         });
@@ -74,10 +74,10 @@ const ABOUT = (shell) => {
         return true;
       }
       // Else fetch data, update the cache, then call update
-      this.fetchData().then(results => {
+      this.fetchData().then((results) => {
         dataCache = results;
         this.updateAbout(data);
-      }).catch(err => {
+      }).catch((err) => {
         console.log(err);
       });
       return true;
