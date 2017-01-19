@@ -12,9 +12,9 @@
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIFeSNFnuXq-KGGKkqMGGmD82fugLAgi0"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   {% if env == "production" %}
-  <script src="js/vendor/vendor.min.js"></script>
-  <script src="templates/templates.min.js"></script>
-  <script src="js/main.min.js"></script>
+  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/l/js/vendor/vendor.min.js"></script>
+  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/welfare-rev/templates/templates.min.js"></script>
+  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/welfare-rev/js/main.min.js"></script>
   {% else %}
   <script src="js/vendor/underscore-min.js"></script>
   <script src="js/vendor/handlebars.runtime.min.js"></script>
