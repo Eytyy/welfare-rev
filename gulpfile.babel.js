@@ -83,9 +83,14 @@ gulp.task('styles', 'Compile Sass', () => {
 // </Styles>
 
 // <Data>
+gulp.task('minifyData', 'minify data', () => {
+  gulp.src(paths.data.src)
+    .pipe(gulpif(jsonminify()))
+    .pipe(gulp.dest(paths.data.dest));
+});
+
 gulp.task('copyData', 'copy data from src to dest', () => {
   gulp.src(paths.data.src)
-    .pipe(gulpif(globalConfig.production(), jsonminify()))
     .pipe(gulp.dest(paths.data.dest));
 });
 // </Data>
