@@ -165,7 +165,6 @@ gulp.task('html', 'compile HTML files', () => {
         env: globalConfig.production() ? 'production' : 'development',
       },
     }))
-    .pipe(gulpif(globalConfig.production(), htmlmin({ collapseWhitespace: true })))
     .pipe(gulp.dest(paths.html.dest));
 });
 // </HTML>
