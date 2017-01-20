@@ -59,6 +59,7 @@ const CORE = (() => {
     AJAX: {
       get(url) {
         const prom = new Promise((resolve, reject) => {
+          console.log(`https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/${url}`);
           const req = new XMLHttpRequest();
           req.open('GET', `https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/${url}`);
           req.onload = () => {
