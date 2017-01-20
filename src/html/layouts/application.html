@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
   <title>{% block title %}WELFARE{% endblock %}</title>
-  <link rel="stylesheet" href="styles/welfare.css">
+  <link rel="stylesheet" href="https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/styles/welfare.css">
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -12,9 +12,9 @@
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIFeSNFnuXq-KGGKkqMGGmD82fugLAgi0"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   {% if env == "production" %}
-  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/l/js/vendor/vendor.min.js"></script>
-  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/welfare-rev/templates/templates.min.js"></script>
-  <script src="https://s3.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/welfare-rev/js/main.min.js"></script>
+  <script src="https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/js/vendor/vendor.min.js"></script>
+  <script src="https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/templates/templates.min.js"></script>
+  <script src="https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/js/main.min.js"></script>
   {% else %}
   <script src="js/vendor/underscore-min.js"></script>
   <script src="js/vendor/handlebars.runtime.min.js"></script>
