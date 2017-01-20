@@ -3,7 +3,7 @@
     "id": 1,
     "name": "projects",
     "title": "Our Projects",
-    "url": "https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/our-projects.json",
+    "url": "data/our-projects.json",
     "hasCategories": true,
     "data": null
   },
@@ -11,8 +11,8 @@
     "id": 2,
     "name": "buildings",
     "title": "Public Buildings",
-    "keysUrl": "https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/public-keys.json",
-    "url": "https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/public.json",
+    "keysUrl": "data/public-keys.json",
+    "url": "data/public.json",
     "hasCategories": false,
     "data": null
   },
@@ -20,8 +20,8 @@
     "id": 3,
     "name": "housing",
     "title": "Housing Study",
-    "keysUrl": "https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/housing-keys.json",
-    "url": "https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/housing.json",
+    "keysUrl": "data/housing-keys.json",
+    "url": "data/housing.json",
     "hasCategories": false,
     "data": null
   }

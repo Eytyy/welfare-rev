@@ -26,7 +26,7 @@ const MAP = (shell) => {
       map = new google.maps.Map(domMap.map, config.options);
 
       // Retrieve the layers and set them up
-      shell.get('https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/layers.json').then((data) => {
+      shell.get('data/layers.json').then((data) => {
         this.setupLayers(data);
       });
 
