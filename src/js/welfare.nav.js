@@ -187,7 +187,7 @@ const NAV = (shell) => {
         const obj = {};
         let sortedData = [];
         let sortData;
-        shell.get('data/sort.json').then((sdata) => {
+        shell.get('https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/sort.json').then((sdata) => {
           sortData = sdata.Sort;
           sortData.forEach((el) => {
             el.sort = parseInt(el.sort, 10);

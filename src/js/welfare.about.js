@@ -4,7 +4,7 @@ const ABOUT = (shell) => {
     active: false,
     currentAbout: null,
   };
-  const dataURL = 'data/about.json';
+  const dataURL = 'https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/data/about.json';
   let dataCache = '';
 
   return {
