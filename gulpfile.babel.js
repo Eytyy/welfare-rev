@@ -16,7 +16,6 @@ import imagemin from 'gulp-imagemin';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';
 import cleanCSS from 'gulp-clean-css';
-import htmlmin from 'gulp-htmlmin';
 import jsonminify from 'gulp-jsonminify';
 import globalConfig from './gulp.config';
 
@@ -85,7 +84,7 @@ gulp.task('styles', 'Compile Sass', () => {
 // <Data>
 gulp.task('minifyData', 'minify data', () => {
   gulp.src(paths.data.src)
-    .pipe(gulpif(jsonminify()))
+    .pipe(jsonminify())
     .pipe(gulp.dest(paths.data.dest));
 });
 
