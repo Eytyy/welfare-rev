@@ -35,7 +35,7 @@ const paths = {
   js: {
     src: [`${root.src}/js/**/*.js`, `!${root.src}/js/vendor/*.js`],
     dest: `${root.dest}/js/`,
-    buildFileName: 'main.min.js',
+    buildFileName: 'all.min.js',
   },
   vendor: {
     src: `${root.src}/js/vendor/*.js`,

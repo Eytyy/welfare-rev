@@ -58,10 +58,9 @@ const CORE = (() => {
 
     AJAX: {
       get(url) {
-        console.log(`https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/${url}`);
         const prom = new Promise((resolve, reject) => {
           const req = new XMLHttpRequest();
-          req.open('GET', `https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/${url}`);
+          req.open('GET', `https://elasticbeanstalk-us-west-2-759804563210.s3.amazonaws.com/welfare-rev/${url}`, true);
           req.onload = () => {
             // This is called even on 404 etc so check the status
             if (req.status === 200) {
