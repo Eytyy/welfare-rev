@@ -4,7 +4,6 @@ node_modules
 *.env
 .tmp
 src
-dest/data
 dest/fonts
 dest/images
 dest/js
