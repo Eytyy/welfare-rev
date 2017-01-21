@@ -128,7 +128,7 @@ gulp.task('js', 'compile javascript: lint then transpile', () => {
     .pipe(gulpif(globalConfig.development(), sourcemaps.init()))
       .pipe(babel())
       .pipe(gulpif(globalConfig.production(), concat(paths.js.buildFileName)))
-      .pipe(gulpif(globalConfig.production(), uglify()))
+      // .pipe(gulpif(globalConfig.production(), uglify()))
     .pipe(gulpif(globalConfig.development(), sourcemaps.write()))
     .pipe(gulp.dest(paths.js.dest));
 });
