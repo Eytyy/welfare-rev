@@ -12,7 +12,7 @@ templates['map-info-projects.tpl.hbs'] = template({"1":function(container,depth0
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.afterImage : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "        <div class=\"image-comp image-comp--before\" style=\"background-image: url('https://s3.amazonaws.com/eytyy.com/"
+    return "        <div class=\"image-comp image-comp--before\" style=\"background-image: url('https://elasticbeanstalk-us-west-2-759804563210/"
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.beforeImage : depth0), depth0))
     + "');\">\n        </div>\n";
 },"6":function(container,depth0,helpers,partials,data) {
