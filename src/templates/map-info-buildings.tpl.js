@@ -63,7 +63,7 @@ templates['map-info-buildings.tpl.hbs'] = template({"1":function(container,depth
 },"30":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "        <div class=\"image-wrapper\">\n          <img src=\"https://elasticbeanstalk-us-west-2-759804563210/"
+  return "        <div class=\"image-wrapper\">\n          <img src=\"https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + alias2(alias1((depth0 != null ? depth0.image : depth0), depth0))
     + "\" alt=\""
     + alias2(alias1((depth0 != null ? depth0.caption : depth0), depth0))

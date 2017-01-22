@@ -12,11 +12,11 @@ templates['map-info-projects.tpl.hbs'] = template({"1":function(container,depth0
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.afterImage : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "        <div class=\"image-comp image-comp--before\" style=\"background-image: url('https://elasticbeanstalk-us-west-2-759804563210/"
+    return "        <div class=\"image-comp image-comp--before\" style=\"background-image: url('https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.beforeImage : depth0), depth0))
     + "');\">\n        </div>\n";
 },"6":function(container,depth0,helpers,partials,data) {
-    return "        <div class=\"image-comp image-comp--after\" style=\"background-image:url('https://elasticbeanstalk-us-west-2-759804563210/"
+    return "        <div class=\"image-comp image-comp--after\" style=\"background-image:url('https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.afterImage : depth0), depth0))
     + "');\">\n        </div>\n";
 },"8":function(container,depth0,helpers,partials,data) {
@@ -26,7 +26,7 @@ templates['map-info-projects.tpl.hbs'] = template({"1":function(container,depth0
 },"9":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "        <img class=\"misc-image\" src=\"https://elasticbeanstalk-us-west-2-759804563210/"
+  return "        <img class=\"misc-image\" src=\"https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + alias2(alias1(depth0, depth0))
     + "\" alt=\""
     + alias2(alias1((depth0 != null ? depth0.RelatedEnglishTitle : depth0), depth0))
@@ -40,7 +40,7 @@ templates['map-info-projects.tpl.hbs'] = template({"1":function(container,depth0
 },"12":function(container,depth0,helpers,partials,data) {
     var alias1=container.escapeExpression;
 
-  return "          <li class=\"links__item\">\n            <a href=\"https://elasticbeanstalk-us-west-2-759804563210/"
+  return "          <li class=\"links__item\">\n            <a href=\"https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + alias1(container.lambda(depth0, depth0))
     + "\">"
     + alias1((helpers.formatFileName || (depth0 && depth0.formatFileName) || helpers.helperMissing).call(depth0 != null ? depth0 : {},depth0,{"name":"formatFileName","hash":{},"data":data}))

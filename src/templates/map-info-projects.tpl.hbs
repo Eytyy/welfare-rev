@@ -31,11 +31,11 @@
   {{#if (or this.beforeImage this.afterImage)}}
     <div class="project__mid">
       {{#if this.beforeImage}}
-        <div class="image-comp image-comp--before" style="background-image: url('https://elasticbeanstalk-us-west-2-759804563210/{{this.beforeImage}}');">
+        <div class="image-comp image-comp--before" style="background-image: url('https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/{{this.beforeImage}}');">
         </div>
       {{/if}}
       {{#if this.afterImage}}
-        <div class="image-comp image-comp--after" style="background-image:url('https://elasticbeanstalk-us-west-2-759804563210/{{this.afterImage}}');">
+        <div class="image-comp image-comp--after" style="background-image:url('https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/{{this.afterImage}}');">
         </div>
       {{/if}}
     </div>
@@ -43,14 +43,14 @@
   <div class="project__bottom">
     {{#if this.miscImages}}
       {{#each this.miscImages}}
-        <img class="misc-image" src="https://elasticbeanstalk-us-west-2-759804563210/{{this}}" alt="{{this.RelatedEnglishTitle}} misc image">
+        <img class="misc-image" src="https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/{{this}}" alt="{{this.RelatedEnglishTitle}} misc image">
       {{/each}}
     {{/if}}
     {{#if this.otherFiles}}
       <ul class="links">
         {{#each this.otherFiles}}
           <li class="links__item">
-            <a href="https://elasticbeanstalk-us-west-2-759804563210/{{this}}">{{formatFileName this}}</a>
+            <a href="https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/{{this}}">{{formatFileName this}}</a>
           </li>
         {{/each}}
       </ul>

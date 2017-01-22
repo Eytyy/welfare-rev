@@ -27,7 +27,7 @@ app.get('/', function(req, res) {
 app.get('/resources/images/:layer/:id', function(req, res) {
   const images = [];
   const prefix = req.params.layer === 'projects' ? `welfare/images/${req.params.layer}/${req.params.id}/Photo/` :
-    `welfare-rev/${req.params.layer}/${req.params.id}/`;
+    `welfare/images/${req.params.layer}/${req.params.id}/`;
   const s3Params = {
     Bucket: process.env.S3_BUCKET_NAME,
     Delimiter: '/',

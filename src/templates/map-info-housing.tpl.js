@@ -373,7 +373,7 @@ templates['map-info-housing.tpl.hbs'] = template({"1":function(container,depth0,
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.images : depth0),{"name":"each","hash":{},"fn":container.program(157, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "      </div>\n";
 },"157":function(container,depth0,helpers,partials,data) {
-    return "          <div class=\"housing-image\">\n            <img src=\"https://elasticbeanstalk-us-west-2-759804563210/"
+    return "          <div class=\"housing-image\">\n            <img src=\"https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-759804563210/"
     + container.escapeExpression(container.lambda(depth0, depth0))
     + "\">\n          </div>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
