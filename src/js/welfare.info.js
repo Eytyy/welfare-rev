@@ -128,7 +128,9 @@ const INFO = (shell) => {
           },
           formatCurr: (v) => {
             const val = v ? v.toString().split('.') : '';
-            val[0] = val[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            if (val !== '') {
+              val[0] = val[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
             return val;
           },
           formatFileName: (v) => {
