@@ -341,9 +341,12 @@ const MAP = (shell) => {
         fillColor: '#BE4459',
         fillOpacity: 1,
       });
-
-      // reposition map and set zeft
-      map.panTo(activeProjectLatLang);
+      if (Array.isArray(activeProjectLatLang.b)) {
+        map.panTo(activeProjectLatLang.b[0]);
+      }
+      else {
+        map.panTo(activeProjectLatLang);
+      }
       map.setZoom(18);
     },
   };
