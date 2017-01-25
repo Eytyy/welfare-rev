@@ -55,6 +55,7 @@ const INFO = (shell) => {
     hideInfoWindow(event) {
       if (!event.fromMap) {
         domMap.$info.classList.remove('js-view-mode');
+        domMap.$info.classList.remove('js-infoExpanded');
       }
     },
 
