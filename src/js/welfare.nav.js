@@ -354,13 +354,21 @@ const NAV = (shell) => {
         this.toggleCategory(catEl, catInner, true, opts);
       }
       else {
+        // if the active layer was housing
+        // we have to do things differently since the category names are
+        // structured differently
         if (event.previousProjectName) {
-          const cat = event.previousProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+          // if the previous project was a housing study project
+          if (event.previousProject.buildingName) {
+            const cat = event.previousProject.buildingName.replace(/ +/g, '').replace(/\./g, '-');
+            prevProj = shell.find(`[data-target="${event.previousProjectName}"][data-cat="${cat}"]`);
+            opts.prevProjCat = shell.find(`.map__nav__item--category--${cat}`);
+          }
+          else {
+            prevProj = shell.find(`[data-target="${event.previousProjectName}"]`);
+            opts.prevProjCat = shell.find(`.map__nav__item--category--${prevProj.dataset.cat}`);
+          }
 
-          prevProj = shell
-            .find(`[data-target="${event.previousProjectName}"][data-cat="${cat}"]`);
-
-          opts.prevProjCat = shell.find(`.map__nav__item--category--${cat}`);
           opts.prevCatInner = opts.prevProjCat.querySelector('.category__inner');
 
           prevProj.classList.remove('js-active');
