@@ -1,5 +1,6 @@
 #about {
   position: absolute;
+  background: rgba(29,29,29,0.95);
   left: 0;
   right: 0;
   top: 0;
@@ -20,7 +21,6 @@
 }
 
 .map-about {
-  background: rgba(29,29,29,0.95);
   border-top: 2px solid $gold;
   position: relative;
 }
