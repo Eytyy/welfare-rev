@@ -91,7 +91,7 @@ const INFO = (shell) => {
 
       if (activeLayer === 'projects') {
         projectData = activeProject.f;
-        activeProjectID = projectData.getProperty('OBJECTID');
+        activeProjectID = projectData.OBJECTID;
       }
       else if (activeLayer === 'buildings') {
         projectData = activeProject.alldata;
